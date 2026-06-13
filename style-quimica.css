@@ -1302,3 +1302,196 @@
   .ocean-turtle::before{right:-13px!important;top:8px!important;width:17px!important;height:15px!important}
   .page-turtle{opacity:.62!important}
 }
+
+
+/* =========================================================
+   V11 — ajuste final solicitado:
+   1) trilha creme menor, parecida com correntinha;
+   2) progresso pink mais fino;
+   3) tartarugas e peixinhos realmente visíveis nadando no mapa;
+   4) sem aumentar poluição visual.
+   ========================================================= */
+
+/* A rota-base agora vira uma correntinha discreta, não bolonas. */
+.route-shadow{
+  stroke:rgba(5,82,116,.14)!important;
+  stroke-width:4.4!important;
+  opacity:.32!important;
+  filter:drop-shadow(0 5px 6px rgba(5,82,116,.12))!important;
+}
+.route-main{
+  stroke:rgba(255,242,184,.98)!important;
+  stroke-width:3.55!important;
+  stroke-dasharray:.65 5.9!important;
+  stroke-linecap:round!important;
+  opacity:.98!important;
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.28)) drop-shadow(0 4px 6px rgba(5,82,116,.11))!important;
+}
+.route-done{
+  stroke:#d01890!important;
+  stroke-width:2.35!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  opacity:.94!important;
+  filter:drop-shadow(0 0 7px rgba(208,24,144,.34))!important;
+}
+
+/* O oceano se mexe com leveza. */
+.route-wrap::before{
+  animation:oceanPatternV11 14s ease-in-out infinite alternate!important;
+}
+.route-wrap::after{
+  animation:oceanLayerV11 16s ease-in-out infinite alternate!important;
+}
+@keyframes oceanPatternV11{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(12px,7px,0)}
+}
+@keyframes oceanLayerV11{
+  from{transform:translateY(0)}
+  to{transform:translateY(-9px)}
+}
+
+/* Animais do mapa: acima da água e da trilha, mas leves para não cobrir as ilhas. */
+.route-ambient{
+  z-index:6!important;
+  display:block!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+.route-map{
+  z-index:7!important;
+  position:absolute!important;
+  inset:0!important;
+}
+.map-fish,
+.map-turtle{
+  display:block!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+}
+
+/* Peixinhos mais visíveis no mar interno. */
+.map-fish{
+  width:26px!important;
+  height:12px!important;
+  opacity:.52!important;
+  z-index:6!important;
+  filter:drop-shadow(0 5px 8px rgba(5,82,116,.16))!important;
+}
+.map-fish::before{
+  right:-7px!important;
+  top:1px!important;
+  border-top:5px solid transparent!important;
+  border-bottom:5px solid transparent!important;
+  border-left-width:8px!important;
+}
+.map-fish::after{
+  width:3px!important;
+  height:3px!important;
+  left:6px!important;
+  top:4px!important;
+}
+.map-fish-1{left:-8%!important;top:16%!important;animation:fishRightV11 24s linear infinite -8s!important}
+.map-fish-2{left:-10%!important;top:38%!important;transform:scale(.78)!important;animation:fishRightV11 31s linear infinite -18s!important}
+.map-fish-3{right:-8%!important;top:58%!important;transform:scaleX(-1) scale(.82)!important;animation:fishLeftV11 29s linear infinite -13s!important}
+.map-fish-4{right:-8%!important;top:80%!important;transform:scaleX(-1) scale(.70)!important;animation:fishLeftV11 37s linear infinite -25s!important}
+.map-fish-5{left:-9%!important;top:69%!important;transform:scale(.66)!important;animation:fishRightV11 34s linear infinite -4s!important}
+.map-fish-6{right:-9%!important;top:27%!important;transform:scaleX(-1) scale(.72)!important;animation:fishLeftV11 36s linear infinite -7s!important}
+
+@keyframes fishRightV11{
+  0%{left:-9%;translate:0 0}
+  50%{left:50%;translate:0 -10px}
+  100%{left:109%;translate:0 7px}
+}
+@keyframes fishLeftV11{
+  0%{right:-9%;translate:0 0}
+  50%{right:50%;translate:0 12px}
+  100%{right:109%;translate:0 -7px}
+}
+
+/* Tartaruga redesenhada: casco, cabeça, olho e nadadeiras. */
+.ocean-turtle{
+  width:58px!important;
+  height:38px!important;
+  border-radius:56% 45% 54% 48%!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,204,70,.78) 0 13%,transparent 14%),
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.32) 0 8%,transparent 9%),
+    linear-gradient(145deg,#20c9b7 0%,#09999f 47%,#055274 100%)!important;
+  opacity:.86!important;
+  box-shadow:inset 7px 6px 12px rgba(255,255,255,.34),inset -7px -6px 10px rgba(5,82,116,.20),0 12px 24px rgba(5,82,116,.20)!important;
+}
+.ocean-turtle::before{
+  content:""!important;
+  position:absolute!important;
+  right:-15px!important;
+  top:10px!important;
+  width:20px!important;
+  height:17px!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 66% 34%,#03496a 0 2.2px,transparent 2.7px),
+    linear-gradient(145deg,#78e2d1,#17b8a9)!important;
+  box-shadow:inset 4px 3px 6px rgba(255,255,255,.35),0 5px 10px rgba(5,82,116,.12)!important;
+}
+.ocean-turtle::after{
+  content:""!important;
+  position:absolute!important;
+  left:5px!important;
+  top:-7px!important;
+  width:15px!important;
+  height:14px!important;
+  border-radius:60% 40% 60% 40%!important;
+  background:#2dc7b5!important;
+  box-shadow:
+    28px 30px 0 #22b8a8,
+    -2px 27px 0 rgba(34,184,168,.88),
+    37px 2px 0 rgba(34,184,168,.78)!important;
+  transform:rotate(-18deg)!important;
+}
+
+/* Tartaruguinhas do mapa: ficam em rotas visíveis dentro do quadro. */
+.map-turtle{
+  opacity:.78!important;
+  z-index:6!important;
+  filter:drop-shadow(0 8px 13px rgba(5,82,116,.20))!important;
+}
+.map-turtle-1{left:-8%!important;top:23%!important;animation:turtleRightV11 44s linear infinite -11s!important}
+.map-turtle-2{right:-8%!important;top:73%!important;animation:turtleLeftV11 52s linear infinite -19s!important}
+.map-turtle-3{left:-8%!important;top:53%!important;transform:scale(.74)!important;animation:turtleRightV11 58s linear infinite -32s!important}
+.map-turtle-4{right:-8%!important;top:10%!important;transform:scale(.66)!important;animation:turtleLeftV11 61s linear infinite -41s!important}
+
+@keyframes turtleRightV11{
+  0%{left:-8%;translate:0 0;rotate:-2deg}
+  35%{left:35%;translate:0 16px;rotate:3deg}
+  70%{left:72%;translate:0 -8px;rotate:-2deg}
+  100%{left:108%;translate:0 6px;rotate:1deg}
+}
+@keyframes turtleLeftV11{
+  0%{right:-8%;translate:0 0;rotate:0deg}
+  35%{right:36%;translate:0 -14px;rotate:-3deg}
+  70%{right:72%;translate:0 9px;rotate:2deg}
+  100%{right:108%;translate:0 -5px;rotate:-1deg}
+}
+
+/* Animais do fundo externo também ficam visíveis, mas discretos. */
+.page-turtle{
+  z-index:1!important;
+  opacity:.56!important;
+  display:block!important;
+}
+.page-fish{
+  z-index:1!important;
+  opacity:.36!important;
+  display:block!important;
+}
+
+/* Pequenos ajustes mobile */
+@media(max-width:760px){
+  .route-main{stroke-width:3px!important;stroke-dasharray:.55 5.1!important}
+  .route-done{stroke-width:2px!important}
+  .map-fish{width:20px!important;height:9px!important;opacity:.42!important}
+  .ocean-turtle{width:45px!important;height:30px!important;opacity:.72!important}
+  .ocean-turtle::before{right:-12px!important;top:8px!important;width:16px!important;height:14px!important}
+}

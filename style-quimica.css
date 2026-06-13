@@ -1495,3 +1495,229 @@
   .ocean-turtle{width:45px!important;height:30px!important;opacity:.72!important}
   .ocean-turtle::before{right:-12px!important;top:8px!important;width:16px!important;height:14px!important}
 }
+
+
+/* =========================================================
+   V12 — oceano realmente animado:
+   - sprites com emoji garantem tartarugas e peixes visíveis;
+   - bolhas mais aparentes;
+   - movimento perceptível do oceano;
+   - mantém a correntinha menor da V11.
+   ========================================================= */
+
+.chem-ocean,
+.route-wrap{
+  overflow:hidden!important;
+}
+
+/* Camada dos sprites acima do mar e abaixo/entre as ilhas, sem bloquear cliques. */
+.route-ambient{
+  z-index:30!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+}
+.route-map{
+  z-index:20!important;
+}
+
+/* Sprite visível e leve. */
+.sea-sprite{
+  position:absolute!important;
+  display:block!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  z-index:35!important;
+  opacity:.76!important;
+  line-height:1!important;
+  filter:drop-shadow(0 8px 10px rgba(5,82,116,.22))!important;
+  will-change:transform,left,right,top!important;
+}
+.sea-map-turtle{
+  font-size:31px!important;
+}
+.sea-map-fish{
+  font-size:24px!important;
+  opacity:.68!important;
+}
+.sea-page-turtle,
+.sea-page-fish{
+  position:fixed!important;
+  z-index:3!important;
+}
+.sea-page-turtle{font-size:32px!important;opacity:.42!important}
+.sea-page-fish{font-size:24px!important;opacity:.34!important}
+
+/* Tartarugas do mapa: rotas atravessando o quadro em pontos diferentes. */
+.sea-map-turtle-1{
+  left:-7%!important;
+  top:18%!important;
+  animation:seaTurtleRightV12 32s linear infinite -6s!important;
+}
+.sea-map-turtle-2{
+  right:-7%!important;
+  top:52%!important;
+  transform:scaleX(-1)!important;
+  animation:seaTurtleLeftV12 38s linear infinite -15s!important;
+}
+.sea-map-turtle-3{
+  left:-7%!important;
+  top:78%!important;
+  font-size:27px!important;
+  opacity:.62!important;
+  animation:seaTurtleRightV12 44s linear infinite -24s!important;
+}
+
+/* Peixes do mapa. */
+.sea-map-fish-1{
+  left:-6%!important;
+  top:34%!important;
+  animation:seaFishRightV12 19s linear infinite -5s!important;
+}
+.sea-map-fish-2{
+  right:-6%!important;
+  top:66%!important;
+  transform:scaleX(-1)!important;
+  animation:seaFishLeftV12 23s linear infinite -11s!important;
+}
+.sea-map-fish-3{
+  left:-6%!important;
+  top:88%!important;
+  font-size:20px!important;
+  opacity:.55!important;
+  animation:seaFishRightV12 29s linear infinite -17s!important;
+}
+
+/* Sprites no oceano externo da página. */
+.sea-page-turtle-1{
+  left:-80px!important;
+  top:54%!important;
+  animation:pageTurtleRightV12 34s linear infinite -8s!important;
+}
+.sea-page-turtle-2{
+  right:-80px!important;
+  top:24%!important;
+  transform:scaleX(-1)!important;
+  animation:pageTurtleLeftV12 42s linear infinite -19s!important;
+}
+.sea-page-fish-1{
+  left:-70px!important;
+  top:36%!important;
+  animation:pageFishRightV12 21s linear infinite -7s!important;
+}
+.sea-page-fish-2{
+  right:-70px!important;
+  top:71%!important;
+  transform:scaleX(-1)!important;
+  animation:pageFishLeftV12 26s linear infinite -13s!important;
+}
+
+@keyframes seaTurtleRightV12{
+  0%{left:-7%;transform:translateY(0) rotate(-3deg)}
+  35%{left:33%;transform:translateY(18px) rotate(4deg)}
+  70%{left:70%;transform:translateY(-12px) rotate(-2deg)}
+  100%{left:107%;transform:translateY(8px) rotate(2deg)}
+}
+@keyframes seaTurtleLeftV12{
+  0%{right:-7%;transform:scaleX(-1) translateY(0) rotate(1deg)}
+  35%{right:34%;transform:scaleX(-1) translateY(-16px) rotate(-4deg)}
+  70%{right:70%;transform:scaleX(-1) translateY(10px) rotate(2deg)}
+  100%{right:107%;transform:scaleX(-1) translateY(-7px) rotate(-2deg)}
+}
+@keyframes seaFishRightV12{
+  0%{left:-6%;transform:translateY(0)}
+  50%{left:52%;transform:translateY(-12px)}
+  100%{left:106%;transform:translateY(8px)}
+}
+@keyframes seaFishLeftV12{
+  0%{right:-6%;transform:scaleX(-1) translateY(0)}
+  50%{right:52%;transform:scaleX(-1) translateY(13px)}
+  100%{right:106%;transform:scaleX(-1) translateY(-8px)}
+}
+@keyframes pageTurtleRightV12{
+  0%{left:-80px;transform:translateY(0) rotate(-2deg)}
+  50%{left:52vw;transform:translateY(18px) rotate(4deg)}
+  100%{left:108vw;transform:translateY(-8px) rotate(-2deg)}
+}
+@keyframes pageTurtleLeftV12{
+  0%{right:-80px;transform:scaleX(-1) translateY(0) rotate(1deg)}
+  50%{right:52vw;transform:scaleX(-1) translateY(-18px) rotate(-4deg)}
+  100%{right:108vw;transform:scaleX(-1) translateY(9px) rotate(2deg)}
+}
+@keyframes pageFishRightV12{
+  0%{left:-70px;transform:translateY(0)}
+  50%{left:54vw;transform:translateY(-14px)}
+  100%{left:108vw;transform:translateY(7px)}
+}
+@keyframes pageFishLeftV12{
+  0%{right:-70px;transform:scaleX(-1) translateY(0)}
+  50%{right:54vw;transform:scaleX(-1) translateY(14px)}
+  100%{right:108vw;transform:scaleX(-1) translateY(-7px)}
+}
+
+/* Bolhas mais visíveis dentro do mapa. */
+.sea-bubble{
+  position:absolute!important;
+  display:block!important;
+  width:9px!important;
+  height:9px!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.34)!important;
+  border:1px solid rgba(255,255,255,.52)!important;
+  box-shadow:0 0 12px rgba(255,255,255,.25)!important;
+  z-index:32!important;
+  opacity:.65!important;
+  animation:seaBubbleRiseV12 10s ease-in-out infinite!important;
+}
+.sea-bubble-1{left:18%;top:82%;animation-delay:-2s!important}
+.sea-bubble-2{left:31%;top:63%;width:6px!important;height:6px!important;animation-delay:-5s!important}
+.sea-bubble-3{left:47%;top:76%;animation-delay:-7s!important}
+.sea-bubble-4{left:66%;top:58%;width:7px!important;height:7px!important;animation-delay:-3s!important}
+.sea-bubble-5{left:82%;top:78%;animation-delay:-8s!important}
+.sea-bubble-6{left:55%;top:34%;width:6px!important;height:6px!important;animation-delay:-4s!important}
+
+@keyframes seaBubbleRiseV12{
+  0%{transform:translateY(20px) scale(.78);opacity:0}
+  25%{opacity:.62}
+  70%{opacity:.55}
+  100%{transform:translateY(-70px) scale(1.18);opacity:0}
+}
+
+/* Movimento perceptível da água do mapa. */
+.route-wrap{
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,.42) 0 7%, transparent 8%),
+    radial-gradient(circle at 82% 28%, rgba(255,255,255,.32) 0 8%, transparent 9%),
+    radial-gradient(circle at 42% 72%, rgba(255,255,255,.20) 0 12%, transparent 13%),
+    linear-gradient(180deg,#74eff5 0%,#3bcfdc 38%,#11a0b9 72%,#087e9b 100%)!important;
+}
+.route-wrap::before{
+  animation:waterTextureV12 8s linear infinite alternate!important;
+  opacity:.55!important;
+}
+.route-wrap::after{
+  animation:waterWaveV12 7s ease-in-out infinite alternate!important;
+  opacity:.86!important;
+}
+@keyframes waterTextureV12{
+  from{background-position:0 0,0 0,0 0;transform:translateX(0)}
+  to{background-position:28px 12px,18px 20px,0 0;transform:translateX(7px)}
+}
+@keyframes waterWaveV12{
+  from{transform:translateY(0) rotate(0deg)}
+  to{transform:translateY(-14px) rotate(-1.2deg)}
+}
+
+/* Garante que os animais antigos em CSS não confundam com os sprites novos. */
+.map-turtle,
+.map-fish{
+  opacity:.12!important;
+}
+
+/* Mobile */
+@media(max-width:760px){
+  .sea-map-turtle{font-size:24px!important}
+  .sea-map-fish{font-size:19px!important}
+  .sea-page-turtle{font-size:25px!important}
+  .sea-page-fish{font-size:19px!important}
+}

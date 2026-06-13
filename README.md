@@ -5,3 +5,7 @@ Versão com mapa de ilhas, trilha-base creme, progresso pink PRENAT+, tartarugas
 
 ## V11
 Ajuste final: trilha creme menor em formato de correntinha, progresso pink fino, tartarugas e peixinhos visíveis nadando no mapa.
+
+
+## V12
+Oceano com sprites visíveis de tartarugas/peixes, bolhas adicionais e animação mais perceptível da água.

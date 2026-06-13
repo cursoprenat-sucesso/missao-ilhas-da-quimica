@@ -1,11 +1,11 @@
 {
-  "slug": "missao-ilhas-da-quimica-prenat-v2-evolucao",
+  "slug": "missao-ilhas-da-quimica-prenat-v4-ilhas-conectadas",
   "brand": "PRENAT+",
   "missionName": "Missão Ilhas da Química",
   "missionKicker": "CAMPO DE TREINO PRENAT+",
-  "subtitle": "Uma travessia gamificada de Química com ilhas flutuantes, evolução da tartaruga, XP, moedas e 5 estrelas.",
+  "subtitle": "Uma travessia gamificada por ilhas químicas conectadas, com evolução da tartaruga, vidas, XP, moedas e até 5 estrelas.",
   "intro": "A tartaruga PRENAT+ vai atravessar ilhas químicas em sequência. Cada vitória libera um novo trecho no mar, entrega um item de evolução do casco e aproxima você da Grande Travessia Química.",
-  "studentThemeNote": "A cada tentativa, o jogo sorteia questões do banco da ilha. Preserve vidas, alcance a meta, conquiste até 5 estrelas e desbloqueie o próximo caminho no arquipélago.",
+  "studentThemeNote": "A cada ilha vencida, o caminho do arquipélago se acende. Conquiste estrelas, preserve vidas e libere itens de evolução da tartaruga PRENAT+.",
   "showMetaToStudent": false,
   "logo": "logo-prenat.png",
   "fontBodyKey": "inter",
@@ -13,10 +13,10 @@
   "starsMax": 5,
   "starThresholds": [
     60,
+    65,
     70,
-    80,
-    85,
-    90
+    75,
+    80
   ],
   "xpPerCorrect": 10,
   "xpPerStar": 60,
@@ -123,8 +123,8 @@
       "difficultyLabel": "Aquecimento",
       "iconStage": 0,
       "icon": "⚛️",
-      "x": 8,
-      "y": 11,
+      "x": 10,
+      "y": 12,
       "rewardItemIndex": 0
     },
     {
@@ -140,8 +140,8 @@
       "difficultyLabel": "Base contextual",
       "iconStage": 1,
       "icon": "🧪",
-      "x": 30,
-      "y": 24,
+      "x": 31,
+      "y": 23,
       "rewardItemIndex": 1
     },
     {
@@ -157,8 +157,8 @@
       "difficultyLabel": "Interpretação",
       "iconStage": 2,
       "icon": "🔗",
-      "x": 56,
-      "y": 13,
+      "x": 54,
+      "y": 12,
       "rewardItemIndex": 2
     },
     {
@@ -174,8 +174,8 @@
       "difficultyLabel": "Conceitual forte",
       "iconStage": 3,
       "icon": "💧",
-      "x": 79,
-      "y": 28,
+      "x": 77,
+      "y": 25,
       "rewardItemIndex": 3
     },
     {
@@ -191,7 +191,7 @@
       "difficultyLabel": "Cálculo guiado",
       "iconStage": 4,
       "icon": "⚖️",
-      "x": 52,
+      "x": 62,
       "y": 43,
       "rewardItemIndex": 4
     },
@@ -208,8 +208,8 @@
       "difficultyLabel": "Aplicações",
       "iconStage": 5,
       "icon": "☢️",
-      "x": 24,
-      "y": 47,
+      "x": 34,
+      "y": 43,
       "rewardItemIndex": 5
     },
     {
@@ -225,8 +225,8 @@
       "difficultyLabel": "Médio-forte",
       "iconStage": 6,
       "icon": "⏱️",
-      "x": 10,
-      "y": 62,
+      "x": 14,
+      "y": 58,
       "rewardItemIndex": 6
     },
     {
@@ -242,7 +242,7 @@
       "difficultyLabel": "Dados e gráficos",
       "iconStage": 7,
       "icon": "🌊",
-      "x": 37,
+      "x": 36,
       "y": 67,
       "rewardItemIndex": 7
     },
@@ -259,8 +259,8 @@
       "difficultyLabel": "Avançado",
       "iconStage": 8,
       "icon": "🔋",
-      "x": 64,
-      "y": 57,
+      "x": 61,
+      "y": 59,
       "rewardItemIndex": 8
     },
     {
@@ -276,7 +276,7 @@
       "difficultyLabel": "Avançado",
       "iconStage": 9,
       "icon": "🌋",
-      "x": 84,
+      "x": 83,
       "y": 70,
       "rewardItemIndex": 9
     },
@@ -293,7 +293,7 @@
       "difficultyLabel": "Hard controlado",
       "iconStage": 10,
       "icon": "🔥",
-      "x": 55,
+      "x": 61,
       "y": 84,
       "rewardItemIndex": 10
     },
@@ -310,7 +310,7 @@
       "difficultyLabel": "Hard estratégico",
       "iconStage": 11,
       "icon": "🌿",
-      "x": 28,
+      "x": 33,
       "y": 86,
       "rewardItemIndex": 11
     },
@@ -327,7 +327,7 @@
       "difficultyLabel": "Boss cumulativo",
       "iconStage": 12,
       "icon": "🏆🦈",
-      "x": 82,
+      "x": 84,
       "y": 91,
       "rewardItemIndex": 12
     }

@@ -29,7 +29,7 @@
     fontBodyKey: 'inter',
     fontHeadingKey: 'inter',
     starsMax: 5,
-    starThresholds: [60, 70, 80, 85, 90],
+    starThresholds: [60, 65, 70, 75, 80],
     xpPerCorrect: 10,
     xpPerStar: 60,
     xpCompletionBonus: 100,
@@ -223,6 +223,7 @@
     const story = app.querySelector('[data-map-story]');
     if (story) story.textContent = 'A tartaruga PRENAT+ atravessa o mar químico: cada ilha vencida acende o caminho, libera a próxima parada e entrega um item de evolução do casco.';
     if (!map) return;
+    updateRouteGeometry();
     map.innerHTML = '';
     settings.phases.forEach((phase, index) => {
       const unlocked = phase.id <= progress.unlockedPhase;
@@ -237,6 +238,9 @@
       node.className = `map-node rpg-node ${unlocked ? 'unlocked' : 'locked'} ${completed ? 'completed' : ''} ${active ? 'current' : ''}`;
       node.style.left = `${phase.x}%`;
       node.style.top = `${phase.y}%`;
+      node.style.setProperty('--x', `${phase.x}%`);
+      node.style.setProperty('--y', `${phase.y}%`);
+      node.dataset.phaseId = String(phase.id);
       node.innerHTML = `
         <button class="map-island-button" ${unlocked && phaseQuestions.length ? '' : 'disabled'} data-start-phase="${phase.id}" aria-label="${escapeHtml(phase.name)}: ${escapeHtml(phase.title)}">
           <span class="island-status-bubble">${completed ? '✓' : active ? '!' : '🔒'}</span>
@@ -279,6 +283,35 @@
     if (text.length <= 34) return text;
     return text.replace(' e ', ' + ').slice(0, 32).trim() + '…';
   }
+
+  function updateRouteGeometry() {
+    const ordered = [...(settings.phases || [])].sort((a, b) => Number(a.id) - Number(b.id));
+    if (!ordered.length) return;
+    const points = ordered.map(p => ({ x: Number(p.x || 50), y: Number(p.y || 50) }));
+    const d = buildIslandRoutePath(points);
+    app.querySelectorAll('.route-shadow,.route-main,.route-done').forEach(path => path.setAttribute('d', d));
+  }
+
+  function buildIslandRoutePath(points) {
+    if (!points.length) return '';
+    if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
+    const parts = [`M ${points[0].x} ${points[0].y}`];
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const cur = points[i];
+      const dx = cur.x - prev.x;
+      const dy = cur.y - prev.y;
+      const curve = Math.min(7, Math.max(2, Math.hypot(dx, dy) / 4));
+      const c1x = prev.x + dx * 0.48;
+      const c1y = prev.y + dy * 0.48 - curve;
+      const c2x = prev.x + dx * 0.52;
+      const c2y = prev.y + dy * 0.52 + curve;
+      parts.push(`C ${round(c1x)} ${round(c1y)}, ${round(c2x)} ${round(c2y)}, ${cur.x} ${cur.y}`);
+    }
+    return parts.join(' ');
+  }
+
+  function round(n) { return Math.round(n * 10) / 10; }
 
   function updateRouteProgress() {
     const path = app.querySelector('.route-done');
@@ -419,8 +452,12 @@
   }
 
   function calculateStars(percent, minPercent) {
-    const thresholds = [minPercent, 70, 80, 85, 90].map(Number).sort((a, b) => a - b);
-    return Math.max(1, Math.min(settings.starsMax || 5, thresholds.filter(t => percent >= t).length));
+    const configured = Array.isArray(settings.starThresholds) && settings.starThresholds.length
+      ? settings.starThresholds
+      : [minPercent, 65, 70, 75, 80];
+    const thresholds = configured.map(Number).filter(Number.isFinite).sort((a, b) => a - b).slice(0, settings.starsMax || 5);
+    const count = thresholds.filter(t => percent >= t).length;
+    return Math.max(1, Math.min(settings.starsMax || 5, count));
   }
   function calculateRewards(score, stars, passed) {
     const xp = Number(score || 0) * Number(settings.xpPerCorrect || 10) + Number(stars || 0) * Number(settings.xpPerStar || 60) + (passed ? Number(settings.xpCompletionBonus || 100) : 0);

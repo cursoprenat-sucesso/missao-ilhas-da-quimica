@@ -467,3 +467,78 @@
   .map-node.rpg-node{width:132px!important;min-height:148px!important}
   .floating-island{width:114px;height:90px}.island-top{width:114px;height:62px}.island-cliff{left:8px;right:8px;height:48px}.chem-prop{width:38px;height:38px;min-width:38px;font-size:23px}.node-caption{width:138px;padding:7px}.node-caption strong{font-size:10px}.node-caption small{font-size:7.5px}.node-badge{width:32px;height:32px;font-size:13px}.island-status-bubble{width:30px;height:30px;font-size:13px}.island-info-panel{display:none}.legend-row{font-size:12px}.section-title-row h2{font-size:32px!important}
 }
+
+
+/* =========================================================
+   V4 — MAPA COM ILHAS CONECTADAS + ESTRELAS CORRIGIDAS
+   Ajuste visual pedido: ilhas mais parecidas com jogo, caminho passando por todas.
+   ========================================================= */
+.chemistry-map-card{
+  max-width:1120px!important;
+  margin-inline:auto!important;
+}
+.map-story{
+  font-weight:900!important;
+  background:linear-gradient(90deg,rgba(255,252,224,.95),rgba(255,255,255,.92))!important;
+}
+.route-wrap{
+  min-height:1160px!important;
+  border-radius:34px!important;
+  background:
+    radial-gradient(circle at 15% 17%, rgba(255,255,255,.55) 0 5.5%, transparent 6%),
+    radial-gradient(circle at 83% 24%, rgba(255,255,255,.38) 0 8%, transparent 9%),
+    radial-gradient(circle at 38% 70%, rgba(255,255,255,.26) 0 10%, transparent 11%),
+    linear-gradient(180deg,#6febf2 0%,#2dc6d6 42%,#0c9bb7 76%,#097f9c 100%)!important;
+}
+.route-shadow{stroke:rgba(1,58,77,.30)!important;stroke-width:7.4!important;stroke-dasharray:none!important;filter:drop-shadow(0 8px 8px rgba(5,82,116,.30))!important}
+.route-main{stroke:rgba(255,236,156,.92)!important;stroke-width:5.4!important;stroke-dasharray:0 10!important;filter:drop-shadow(0 2px 0 rgba(255,255,255,.25))!important}
+.route-done{stroke:rgba(208,24,144,.96)!important;stroke-width:6.2!important;stroke-dasharray:none!important;filter:drop-shadow(0 0 13px rgba(208,24,144,.52)) drop-shadow(0 2px 0 rgba(255,255,255,.25))!important}
+.map-node.rpg-node{width:146px!important;min-height:150px!important}
+.floating-island{
+  width:128px!important;
+  height:104px!important;
+  filter:drop-shadow(0 20px 17px rgba(2,53,75,.28))!important;
+}
+.island-cliff{
+  left:10px!important;right:10px!important;bottom:8px!important;height:58px!important;
+  border-radius:20px 25px 42px 38px!important;
+  background:
+    linear-gradient(140deg,rgba(255,255,255,.26),transparent 24%),
+    repeating-linear-gradient(105deg,rgba(255,255,255,.10) 0 6px, transparent 7px 15px),
+    linear-gradient(90deg,#6c3c3b 0%,#b3664e 32%,#5c3448 64%,#8b4a3e 100%)!important;
+  clip-path:polygon(4% 10%,96% 4%,100% 38%,86% 92%,59% 100%,19% 95%,0 37%)!important;
+}
+.island-top{
+  width:128px!important;height:74px!important;top:2px!important;
+  border-radius:50% 48% 44% 57% / 52% 49% 55% 49%!important;
+  border:2px solid rgba(255,255,255,.55)!important;
+  box-shadow:inset 0 8px 0 rgba(255,255,255,.22), inset 0 -10px 0 rgba(11,92,45,.22), 0 8px 16px rgba(5,82,116,.10)!important;
+}
+.island-sand{left:20px!important;right:20px!important;bottom:4px!important;height:16px!important;background:rgba(255,220,139,.86)!important}
+.tiny-tree{display:block!important}.tree-a{left:18px!important;top:11px!important}.tree-b{right:18px!important;top:16px!important}
+.chem-prop{font-size:26px!important;width:43px!important;height:43px!important;min-width:43px!important;border-radius:16px!important}
+.node-badge{left:6px!important;top:-2px!important;width:34px!important;height:34px!important;font-size:14px!important;z-index:12!important}
+.island-status-bubble{right:7px!important;top:1px!important;width:31px!important;height:31px!important;font-size:14px!important;z-index:12!important}
+.node-caption{width:150px!important;margin-top:-2px!important;padding:7px 8px!important;border-radius:15px!important;background:rgba(255,255,255,.92)!important}
+.node-caption small{font-size:7.8px!important;letter-spacing:.12em!important}.node-caption strong{font-size:10.5px!important;line-height:1.1!important}.node-stars{margin-top:1px!important}.node-stars .star{font-size:12px!important}
+.map-node.locked{opacity:.62!important;filter:grayscale(.28) saturate(.68)!important}.map-node.locked .route-main{opacity:.5!important}
+.map-node.current .floating-island{animation:prenatFloat 4.2s ease-in-out infinite,islandGlow 1.5s ease-in-out infinite!important}
+.map-node.current .node-caption{border:2px solid rgba(208,24,144,.35)!important;box-shadow:0 14px 28px rgba(208,24,144,.18)!important}
+.map-node.completed .node-caption{border:2px solid rgba(32,185,106,.28)!important}
+.map-node:nth-child(1) .island-top{background:radial-gradient(circle at 22% 68%,#ffe29e 0 13%,transparent 14%),linear-gradient(145deg,#a6e964,#34b455 58%,#168946)!important}
+.map-node:nth-child(2) .island-top{background:radial-gradient(circle at 70% 26%,#d9fbff 0 13%,transparent 14%),linear-gradient(145deg,#93f1df,#34c783 60%,#088d73)!important}
+.map-node:nth-child(3) .island-top{background:radial-gradient(circle at 26% 34%,#fff0a5 0 13%,transparent 14%),linear-gradient(145deg,#c9ef6b,#82c840 58%,#468b29)!important}
+.map-node:nth-child(4) .island-top{background:radial-gradient(circle at 70% 68%,#ffd5a0 0 13%,transparent 14%),linear-gradient(145deg,#96dc70,#35a54d 60%,#236f38)!important}
+.map-node:nth-child(5) .island-top{background:radial-gradient(circle at 50% 74%,#fff1b5 0 15%,transparent 16%),linear-gradient(145deg,#b8ec70,#55b947 60%,#2e8532)!important}
+.map-node:nth-child(6) .island-top{background:radial-gradient(circle at 70% 30%,#c8f4ff 0 13%,transparent 14%),linear-gradient(145deg,#81d5bf,#3ba587 60%,#236e67)!important}
+.map-node:nth-child(7) .island-top{background:radial-gradient(circle at 25% 70%,#f5dfa1 0 13%,transparent 14%),linear-gradient(145deg,#a1df69,#43b055 60%,#247d3c)!important}
+.map-node:nth-child(8) .island-top{background:radial-gradient(circle at 70% 32%,#d9f7ff 0 15%,transparent 16%),linear-gradient(145deg,#77e7d9,#26bfc3 58%,#09828e)!important}
+.map-node:nth-child(9) .island-top{background:radial-gradient(circle at 34% 32%,#fff2b6 0 13%,transparent 14%),linear-gradient(145deg,#a5ef74,#3fab50 62%,#1f7a35)!important}
+.map-node:nth-child(10) .island-top{background:radial-gradient(circle at 52% 36%,#ff9d4d 0 13%,transparent 14%),linear-gradient(145deg,#839338,#5f6a28 60%,#3a3f28)!important}
+.map-node:nth-child(11) .island-top{background:radial-gradient(circle at 67% 68%,#ffd8a1 0 13%,transparent 14%),linear-gradient(145deg,#bedb71,#78aa42 58%,#526f2b)!important}
+.map-node:nth-child(12) .island-top{background:radial-gradient(circle at 28% 32%,#ffcbe8 0 13%,transparent 14%),linear-gradient(145deg,#99e66b,#2eaa55 60%,#14753c)!important}
+.map-node:nth-child(13) .floating-island{transform:scale(1.16)!important;filter:drop-shadow(0 24px 22px rgba(4,68,91,.36)) drop-shadow(0 0 20px rgba(252,204,70,.55))!important}
+.map-node:nth-child(13) .island-top{background:radial-gradient(circle at 52% 47%,#fff0a0 0 18%,transparent 19%),linear-gradient(145deg,#9bd9ff,#2b99bd 56%,#0b5673)!important}
+.result-card .result-stars .star.filled{color:#ffbd2e!important}
+@media(max-width:1100px){.route-wrap{min-height:1160px!important}.map-node.rpg-node{width:140px!important}}
+@media(max-width:760px){.route-wrap{min-height:1340px!important}.map-node.rpg-node{width:124px!important}.floating-island{width:112px!important;height:92px!important}.island-top{width:112px!important;height:62px!important}.node-caption{width:132px!important}.node-caption strong{font-size:9.5px!important}.node-caption small{font-size:7px!important}}

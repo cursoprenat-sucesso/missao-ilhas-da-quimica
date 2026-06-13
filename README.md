@@ -1,10 +1,17 @@
-# PRENAT+ | Missão Ilhas da Química — V3 Mapa RPG
+# PRENAT+ | Missão Ilhas da Química — Premium V2
 
-Versão com mapa do aluno redesenhado em HTML, CSS e JavaScript: ilhas compactas flutuantes, caminho no mar, bloqueio por cadeado, destaque da ilha atual, estrelas, XP, moedas, vidas e evolução da tartaruga.
+Versão com mapa de ilhas flutuantes, caminho desbloqueável, vidas, 5 estrelas, XP, moedas e evolução da tartaruga PRENAT+.
 
-O painel do professor foi mantido no padrão da versão anterior, com cadastro de questões, subscrito, sobrescrito, fórmulas, imagem e exportação dos arquivos `settings.json` e `questions.json`.
+## Arquivos principais
 
-## Links esperados no GitHub Pages
+- `index.html`: jogo do aluno.
+- `professor.html`: painel do professor.
+- `app-quimica.js`: lógica do jogo.
+- `style-quimica.css`: design visual.
+- `settings.json`: configuração das ilhas, patentes e evolução.
+- `questions.json`: banco de questões.
+
+## Links
 
 Aluno: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/`
 

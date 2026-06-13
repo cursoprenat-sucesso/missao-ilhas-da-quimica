@@ -1,4 +1,4 @@
-# Guia rápido — Missão Ilhas da Química Premium V3
+# Guia rápido — Missão Ilhas da Química Premium V2
 
 1. Crie um repositório novo chamado `missao-ilhas-da-quimica`.
 2. Envie todos os arquivos desta pasta.

@@ -317,7 +317,8 @@
     const path = app.querySelector('.route-done');
     if (!path || typeof path.getTotalLength !== 'function') return;
     const totalPhases = Math.max(1, settings.phases.length - 1);
-    const ratio = Math.max(0, Math.min(1, (Number(progress.unlockedPhase || 1) - 1) / totalPhases));
+    const rawRatio = (Number(progress.unlockedPhase || 1) - 1) / totalPhases;
+    const ratio = Math.max(0.025, Math.min(1, rawRatio));
     requestAnimationFrame(() => {
       const length = path.getTotalLength();
       path.style.strokeDasharray = String(length);

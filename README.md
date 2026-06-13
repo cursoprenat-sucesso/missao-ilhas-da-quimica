@@ -1,23 +1,10 @@
-# PRENAT+ | Missão Ilhas da Química — Premium V2
+# PRENAT+ | Missão Ilhas da Química — V7
 
-Versão com mapa de ilhas flutuantes, caminho desbloqueável, vidas, 5 estrelas, XP, moedas e evolução da tartaruga PRENAT+.
+Jogo gamificado de Química com mapa de ilhas, trilha creme, progresso pink PRENAT+, vidas, estrelas, XP, moedas, evolução da tartaruga e painel do professor.
 
-## Arquivos principais
-
-- `index.html`: jogo do aluno.
-- `professor.html`: painel do professor.
-- `app-quimica.js`: lógica do jogo.
-- `style-quimica.css`: design visual.
-- `settings.json`: configuração das ilhas, patentes e evolução.
-- `questions.json`: banco de questões.
-
-## Links
-
-Aluno: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/`
-
-Professor: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html`
-
-
-## V6 Oceano Vivo
-
-Mantém a trilha verde discreta da V5 e adiciona fundo oceânico em CSS com ondas suaves, peixinhos, tartaruguinhas e bolhas discretas, sem mexer no painel do professor.
+## V7
+- progresso da trilha em pink PRENAT+;
+- trilha-base creme preservada;
+- tartaruguinhas animadas mais reconhecíveis;
+- oceano vivo mantido com bolhas e peixinhos discretos;
+- painel do professor mantido.

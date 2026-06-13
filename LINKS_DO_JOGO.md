@@ -1,6 +1,5 @@
-# Links oficiais
+# Links do jogo
 
-Depois de publicar no GitHub Pages:
+Aluno: https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=7
 
-- Link do aluno: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/`
-- Link do professor: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html`
+Professor: https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=7

@@ -221,7 +221,7 @@
   function renderMap() {
     const map = app.querySelector('[data-island-map]');
     const story = app.querySelector('[data-map-story]');
-    if (story) story.textContent = 'Siga a tartaruga pelo arquipélago. As ilhas bloqueadas abrem quando você vence a etapa anterior; cada rodada sorteia perguntas do banco.';
+    if (story) story.textContent = 'A tartaruga PRENAT+ atravessa o mar químico: cada ilha vencida acende o caminho, libera a próxima parada e entrega um item de evolução do casco.';
     if (!map) return;
     map.innerHTML = '';
     settings.phases.forEach((phase, index) => {
@@ -232,36 +232,52 @@
       const playableCount = getPlayableCount(phase, phaseQuestions.length);
       const score = progress.phaseScores?.[phase.id];
       const stars = score?.stars || 0;
+      const reward = settings.turtleRewards?.[phase.rewardItemIndex] || settings.turtleRewards?.[index];
       const node = document.createElement('article');
-      node.className = `map-node ${unlocked ? 'unlocked' : 'locked'} ${completed ? 'completed' : ''} ${active ? 'current' : ''}`;
+      node.className = `map-node rpg-node ${unlocked ? 'unlocked' : 'locked'} ${completed ? 'completed' : ''} ${active ? 'current' : ''}`;
       node.style.left = `${phase.x}%`;
       node.style.top = `${phase.y}%`;
       node.innerHTML = `
-        <div class="island-orb ${completed ? 'orb-done' : active ? 'orb-current' : ''}">
-          <div class="island-number">${index + 1}</div>
-          <div class="island-icon">${escapeHtml(phase.icon || islandIcon(index))}</div>
-          <span class="lock-chip">${completed ? '✓' : unlocked ? 'Aberta' : '🔒'}</span>
-        </div>
-        <div class="island-popover">
-          <span class="tiny-label">${escapeHtml(phase.name)}</span>
-          <h3>${escapeHtml(phase.title)}</h3>
+        <button class="map-island-button" ${unlocked && phaseQuestions.length ? '' : 'disabled'} data-start-phase="${phase.id}" aria-label="${escapeHtml(phase.name)}: ${escapeHtml(phase.title)}">
+          <span class="island-status-bubble">${completed ? '✓' : active ? '!' : '🔒'}</span>
+          <span class="node-badge">${index + 1}</span>
+          <span class="floating-island" aria-hidden="true">
+            <span class="island-shadow"></span>
+            <span class="island-cliff"></span>
+            <span class="island-top">
+              <span class="island-grass"></span>
+              <span class="island-sand"></span>
+              <span class="tiny-tree tree-a"></span>
+              <span class="tiny-tree tree-b"></span>
+              <span class="chem-prop">${escapeHtml(phase.icon || islandIcon(index))}</span>
+            </span>
+          </span>
+          <span class="node-caption">
+            <small>${escapeHtml(phase.name)}</small>
+            <strong>${escapeHtml(shortTitle(phase.title))}</strong>
+          </span>
+          <span class="node-stars" aria-label="${stars} de ${settings.starsMax || 5} estrelas">${starHtml(stars)}</span>
+        </button>
+        <div class="island-info-panel">
+          <strong>${escapeHtml(phase.title)}</strong>
           <p>${escapeHtml(phase.story)}</p>
-          <div class="star-row" aria-label="${stars} estrelas">${starHtml(stars)}</div>
-          <div class="island-meta">
-            <span class="meta-chip">Meta ${phase.minPercent}%</span>
-            <span class="meta-chip">${phase.lives} vidas</span>
-            <span class="meta-chip">${playableCount || phase.questionLimit || 'todas'} questões</span>
-            <span class="meta-chip">${escapeHtml(phase.difficultyLabel)}</span>
+          <div class="island-info-meta">
+            <span>Meta ${phase.minPercent}%</span>
+            <span>${phase.lives} vidas</span>
+            <span>${playableCount || phase.questionLimit || 'todas'} questões</span>
           </div>
-          <button class="btn ${unlocked ? 'btn-primary' : 'btn-soft'}" ${unlocked && phaseQuestions.length ? '' : 'disabled'} data-start-phase="${phase.id}">
-            ${completed ? 'Refazer ilha' : unlocked ? 'Entrar na ilha' : 'Bloqueada'}
-          </button>
-          ${unlocked && !phaseQuestions.length ? '<p class="small-muted">Ilha em preparação: ainda não há questões cadastradas.</p>' : ''}
+          <em>${completed ? 'Ilha conquistada. Você pode refazer para melhorar estrelas.' : unlocked ? `Recompensa: ${escapeHtml(reward?.name || 'item da tartaruga')}` : 'Bloqueada: vença a ilha anterior para abrir este caminho.'}</em>
         </div>`;
       map.appendChild(node);
     });
     map.querySelectorAll('[data-start-phase]').forEach(btn => btn.addEventListener('click', () => startPhase(Number(btn.dataset.startPhase))));
     updateRouteProgress();
+  }
+
+  function shortTitle(title) {
+    const text = String(title || '');
+    if (text.length <= 34) return text;
+    return text.replace(' e ', ' + ').slice(0, 32).trim() + '…';
   }
 
   function updateRouteProgress() {

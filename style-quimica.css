@@ -1721,3 +1721,65 @@
   .sea-page-turtle{font-size:25px!important}
   .sea-page-fish{font-size:19px!important}
 }
+
+
+/* V13 — painel do professor organizado por banco de questões de cada ilha */
+.bank-toolbar{
+  display:grid;
+  grid-template-columns:minmax(220px,320px) 1fr;
+  gap:14px;
+  align-items:end;
+  margin:14px 0 18px;
+}
+.phase-question-stats{
+  border:1px solid rgba(216,239,242,.95);
+  background:linear-gradient(135deg,#ffffff,#f2fbfc);
+  border-radius:18px;
+  padding:13px 15px;
+  color:#365f72;
+  font-weight:850;
+  min-height:58px;
+}
+.phase-question-stats strong{
+  display:block;
+  color:#055274;
+  margin-bottom:5px;
+}
+.phase-question-stats span{
+  display:inline-block;
+}
+.bank-chip{
+  display:inline-flex!important;
+  gap:5px;
+  align-items:center;
+  margin:4px 5px 0 0;
+  padding:6px 9px;
+  border-radius:999px;
+  background:#eefafb;
+  border:1px solid rgba(216,239,242,.95);
+  font-size:.78rem;
+}
+.question-phase-group{
+  border:1px solid rgba(216,239,242,.95);
+  border-radius:20px;
+  padding:14px;
+  margin:0 0 14px;
+  background:rgba(255,255,255,.72);
+}
+.question-phase-group h3{
+  margin:0 0 12px;
+  color:#055274;
+  font-size:1rem;
+}
+.question-phase-group h3 span{
+  display:inline-flex;
+  margin-left:7px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#fff3fb;
+  color:#d01890;
+  font-size:.74rem;
+}
+@media(max-width:760px){
+  .bank-toolbar{grid-template-columns:1fr}
+}

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Área do Professor | PRENAT+ Química</title>
-  <link rel="stylesheet" href="style-quimica.css?v=12" />
+  <link rel="stylesheet" href="style-quimica.css?v=13" />
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] }, svg: { fontCache: 'global' } };
   </script>
@@ -96,7 +96,7 @@
 
       <section class="teacher-panel glass-card hidden" data-tab="questoes">
         <h2>Cadastrar questões</h2>
-        <p class="warning-tip">As questões podem misturar Biologia, Física e Química em qualquer fase. A disciplina, tema e dificuldade servem como etiqueta interna do professor.</p>
+        <p class="warning-tip"><strong>Banco por ilha:</strong> cada questão fica vinculada à fase/ilha escolhida abaixo. O aluno só recebe questões daquela ilha. O Boss Final usa banco cumulativo das ilhas anteriores, além das questões cadastradas diretamente nele.</p>
         <input type="hidden" id="editingQuestionId" />
         <div class="form-grid three">
           <div class="form-field"><label>Fase/ilha</label><select id="qPhase"></select></div>
@@ -120,7 +120,14 @@
           <button class="btn btn-primary" id="saveQuestionBtn">Salvar questão</button>
           <button class="btn btn-soft" id="clearQuestionBtn">Limpar formulário</button>
         </div>
-        <h2 style="margin-top:30px">Banco de questões</h2>
+        <h2 style="margin-top:30px">Banco de questões por ilha</h2>
+        <div class="bank-toolbar">
+          <div class="form-field">
+            <label>Filtrar banco</label>
+            <select id="bankPhaseFilter"><option value="all">Todas as ilhas</option></select>
+          </div>
+          <div id="phaseQuestionStats" class="phase-question-stats"></div>
+        </div>
         <div id="questionBankList" class="question-bank-list"></div>
       </section>
 
@@ -149,6 +156,6 @@
     </section>
   </main>
 
-  <script src="professor-quimica.js?v=12"></script>
+  <script src="professor-quimica.js?v=13"></script>
 </body>
 </html>

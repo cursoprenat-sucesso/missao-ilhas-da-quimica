@@ -20,10 +20,10 @@
     "starsMax": 5,
     "starThresholds": [
       60,
+      65,
       70,
-      80,
-      85,
-      90
+      75,
+      80
     ],
     "xpPerCorrect": 10,
     "xpPerStar": 60,
@@ -286,6 +286,8 @@
         "difficultyLabel": "Boss cumulativo",
         "iconStage": 12,
         "icon": "🏆🦈",
+        "cumulative": true,
+        "cumulativeFromPrevious": true,
         "x": 82,
         "y": 91
       }
@@ -321,8 +323,11 @@
 
   function normalize() {
     settings = { ...DEFAULT_SETTINGS, ...settings };
+    settings.starThresholds = Array.isArray(settings.starThresholds) && settings.starThresholds.length ? settings.starThresholds : [60, 65, 70, 75, 80];
     settings.ranks = Array.isArray(settings.ranks) && settings.ranks.length ? settings.ranks : DEFAULT_SETTINGS.ranks;
     settings.phases = Array.isArray(settings.phases) && settings.phases.length ? settings.phases : DEFAULT_SETTINGS.phases;
+    const lastPhaseId = Math.max(...settings.phases.map(p => Number(p.id || 0)));
+    settings.phases = settings.phases.map(p => Number(p.id) === lastPhaseId ? { ...p, cumulative: true, cumulativeFromPrevious: true } : p);
     questions = Array.isArray(questions) ? questions.map(normalizeQuestion) : [];
   }
 
@@ -472,7 +477,17 @@
   function renderQuestionForm() {
     const phaseSelect = document.getElementById('qPhase');
     if (phaseSelect) {
-      phaseSelect.innerHTML = settings.phases.map(p => `<option value="${p.id}">${escapeHtml(p.name)} · ${escapeHtml(p.title)}</option>`).join('');
+      phaseSelect.innerHTML = settings.phases.map(p => `<option value="${p.id}">${escapeHtml(p.name)} · ${escapeHtml(p.title)}${p.cumulative ? ' · Boss cumulativo' : ''}</option>`).join('');
+      phaseSelect.onchange = () => {
+        const bankFilter = document.getElementById('bankPhaseFilter');
+        if (bankFilter) bankFilter.value = phaseSelect.value;
+        renderQuestionBank();
+      };
+    }
+    const bankFilter = document.getElementById('bankPhaseFilter');
+    if (bankFilter) {
+      bankFilter.innerHTML = '<option value="all">Todas as ilhas</option>' + settings.phases.map(p => `<option value="${p.id}">${escapeHtml(p.name)} · ${escapeHtml(p.title)}${p.cumulative ? ' · Boss cumulativo' : ''}</option>`).join('');
+      bankFilter.onchange = renderQuestionBank;
     }
     const options = document.getElementById('optionsEditor');
     if (!options) return;
@@ -530,6 +545,8 @@
     if (!q) return;
     setValue('editingQuestionId', q.id);
     setValue('qPhase', q.phase);
+    const bankFilter = document.getElementById('bankPhaseFilter');
+    if (bankFilter) bankFilter.value = String(q.phase);
     setValue('qDiscipline', q.discipline);
     setValue('qTopic', q.topic);
     setValue('qDifficulty', q.difficulty);
@@ -568,33 +585,79 @@
 
   function renderQuestionBank() {
     const list = document.getElementById('questionBankList');
+    const stats = document.getElementById('phaseQuestionStats');
+    const filter = document.getElementById('bankPhaseFilter')?.value || 'all';
     if (!list) return;
+
+    const counts = {};
+    questions.forEach(q => { counts[q.phase] = (counts[q.phase] || 0) + 1; });
+
+    if (stats) {
+      const selectedPhase = filter === 'all' ? null : settings.phases.find(p => Number(p.id) === Number(filter));
+      if (selectedPhase) {
+        const direct = counts[selectedPhase.id] || 0;
+        const cumulative = selectedPhase.cumulative ? questions.filter(q => Number(q.phase) <= Number(selectedPhase.id)).length : direct;
+        stats.innerHTML = `<strong>${escapeHtml(selectedPhase.name)}</strong><span>${direct} questão(ões) cadastrada(s) diretamente nesta ilha${selectedPhase.cumulative ? ` · ${cumulative} no banco cumulativo do Boss` : ''}</span>`;
+      } else {
+        const total = questions.length;
+        const chips = settings.phases.map(p => `<span class="bank-chip">${escapeHtml(p.name)}: <strong>${counts[p.id] || 0}</strong></span>`).join('');
+        stats.innerHTML = `<strong>Total: ${total} questão(ões)</strong><div>${chips}</div>`;
+      }
+    }
+
     if (!questions.length) {
-      list.innerHTML = '<p class="warning-tip">Ainda não há questões cadastradas.</p>';
+      list.innerHTML = '<p class="warning-tip">Ainda não há questões cadastradas. Escolha uma ilha no campo “Fase/ilha” e salve as questões daquela temática.</p>';
       return;
     }
+
+    const visible = [...questions]
+      .filter(q => filter === 'all' || Number(q.phase) === Number(filter))
+      .sort((a,b) => a.phase - b.phase);
+
+    if (!visible.length) {
+      list.innerHTML = '<p class="warning-tip">Essa ilha ainda não possui questões cadastradas. Cadastre questões selecionando essa ilha no formulário acima.</p>';
+      return;
+    }
+
     list.innerHTML = '';
-    const grouped = [...questions].sort((a,b) => a.phase - b.phase);
-    grouped.forEach(q => {
-      const phase = settings.phases.find(p => p.id === q.phase);
-      const row = document.createElement('article');
-      row.className = 'question-row';
-      row.innerHTML = `
-        <div>
-          <strong>${escapeHtml(phase ? `${phase.name} · ${phase.title}` : `Fase ${q.phase}`)}</strong>
-          <small>${escapeHtml([q.discipline, q.topic, q.difficulty].filter(Boolean).join(' · ') || 'Sem etiquetas')}</small>
-          <p>${escapeHtml(stripHtml(q.statement).slice(0, 180))}${stripHtml(q.statement).length > 180 ? '...' : ''}</p>
-        </div>
-        <div class="teacher-actions">
-          <button class="btn btn-soft small" data-edit="${q.id}">Editar</button>
-          <button class="btn btn-soft small danger" data-delete="${q.id}">Excluir</button>
-        </div>`;
-      list.appendChild(row);
-    });
+
+    if (filter === 'all') {
+      settings.phases.forEach(phase => {
+        const group = visible.filter(q => Number(q.phase) === Number(phase.id));
+        const box = document.createElement('section');
+        box.className = 'question-phase-group';
+        box.innerHTML = `<h3>${escapeHtml(phase.name)} · ${escapeHtml(phase.title)} <span>${group.length} questão(ões)</span></h3>`;
+        if (!group.length) {
+          box.innerHTML += '<p class="small-muted">Nenhuma questão cadastrada nesta ilha ainda.</p>';
+        } else {
+          group.forEach(q => box.appendChild(questionRow(q)));
+        }
+        list.appendChild(box);
+      });
+    } else {
+      visible.forEach(q => list.appendChild(questionRow(q)));
+    }
+
     list.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => editQuestion(btn.dataset.edit)));
     list.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => deleteQuestion(btn.dataset.delete)));
   }
 
+  function questionRow(q) {
+    const phase = settings.phases.find(p => p.id === q.phase);
+    const row = document.createElement('article');
+    row.className = 'question-row';
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHtml(phase ? `${phase.name} · ${phase.title}` : `Fase ${q.phase}`)}</strong>
+        <small>${escapeHtml([q.discipline, q.topic, q.difficulty].filter(Boolean).join(' · ') || 'Sem etiquetas')}</small>
+        <p>${escapeHtml(stripHtml(q.statement).slice(0, 180))}${stripHtml(q.statement).length > 180 ? '...' : ''}</p>
+      </div>
+      <div class="teacher-actions">
+        <button class="btn btn-soft small" data-edit="${q.id}">Editar</button>
+        <button class="btn btn-soft small danger" data-delete="${q.id}">Excluir</button>
+      </div>`;
+    return row;
+  }
 
   function setupRichTextHelpers() {
     document.querySelectorAll('textarea[data-rich="true"]').forEach(textarea => {

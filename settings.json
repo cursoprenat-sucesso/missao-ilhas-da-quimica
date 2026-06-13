@@ -329,7 +329,9 @@
       "icon": "🏆🦈",
       "x": 84,
       "y": 86,
-      "rewardItemIndex": 12
+      "rewardItemIndex": 12,
+      "cumulative": true,
+      "cumulativeFromPrevious": true
     }
   ],
   "turtleRewards": [

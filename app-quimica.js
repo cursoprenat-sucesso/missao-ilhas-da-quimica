@@ -335,7 +335,16 @@
     });
   }
 
-  function getQuestionsForPhase(phaseId) { return questions.filter(q => Number(q.phase) === Number(phaseId) && q.statement && q.options.length >= 2 && q.options.some(op => op.correct)); }
+  function getQuestionsForPhase(phaseId) {
+    const phase = settings.phases.find(p => Number(p.id) === Number(phaseId));
+    const valid = q => q.statement && Array.isArray(q.options) && q.options.length >= 2 && q.options.some(op => op.correct);
+    // Banco normal: cada ilha só sorteia questões cadastradas nela.
+    if (!phase?.cumulative) return questions.filter(q => Number(q.phase) === Number(phaseId) && valid(q));
+
+    // Boss Final cumulativo: mistura questões das ilhas anteriores e também as cadastradas diretamente no Boss.
+    const maxPhase = Number(phase.id);
+    return questions.filter(q => Number(q.phase) <= maxPhase && valid(q));
+  }
   function getPlayableCount(phase, poolLength) {
     if (!poolLength) return 0;
     if (!phase.questionLimit || phase.questionLimit <= 0) return poolLength;
@@ -344,7 +353,12 @@
   function selectQuestionsForAttempt(phase, pool) {
     const shuffled = phase.shuffle ? shuffleArray(pool) : [...pool];
     const limit = getPlayableCount(phase, shuffled.length);
-    return shuffled.slice(0, limit);
+    // Cada tentativa embaralha as questões e também a ordem das alternativas.
+    // Isso mantém o banco da ilha organizado, mas evita que o aluno decore a letra.
+    return shuffled.slice(0, limit).map(q => ({
+      ...q,
+      options: Array.isArray(q.options) ? shuffleArray(q.options) : []
+    }));
   }
 
   function startPhase(phaseId) {
@@ -369,7 +383,7 @@
     app.querySelector('[data-lives]').textContent = '❤️'.repeat(run.lives) || '0';
     app.querySelector('[data-minpercent]').textContent = `${run.phase.minPercent}%`;
     app.querySelector('[data-score]').textContent = `${run.score}/${run.questions.length}`;
-    app.querySelector('[data-question-count]').textContent = `Questão ${run.index + 1} de ${run.questions.length} · sorteada de ${run.poolSize} do banco da ilha`;
+    app.querySelector('[data-question-count]').textContent = `Questão ${run.index + 1} de ${run.questions.length} · sorteada de ${run.poolSize} ${run.phase.cumulative ? 'do banco cumulativo do Boss Final' : 'do banco desta ilha'}`;
     app.querySelector('[data-quiz-progress]').style.width = `${(run.index / run.questions.length) * 100}%`;
     app.querySelector('[data-question-index]').textContent = `Questão ${run.index + 1}`;
     app.querySelector('[data-question-meta]').textContent = settings.showMetaToStudent

@@ -321,8 +321,14 @@
     const ratio = Math.max(0.025, Math.min(1, rawRatio));
     requestAnimationFrame(() => {
       const length = path.getTotalLength();
+      const offset = length * (1 - ratio);
+      // V8: o CSS usa variáveis com !important para impedir que versões antigas
+      // deixem a trilha rosa preenchida inteira. Assim, o caminho creme aparece
+      // completo e apenas o trecho vencido recebe o pink PRENAT+.
+      path.style.setProperty('--route-length', String(length));
+      path.style.setProperty('--route-offset', String(offset));
       path.style.strokeDasharray = String(length);
-      path.style.strokeDashoffset = String(length * (1 - ratio));
+      path.style.strokeDashoffset = String(offset);
     });
   }
 

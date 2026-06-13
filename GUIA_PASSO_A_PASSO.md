@@ -1,7 +1,8 @@
-# Guia rápido — Missão Ilhas da Química V7
+# Guia rápido — V8
 
-1. Envie todos os arquivos desta pasta para o repositório `missao-ilhas-da-quimica`.
-2. Substitua os arquivos antigos quando o GitHub perguntar.
-3. Aguarde o GitHub Pages atualizar.
-4. Teste com `?v=7` no final do link.
-5. Se o caminho aparecer todo completo por causa dos testes anteriores, clique em **Recomeçar missão** para limpar o progresso salvo no navegador.
+1. Extraia o ZIP.
+2. Envie todos os arquivos para o repositório `missao-ilhas-da-quimica`.
+3. Ative o GitHub Pages em Settings > Pages > Deploy from a branch > main > / root.
+4. Teste o aluno com `?v=8` no final do link.
+5. Teste o professor com `/professor.html?v=8`.
+6. Se aparecer progresso antigo, clique em Recomeçar missão.

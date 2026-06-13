@@ -1,11 +1,11 @@
 {
-  "slug": "missao-ilhas-da-quimica-prenat-v5-trilha-verde",
+  "slug": "missao-ilhas-da-quimica-prenat-v8-pink-creme-tartarugas",
   "brand": "PRENAT+",
   "missionName": "Missão Ilhas da Química",
   "missionKicker": "CAMPO DE TREINO PRENAT+",
-  "subtitle": "Uma travessia gamificada por ilhas químicas conectadas, com trilha discreta no mar, progresso verde, evolução da tartaruga, vidas, XP, moedas e até 5 estrelas.",
-  "intro": "A tartaruga PRENAT+ vai atravessar ilhas químicas em sequência. Cada vitória acende em verde um novo trecho do caminho no mar, entrega um item de evolução do casco e aproxima você da Grande Travessia Química.",
-  "studentThemeNote": "A rota clara mostra o caminho inteiro; a parte verde aparece conforme você vence as ilhas. Conquiste estrelas, preserve vidas e libere itens de evolução da tartaruga PRENAT+.",
+  "subtitle": "Uma travessia gamificada por ilhas químicas conectadas, com trilha-base creme, progresso pink PRENAT+, evolução da tartaruga, vidas, XP, moedas e até 5 estrelas.",
+  "intro": "A tartaruga PRENAT+ vai atravessar ilhas químicas em sequência. O caminho creme mostra a rota inteira; o trecho pink aparece apenas conforme você vence as ilhas, ganha fragmentos do casco e se aproxima da Grande Travessia Química.",
+  "studentThemeNote": "A rota creme mostra o caminho inteiro. A parte pink PRENAT+ aparece conforme você vence as ilhas. Conquiste estrelas, preserve vidas e libere itens de evolução da tartaruga PRENAT+.",
   "showMetaToStudent": false,
   "logo": "logo-prenat.png",
   "fontBodyKey": "inter",
@@ -294,7 +294,7 @@
       "iconStage": 10,
       "icon": "🔥",
       "x": 61,
-      "y": 84,
+      "y": 81,
       "rewardItemIndex": 10
     },
     {
@@ -311,7 +311,7 @@
       "iconStage": 11,
       "icon": "🌿",
       "x": 33,
-      "y": 86,
+      "y": 83,
       "rewardItemIndex": 11
     },
     {
@@ -328,7 +328,7 @@
       "iconStage": 12,
       "icon": "🏆🦈",
       "x": 84,
-      "y": 91,
+      "y": 86,
       "rewardItemIndex": 12
     }
   ],

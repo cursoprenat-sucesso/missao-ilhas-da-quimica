@@ -1,9 +1,3 @@
-# PRENAT+ | Missão Ilhas da Química — V8
+# PRENAT+ | Missão Ilhas da Química — V9 Lapidada Final
 
-Versão com mapa de ilhas, trilha-base creme, progresso pink PRENAT+, tartaruguinhas em CSS, vidas, estrelas, XP, moedas, evolução da tartaruga e painel do professor.
-
-## Links após publicar no GitHub Pages
-
-Aluno: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/`
-
-Professor: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html`
+Versão com mapa de ilhas, trilha-base creme, progresso pink PRENAT+, tartarugas visíveis no oceano, nomes das ilhas mais legíveis, vidas, estrelas, XP, moedas, evolução da tartaruga e painel do professor.

@@ -1040,3 +1040,223 @@
   .ocean-turtle{width:42px!important;height:29px!important}
   .ocean-turtle::before{right:-10px!important;top:8px!important;width:14px!important;height:13px!important}
 }
+
+/* =========================================================
+   V9 — LAPIDAÇÃO FINAL PRENAT+
+   - tartaruguinhas visíveis no oceano e no mapa;
+   - nomes das ilhas mais legíveis, sem transparência excessiva;
+   - trilha-base creme sempre visível com progresso pink mais fino;
+   - bloqueadas continuam bloqueadas, mas o texto fica legível.
+   ========================================================= */
+
+/* O fundo oceânico continua atrás do jogo, mas os animais não ficam atrás do próprio fundo. */
+.chem-ocean{z-index:-2!important;overflow:hidden!important}
+.page-fish,.page-turtle{z-index:2!important;display:block!important;opacity:.55!important}
+.page-turtle{opacity:.42!important;filter:drop-shadow(0 10px 18px rgba(5,82,116,.18))!important}
+.page-fish{opacity:.34!important}
+
+/* Camadas do mapa: água viva atrás, ilhas acima. */
+.route-svg{z-index:1!important}
+.route-ambient{z-index:2!important;display:block!important;overflow:hidden!important}
+.route-map{z-index:4!important;position:absolute!important;inset:0!important}
+
+/* Trilha: creme como rota total; pink apenas como avanço. O pink fica mais fino para o creme aparecer nas bordas. */
+.route-shadow{
+  stroke:rgba(5,82,116,.20)!important;
+  stroke-width:7.4!important;
+  opacity:.42!important;
+  filter:drop-shadow(0 8px 8px rgba(5,82,116,.16))!important;
+}
+.route-main{
+  stroke:rgba(255,242,184,.98)!important;
+  stroke-width:6.6!important;
+  stroke-dasharray:0 10!important;
+  stroke-linecap:round!important;
+  opacity:1!important;
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.36)) drop-shadow(0 6px 8px rgba(5,82,116,.16))!important;
+}
+.route-done{
+  stroke:#d01890!important;
+  stroke-width:3.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+  opacity:.96!important;
+  stroke-dasharray:var(--route-length,0)!important;
+  stroke-dashoffset:var(--route-offset,9999)!important;
+  transition:stroke-dashoffset .75s ease!important;
+  filter:drop-shadow(0 0 10px rgba(208,24,144,.45))!important;
+}
+
+/* Bloqueada não deixa o texto apagado; só a ilha fica menos saturada. */
+.map-node.locked{
+  opacity:1!important;
+  filter:none!important;
+}
+.map-node.locked .floating-island,
+.map-node.locked .chem-prop{
+  filter:grayscale(.34) saturate(.72) opacity(.82)!important;
+}
+.map-node.locked .island-status-bubble{
+  background:#f3fafb!important;
+  color:#496775!important;
+  border-color:rgba(255,255,255,.95)!important;
+}
+
+/* Legibilidade dos nomes das ilhas. */
+.node-caption{
+  width:176px!important;
+  padding:9px 10px!important;
+  background:rgba(255,255,255,.97)!important;
+  border:1.8px solid rgba(255,255,255,.98)!important;
+  box-shadow:0 13px 28px rgba(5,82,116,.18), inset 0 0 0 1px rgba(9,153,159,.08)!important;
+  backdrop-filter:blur(6px)!important;
+  opacity:1!important;
+}
+.node-caption small{
+  color:#d01890!important;
+  opacity:1!important;
+  font-size:10px!important;
+  line-height:1.08!important;
+  letter-spacing:.13em!important;
+  font-weight:1000!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.95)!important;
+}
+.node-caption strong{
+  color:#03496a!important;
+  opacity:1!important;
+  font-size:13px!important;
+  line-height:1.08!important;
+  font-weight:1000!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.95)!important;
+}
+.map-node.current .node-caption{
+  background:linear-gradient(180deg,#ffffff,#fff2fb)!important;
+  border-color:rgba(208,24,144,.42)!important;
+  box-shadow:0 15px 32px rgba(208,24,144,.18), inset 0 0 0 1px rgba(255,255,255,.72)!important;
+}
+.map-node.completed .node-caption{
+  border-color:rgba(208,24,144,.36)!important;
+  box-shadow:0 15px 32px rgba(208,24,144,.16), inset 0 0 0 1px rgba(255,255,255,.72)!important;
+}
+
+/* Tartaruga mais reconhecível: casco, cabeça, olho e nadadeiras. */
+.ocean-turtle{
+  width:58px!important;
+  height:38px!important;
+  border-radius:58% 44% 52% 48%!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,204,70,.62) 0 14%,transparent 15%),
+    radial-gradient(circle at 34% 38%,rgba(255,255,255,.32) 0 8%,transparent 9%),
+    linear-gradient(145deg,#12b5a8 0%,#09999f 48%,#055274 100%)!important;
+  box-shadow:inset 8px 7px 12px rgba(255,255,255,.30),inset -7px -6px 10px rgba(5,82,116,.20),0 11px 24px rgba(5,82,116,.17)!important;
+  opacity:.56!important;
+  pointer-events:none!important;
+}
+.ocean-turtle::before{
+  content:""!important;
+  position:absolute!important;
+  right:-15px!important;
+  top:10px!important;
+  width:20px!important;
+  height:18px!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 68% 34%,#03496a 0 2.3px,transparent 2.8px),
+    linear-gradient(145deg,#59d7c4,#09999f)!important;
+  box-shadow:inset 4px 3px 6px rgba(255,255,255,.34),0 5px 10px rgba(5,82,116,.10)!important;
+}
+.ocean-turtle::after{
+  content:""!important;
+  position:absolute!important;
+  left:7px!important;
+  top:-8px!important;
+  width:16px!important;
+  height:16px!important;
+  border-radius:60% 40% 60% 40%!important;
+  background:#28bfae!important;
+  box-shadow:
+    27px 30px 0 #1fae9f,
+    -3px 28px 0 rgba(31,174,159,.86),
+    36px 1px 0 rgba(31,174,159,.72)!important;
+  transform:rotate(-20deg)!important;
+}
+.map-turtle{
+  display:block!important;
+  opacity:.58!important;
+  z-index:2!important;
+  filter:drop-shadow(0 8px 13px rgba(5,82,116,.18))!important;
+}
+.map-turtle-1{
+  left:-10%!important;
+  top:30%!important;
+  animation:turtleSwimRightV9 58s linear infinite -24s!important;
+}
+.map-turtle-2{
+  right:-10%!important;
+  top:76%!important;
+  transform:scaleX(-1) scale(.82)!important;
+  animation:turtleSwimLeftV9 66s linear infinite -38s!important;
+}
+.turtle-page-1{
+  left:-90px!important;
+  top:53%!important;
+  animation:turtlePageRightV9 48s linear infinite -18s!important;
+}
+.turtle-page-2{
+  right:-90px!important;
+  top:20%!important;
+  transform:scaleX(-1) scale(.78)!important;
+  animation:turtlePageLeftV9 60s linear infinite -33s!important;
+}
+@keyframes turtleSwimRightV9{
+  0%{left:-10%;transform:translateY(0) rotate(-2deg)}
+  45%{left:48%;transform:translateY(16px) rotate(4deg)}
+  100%{left:110%;transform:translateY(-8px) rotate(-1deg)}
+}
+@keyframes turtleSwimLeftV9{
+  0%{right:-10%;transform:scaleX(-1) scale(.82) translateY(0) rotate(-2deg)}
+  45%{right:48%;transform:scaleX(-1) scale(.82) translateY(-16px) rotate(4deg)}
+  100%{right:110%;transform:scaleX(-1) scale(.82) translateY(8px) rotate(-1deg)}
+}
+@keyframes turtlePageRightV9{
+  0%{left:-90px;transform:translateY(0) rotate(-2deg)}
+  50%{left:52vw;transform:translateY(20px) rotate(4deg)}
+  100%{left:108vw;transform:translateY(-10px) rotate(-1deg)}
+}
+@keyframes turtlePageLeftV9{
+  0%{right:-90px;transform:scaleX(-1) scale(.78) translateY(0) rotate(-2deg)}
+  50%{right:52vw;transform:scaleX(-1) scale(.78) translateY(-18px) rotate(4deg)}
+  100%{right:108vw;transform:scaleX(-1) scale(.78) translateY(10px) rotate(-1deg)}
+}
+
+/* Painéis inferiores: garantem que o Boss Final não fique tampado. */
+.map-node:nth-child(10) .island-info-panel,
+.map-node:nth-child(11) .island-info-panel,
+.map-node:nth-child(12) .island-info-panel,
+.map-node:nth-child(13) .island-info-panel{
+  top:auto!important;
+  bottom:calc(100% + 14px)!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%) translateY(8px)!important;
+}
+.map-node:nth-child(10):hover .island-info-panel,
+.map-node:nth-child(10):focus-within .island-info-panel,
+.map-node:nth-child(11):hover .island-info-panel,
+.map-node:nth-child(11):focus-within .island-info-panel,
+.map-node:nth-child(12):hover .island-info-panel,
+.map-node:nth-child(12):focus-within .island-info-panel,
+.map-node:nth-child(13):hover .island-info-panel,
+.map-node:nth-child(13):focus-within .island-info-panel{
+  transform:translateX(-50%) translateY(0)!important;
+}
+
+@media(max-width:760px){
+  .route-main{stroke-width:4.2!important;stroke-dasharray:0 8!important}
+  .route-done{stroke-width:3.1!important}
+  .node-caption{width:142px!important;padding:8px 8px!important}
+  .node-caption small{font-size:8.2px!important;letter-spacing:.09em!important}
+  .node-caption strong{font-size:10.5px!important}
+  .ocean-turtle{width:46px!important;height:31px!important;opacity:.48!important}
+  .ocean-turtle::before{right:-12px!important;top:8px!important;width:16px!important;height:14px!important}
+}

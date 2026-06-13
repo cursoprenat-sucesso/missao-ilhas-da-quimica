@@ -317,8 +317,11 @@
     const path = app.querySelector('.route-done');
     if (!path || typeof path.getTotalLength !== 'function') return;
     const totalPhases = Math.max(1, settings.phases.length - 1);
-    const rawRatio = (Number(progress.unlockedPhase || 1) - 1) / totalPhases;
-    const ratio = Math.max(0.025, Math.min(1, rawRatio));
+    // V9: a trilha pink representa ilhas efetivamente conquistadas.
+    // A rota creme permanece inteira como caminho-base; o pink cresce por conquista.
+    const completedSteps = Array.isArray(progress.completedPhases) ? progress.completedPhases.length : 0;
+    const rawRatio = completedSteps / totalPhases;
+    const ratio = Math.max(0.018, Math.min(1, rawRatio));
     requestAnimationFrame(() => {
       const length = path.getTotalLength();
       const offset = length * (1 - ratio);

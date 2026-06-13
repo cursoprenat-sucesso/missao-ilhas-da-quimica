@@ -16,3 +16,8 @@ Versão com mapa de ilhas flutuantes, caminho desbloqueável, vidas, 5 estrelas,
 Aluno: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/`
 
 Professor: `https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html`
+
+
+## V6 Oceano Vivo
+
+Mantém a trilha verde discreta da V5 e adiciona fundo oceânico em CSS com ondas suaves, peixinhos, tartaruguinhas e bolhas discretas, sem mexer no painel do professor.

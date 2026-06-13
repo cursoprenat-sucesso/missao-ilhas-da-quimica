@@ -1,0 +1,415 @@
+{
+  "slug": "missao-ilhas-da-quimica-prenat-v2-evolucao",
+  "brand": "PRENAT+",
+  "missionName": "Missão Ilhas da Química",
+  "missionKicker": "CAMPO DE TREINO PRENAT+",
+  "subtitle": "Uma travessia gamificada de Química com ilhas flutuantes, evolução da tartaruga, XP, moedas e 5 estrelas.",
+  "intro": "A tartaruga PRENAT+ vai atravessar ilhas químicas em sequência. Cada vitória libera um novo trecho no mar, entrega um item de evolução do casco e aproxima você da Grande Travessia Química.",
+  "studentThemeNote": "A cada tentativa, o jogo sorteia questões do banco da ilha. Preserve vidas, alcance a meta, conquiste até 5 estrelas e desbloqueie o próximo caminho no arquipélago.",
+  "showMetaToStudent": false,
+  "logo": "logo-prenat.png",
+  "fontBodyKey": "inter",
+  "fontHeadingKey": "inter",
+  "starsMax": 5,
+  "starThresholds": [
+    60,
+    70,
+    80,
+    85,
+    90
+  ],
+  "xpPerCorrect": 10,
+  "xpPerStar": 60,
+  "xpCompletionBonus": 100,
+  "coinPerStar": 4,
+  "coinCompletionBonus": 10,
+  "ranks": [
+    {
+      "name": "Ovo Químico PRENAT+",
+      "icon": "🥚",
+      "visualStage": 0,
+      "description": "Você começa protegido pela casca: a base ainda está sendo formada."
+    },
+    {
+      "name": "Ovo Aquecido de Dalton",
+      "icon": "🥚",
+      "visualStage": 1,
+      "description": "A casca recebeu energia inicial: matéria, energia e modelos atômicos começam a fazer sentido."
+    },
+    {
+      "name": "Ovo com Casco de Misturas",
+      "icon": "🥚",
+      "visualStage": 2,
+      "description": "A casca ficou mais resistente: você já separa fases, componentes e propriedades."
+    },
+    {
+      "name": "Filhote do Casco Atômico",
+      "icon": "🐢",
+      "visualStage": 3,
+      "description": "Você saiu do ovo e começou a caminhar pelas ligações entre átomos."
+    },
+    {
+      "name": "Filhote das Interações",
+      "icon": "🐢",
+      "visualStage": 4,
+      "description": "Seu casco reconhece funções, geometrias e forças que explicam propriedades das substâncias."
+    },
+    {
+      "name": "Tartaruga dos Cálculos",
+      "icon": "🐢",
+      "visualStage": 5,
+      "description": "Você ganhou equilíbrio para atravessar proporções, massas, mols e rendimento."
+    },
+    {
+      "name": "Tartaruga do Núcleo",
+      "icon": "🐢",
+      "visualStage": 6,
+      "description": "Você atravessou emissões, meia-vida e aplicações nucleares sem perder a rota."
+    },
+    {
+      "name": "Tartaruga Cinética",
+      "icon": "🐢",
+      "visualStage": 7,
+      "description": "Você acelerou a travessia entendendo fatores que mudam a velocidade das reações."
+    },
+    {
+      "name": "Navegadora das Soluções",
+      "icon": "🐢",
+      "visualStage": 8,
+      "description": "Você aprendeu a navegar por concentrações, diluições, curvas e preparo de soluções."
+    },
+    {
+      "name": "Guardião Eletroquímico",
+      "icon": "🐢",
+      "visualStage": 9,
+      "description": "Seu casco agora conduz elétrons: oxirredução, pilhas e eletrólise ficaram no radar."
+    },
+    {
+      "name": "Mestre do Equilíbrio",
+      "icon": "🐢",
+      "visualStage": 10,
+      "description": "Você controla deslocamentos, constantes e sistemas reversíveis com estratégia."
+    },
+    {
+      "name": "Mestre Termoquímico",
+      "icon": "🐢",
+      "visualStage": 11,
+      "description": "Você domina calor, entalpia e energia nas transformações químicas."
+    },
+    {
+      "name": "Tartaruga da Vida Orgânica",
+      "icon": "🐢",
+      "visualStage": 12,
+      "description": "Você atravessa cadeias, funções orgânicas e aplicações em saúde, ambiente e cotidiano."
+    },
+    {
+      "name": "Grande Mestre da Travessia Química",
+      "icon": "🏆",
+      "visualStage": 13,
+      "description": "Você venceu o desafio cumulativo e concluiu a Missão Ilhas da Química."
+    }
+  ],
+  "phases": [
+    {
+      "id": 1,
+      "name": "Ilha de Dalton",
+      "title": "Matéria, Energia e Modelos Atômicos",
+      "story": "Nesta primeira ilha, você vai romper a casca da Química: matéria, energia, mudanças de estado, estrutura atômica e modelos atômicos. Proteja suas vidas e construa sua base.",
+      "minPercent": 60,
+      "lives": 3,
+      "questionLimit": 10,
+      "shuffle": true,
+      "rewardRankIndex": 1,
+      "difficultyLabel": "Aquecimento",
+      "iconStage": 0,
+      "icon": "⚛️",
+      "x": 8,
+      "y": 11,
+      "rewardItemIndex": 0
+    },
+    {
+      "id": 2,
+      "name": "Praia das Misturas",
+      "title": "Misturas e Separação",
+      "story": "Aqui você vai atravessar sistemas homogêneos e heterogêneos, fases, componentes e métodos de separação. Observe propriedades, não apenas nomes decorados.",
+      "minPercent": 60,
+      "lives": 3,
+      "questionLimit": 10,
+      "shuffle": true,
+      "rewardRankIndex": 2,
+      "difficultyLabel": "Base contextual",
+      "iconStage": 1,
+      "icon": "🧪",
+      "x": 30,
+      "y": 24,
+      "rewardItemIndex": 1
+    },
+    {
+      "id": 3,
+      "name": "Ponte das Ligações",
+      "title": "Ligações Químicas",
+      "story": "Você vai cruzar pontes entre átomos: ligação iônica, covalente, metálica, polaridade, geometria e propriedades das substâncias.",
+      "minPercent": 65,
+      "lives": 4,
+      "questionLimit": 15,
+      "shuffle": true,
+      "rewardRankIndex": 3,
+      "difficultyLabel": "Interpretação",
+      "iconStage": 2,
+      "icon": "🔗",
+      "x": 56,
+      "y": 13,
+      "rewardItemIndex": 2
+    },
+    {
+      "id": 4,
+      "name": "Gruta das Funções",
+      "title": "Funções Inorgânicas e Interações",
+      "story": "Nesta ilha, você vai reconhecer ácidos, bases, sais, óxidos, geometria molecular e forças intermoleculares em situações do cotidiano.",
+      "minPercent": 65,
+      "lives": 4,
+      "questionLimit": 15,
+      "shuffle": true,
+      "rewardRankIndex": 4,
+      "difficultyLabel": "Conceitual forte",
+      "iconStage": 3,
+      "icon": "💧",
+      "x": 79,
+      "y": 28,
+      "rewardItemIndex": 3
+    },
+    {
+      "id": 5,
+      "name": "Balança Estequiométrica",
+      "title": "Estequiometria",
+      "story": "Agora a travessia pede proporção, conservação de massa, reagente limitante, excesso, rendimento e leitura cuidadosa de dados.",
+      "minPercent": 70,
+      "lives": 5,
+      "questionLimit": 20,
+      "shuffle": true,
+      "rewardRankIndex": 5,
+      "difficultyLabel": "Cálculo guiado",
+      "iconStage": 4,
+      "icon": "⚖️",
+      "x": 52,
+      "y": 43,
+      "rewardItemIndex": 4
+    },
+    {
+      "id": 6,
+      "name": "Farol Radioativo",
+      "title": "Radioatividade",
+      "story": "Nesta ilha, você vai lidar com emissões, meia-vida, aplicações médicas, riscos ambientais e leitura crítica de contextos nucleares.",
+      "minPercent": 70,
+      "lives": 5,
+      "questionLimit": 20,
+      "shuffle": true,
+      "rewardRankIndex": 6,
+      "difficultyLabel": "Aplicações",
+      "iconStage": 5,
+      "icon": "☢️",
+      "x": 24,
+      "y": 47,
+      "rewardItemIndex": 5
+    },
+    {
+      "id": 7,
+      "name": "Corrente Cinética",
+      "title": "Cinética Química",
+      "story": "Você vai enfrentar velocidade das reações, catalisadores, temperatura, superfície de contato, concentração e colisões efetivas.",
+      "minPercent": 75,
+      "lives": 6,
+      "questionLimit": 25,
+      "shuffle": true,
+      "rewardRankIndex": 7,
+      "difficultyLabel": "Médio-forte",
+      "iconStage": 6,
+      "icon": "⏱️",
+      "x": 10,
+      "y": 62,
+      "rewardItemIndex": 6
+    },
+    {
+      "id": 8,
+      "name": "Lago das Soluções",
+      "title": "Soluções",
+      "story": "Aqui aparecem concentração, diluição, mistura de soluções, solubilidade, curvas, unidades e interpretação de preparo de soluções.",
+      "minPercent": 75,
+      "lives": 6,
+      "questionLimit": 25,
+      "shuffle": true,
+      "rewardRankIndex": 8,
+      "difficultyLabel": "Dados e gráficos",
+      "iconStage": 7,
+      "icon": "🌊",
+      "x": 37,
+      "y": 67,
+      "rewardItemIndex": 7
+    },
+    {
+      "id": 9,
+      "name": "Usina Eletroquímica",
+      "title": "Eletroquímica",
+      "story": "Nesta ilha, você vai percorrer oxirredução, NOX, pilhas, eletrólise, corrosão e aplicações tecnológicas.",
+      "minPercent": 80,
+      "lives": 7,
+      "questionLimit": 30,
+      "shuffle": true,
+      "rewardRankIndex": 9,
+      "difficultyLabel": "Avançado",
+      "iconStage": 8,
+      "icon": "🔋",
+      "x": 64,
+      "y": 57,
+      "rewardItemIndex": 8
+    },
+    {
+      "id": 10,
+      "name": "Vulcão do Equilíbrio",
+      "title": "Equilíbrio Químico",
+      "story": "Você vai controlar o vulcão das reações reversíveis: Kc, deslocamento, Le Châtelier, pH, hidrólise e aplicações industriais.",
+      "minPercent": 80,
+      "lives": 7,
+      "questionLimit": 30,
+      "shuffle": true,
+      "rewardRankIndex": 10,
+      "difficultyLabel": "Avançado",
+      "iconStage": 9,
+      "icon": "🌋",
+      "x": 84,
+      "y": 70,
+      "rewardItemIndex": 9
+    },
+    {
+      "id": 11,
+      "name": "Caldeira Termoquímica",
+      "title": "Termoquímica",
+      "story": "Nesta caldeira, você vai interpretar calor, entalpia, reações exotérmicas e endotérmicas, energia de ligação e combustíveis.",
+      "minPercent": 82,
+      "lives": 8,
+      "questionLimit": 35,
+      "shuffle": true,
+      "rewardRankIndex": 11,
+      "difficultyLabel": "Hard controlado",
+      "iconStage": 10,
+      "icon": "🔥",
+      "x": 55,
+      "y": 84,
+      "rewardItemIndex": 10
+    },
+    {
+      "id": 12,
+      "name": "Floresta Orgânica",
+      "title": "Química Orgânica",
+      "story": "Você vai atravessar cadeias carbônicas, funções orgânicas, isomeria, propriedades e aplicações em saúde, ambiente e cotidiano.",
+      "minPercent": 85,
+      "lives": 8,
+      "questionLimit": 40,
+      "shuffle": true,
+      "rewardRankIndex": 12,
+      "difficultyLabel": "Hard estratégico",
+      "iconStage": 11,
+      "icon": "🌿",
+      "x": 28,
+      "y": 86,
+      "rewardItemIndex": 11
+    },
+    {
+      "id": 13,
+      "name": "Boss Final",
+      "title": "Grande Travessia Química",
+      "story": "Chegou o Boss Final. Pode cair qualquer conteúdo das ilhas anteriores. Respire, leia com estratégia, preserve vidas e mostre domínio cumulativo.",
+      "minPercent": 85,
+      "lives": 9,
+      "questionLimit": 45,
+      "shuffle": true,
+      "rewardRankIndex": 13,
+      "difficultyLabel": "Boss cumulativo",
+      "iconStage": 12,
+      "icon": "🏆🦈",
+      "x": 82,
+      "y": 91,
+      "rewardItemIndex": 12
+    }
+  ],
+  "turtleRewards": [
+    {
+      "phaseId": 1,
+      "name": "Fragmento da Casca Inicial",
+      "icon": "🥚",
+      "message": "Você ganhou o primeiro fragmento da casca. O ovo químico começou a se fortalecer."
+    },
+    {
+      "phaseId": 2,
+      "name": "Camada de Casco das Misturas",
+      "icon": "🐚",
+      "message": "Você adicionou uma camada ao casco: agora sabe olhar fases, componentes e propriedades."
+    },
+    {
+      "phaseId": 3,
+      "name": "Ponte Molecular do Filhote",
+      "icon": "🔗",
+      "message": "Você montou a primeira ponte do filhote: as ligações começaram a guiar a travessia."
+    },
+    {
+      "phaseId": 4,
+      "name": "Gota das Interações",
+      "icon": "💧",
+      "message": "Você coletou a gota das interações: forças, geometria e funções passaram a proteger seu casco."
+    },
+    {
+      "phaseId": 5,
+      "name": "Balança do Casco Estequiométrico",
+      "icon": "⚖️",
+      "message": "Você ganhou a balança do casco: proporções e cálculos ficaram mais controlados."
+    },
+    {
+      "phaseId": 6,
+      "name": "Farol do Núcleo",
+      "icon": "☢️",
+      "message": "Você acendeu o farol do núcleo: radioatividade agora é rota, não mistério."
+    },
+    {
+      "phaseId": 7,
+      "name": "Ampulheta Cinética",
+      "icon": "⏱️",
+      "message": "Você conquistou a ampulheta cinética: aprendeu a reconhecer o ritmo das reações."
+    },
+    {
+      "phaseId": 8,
+      "name": "Pérola das Soluções",
+      "icon": "💠",
+      "message": "Você guardou a pérola das soluções: concentração, diluição e solubilidade entraram no mapa."
+    },
+    {
+      "phaseId": 9,
+      "name": "Bateria Eletroquímica",
+      "icon": "🔋",
+      "message": "Você ativou a bateria da travessia: elétrons, NOX e pilhas passaram a impulsionar sua rota."
+    },
+    {
+      "phaseId": 10,
+      "name": "Cristal do Equilíbrio",
+      "icon": "⚗️",
+      "message": "Você ganhou o cristal do equilíbrio: agora consegue pensar sistemas reversíveis com calma."
+    },
+    {
+      "phaseId": 11,
+      "name": "Chama Termoquímica",
+      "icon": "🔥",
+      "message": "Você dominou a chama termoquímica: energia, entalpia e calor entraram no seu casco."
+    },
+    {
+      "phaseId": 12,
+      "name": "Folha Orgânica da Vida",
+      "icon": "🌿",
+      "message": "Você recebeu a folha orgânica: carbono, cadeias e funções da vida fecharam a preparação."
+    },
+    {
+      "phaseId": 13,
+      "name": "Coroa da Grande Travessia",
+      "icon": "👑",
+      "message": "Você conquistou a coroa final: a tartaruga PRENAT+ concluiu a travessia química."
+    }
+  ]
+}

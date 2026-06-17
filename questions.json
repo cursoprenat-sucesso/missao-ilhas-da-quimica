@@ -960,5 +960,42 @@
       }
     ],
     "explanation": "Muitos contextos ambientais integram interações intermoleculares, solubilidade e propriedades das substâncias."
+  },
+  {
+    "id": "q_1781707155719_2302e3",
+    "phase": 1,
+    "discipline": "",
+    "topic": "",
+    "difficulty": "",
+    "statement": "Na busca pela compreensão da constituição íntima da matéria, a ciência evoluiu através de modelos teóricos. O modelo atômico de Dalton, frequentemente comparado a uma \"bola de bilhar\", estabeleceu pilares que, embora superados em alguns aspectos, fundamentaram a química moderna. Qual das alternativas abaixo apresenta uma premissa do modelo de Dalton que ainda é aceita atualmente?",
+    "image": "",
+    "options": [
+      {
+        "text": "Os átomos são esferas maciças, indivisíveis e indestrutíveis.",
+        "feedback": "",
+        "correct": true
+      },
+      {
+        "text": "Átomos de um mesmo elemento possuem massas idênticas e propriedades iguais.",
+        "feedback": "",
+        "correct": false
+      },
+      {
+        "text": "Os elementos químicos são formados por átomos que não podem ser criados nem destruídos.",
+        "feedback": "",
+        "correct": false
+      },
+      {
+        "text": "Um átomo de um elemento pode ser transformado em outro através de reações químicas.",
+        "feedback": "",
+        "correct": false
+      },
+      {
+        "text": "A combinação de elementos diferentes ocorre em proporções numéricas fixas.",
+        "feedback": "",
+        "correct": false
+      }
+    ],
+    "explanation": ""
   }
 ]

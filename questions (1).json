@@ -1,5 +1,5 @@
-{
-  "0": {
+[
+  {
     "id": "q001",
     "phase": 1,
     "discipline": "Química",
@@ -36,7 +36,7 @@
     ],
     "explanation": "Derretimento e evaporação são transformações físicas: alteram estado físico, não a composição química da água."
   },
-  "1": {
+  {
     "id": "q002",
     "phase": 1,
     "discipline": "Química",
@@ -73,7 +73,7 @@
     ],
     "explanation": "O experimento da lâmina de ouro sugeriu que a massa e a carga positiva estavam concentradas em uma região nuclear pequena."
   },
-  "2": {
+  {
     "id": "q003",
     "phase": 2,
     "discipline": "Química",
@@ -110,7 +110,7 @@
     ],
     "explanation": "Na decantação, componentes se separam pela diferença de densidade após repouso ou escoamento cuidadoso."
   },
-  "3": {
+  {
     "id": "q004",
     "phase": 2,
     "discipline": "Química",
@@ -147,7 +147,7 @@
     ],
     "explanation": "A floculação agrega partículas dispersas, favorecendo a sedimentação e a etapa de decantação."
   },
-  "4": {
+  {
     "id": "q005",
     "phase": 3,
     "discipline": "Química",
@@ -184,7 +184,7 @@
     ],
     "explanation": "Compostos iônicos têm retículo cristalino e íons móveis quando fundidos ou em solução."
   },
-  "5": {
+  {
     "id": "q006",
     "phase": 3,
     "discipline": "Química",
@@ -221,7 +221,7 @@
     ],
     "explanation": "A polaridade molecular depende da soma vetorial dos dipolos e da geometria molecular."
   },
-  "6": {
+  {
     "id": "q007",
     "phase": 4,
     "discipline": "Química",
@@ -258,7 +258,7 @@
     ],
     "explanation": "Bases em água estão relacionadas ao aumento da concentração de OH<sup>-</sup> e a pH geralmente maior que 7."
   },
-  "7": {
+  {
     "id": "q008",
     "phase": 4,
     "discipline": "Química",
@@ -295,7 +295,7 @@
     ],
     "explanation": "Ligações de hidrogênio são interações fortes entre moléculas com H ligado a F, O ou N."
   },
-  "8": {
+  {
     "id": "q009",
     "phase": 5,
     "discipline": "Química",
@@ -332,7 +332,7 @@
     ],
     "explanation": "O limitante deve ser identificado pela proporção estequiométrica, não apenas pela massa disponível."
   },
-  "9": {
+  {
     "id": "q010",
     "phase": 5,
     "discipline": "Química",
@@ -369,7 +369,7 @@
     ],
     "explanation": "A conservação da massa decorre da conservação dos átomos em sistema fechado."
   },
-  "10": {
+  {
     "id": "q011",
     "phase": 6,
     "discipline": "Química",
@@ -406,7 +406,7 @@
     ],
     "explanation": "Meia-vida é um conceito estatístico de decaimento nuclear."
   },
-  "11": {
+  {
     "id": "q012",
     "phase": 6,
     "discipline": "Química",
@@ -443,7 +443,7 @@
     ],
     "explanation": "Radiações ionizantes podem causar danos biológicos, mas também têm aplicações diagnósticas e terapêuticas controladas."
   },
-  "12": {
+  {
     "id": "q013",
     "phase": 7,
     "discipline": "Química",
@@ -480,7 +480,7 @@
     ],
     "explanation": "Maior superfície de contato aumenta a frequência de colisões entre reagentes."
   },
-  "13": {
+  {
     "id": "q014",
     "phase": 7,
     "discipline": "Química",
@@ -517,7 +517,7 @@
     ],
     "explanation": "Catalisadores alteram a rota e reduzem a energia de ativação, sem serem consumidos globalmente."
   },
-  "14": {
+  {
     "id": "q015",
     "phase": 8,
     "discipline": "Química",
@@ -554,7 +554,7 @@
     ],
     "explanation": "Concentração adequada evita soluções muito hipertônicas ou hipotônicas em relação ao organismo."
   },
-  "15": {
+  {
     "id": "q016",
     "phase": 8,
     "discipline": "Química",
@@ -591,7 +591,7 @@
     ],
     "explanation": "Curvas de solubilidade relacionam temperatura e quantidade de soluto dissolvido no equilíbrio de saturação."
   },
-  "16": {
+  {
     "id": "q017",
     "phase": 9,
     "discipline": "Química",
@@ -628,7 +628,7 @@
     ],
     "explanation": "Oxidação é perda de elétrons; redução é ganho de elétrons."
   },
-  "17": {
+  {
     "id": "q018",
     "phase": 9,
     "discipline": "Química",
@@ -665,7 +665,7 @@
     ],
     "explanation": "Pilhas eletroquímicas usam reações redox espontâneas para gerar corrente elétrica."
   },
-  "18": {
+  {
     "id": "q019",
     "phase": 10,
     "discipline": "Química",
@@ -702,7 +702,7 @@
     ],
     "explanation": "No equilíbrio dinâmico, o sistema responde a alterações de concentração, pressão ou temperatura."
   },
-  "19": {
+  {
     "id": "q020",
     "phase": 10,
     "discipline": "Química",
@@ -739,7 +739,7 @@
     ],
     "explanation": "A concentração efetiva de sólidos e líquidos puros não varia de forma relevante na expressão de equilíbrio."
   },
-  "20": {
+  {
     "id": "q021",
     "phase": 11,
     "discipline": "Química",
@@ -776,7 +776,7 @@
     ],
     "explanation": "Em reações exotérmicas, a entalpia dos produtos é menor que a dos reagentes."
   },
-  "21": {
+  {
     "id": "q022",
     "phase": 11,
     "discipline": "Química",
@@ -813,7 +813,7 @@
     ],
     "explanation": "Questões contextualizadas costumam integrar energia, ambiente, rendimento e poluentes."
   },
-  "22": {
+  {
     "id": "q023",
     "phase": 12,
     "discipline": "Química",
@@ -850,7 +850,7 @@
     ],
     "explanation": "Insaturação em orgânica está associada a ligações múltiplas entre carbonos."
   },
-  "23": {
+  {
     "id": "q024",
     "phase": 12,
     "discipline": "Química",
@@ -887,7 +887,7 @@
     ],
     "explanation": "O grupo funcional influencia polaridade, forças intermoleculares, acidez/basicidade e solubilidade."
   },
-  "24": {
+  {
     "id": "q025",
     "phase": 13,
     "discipline": "Química",
@@ -924,7 +924,7 @@
     ],
     "explanation": "O Boss Final mistura conteúdos; a estratégia é identificar o conceito dominante e eliminar distratores."
   },
-  "25": {
+  {
     "id": "q026",
     "phase": 13,
     "discipline": "Química",
@@ -961,7 +961,7 @@
     ],
     "explanation": "Muitos contextos ambientais integram interações intermoleculares, solubilidade e propriedades das substâncias."
   },
-  "26": {
+  {
     "id": "q_1781707155719_2302e3",
     "phase": 1,
     "discipline": "",
@@ -972,316 +972,30 @@
     "options": [
       {
         "text": "Os átomos são esferas maciças, indivisíveis e indestrutíveis.",
-        "feedback": "",
-        "correct": true
+        "correct": true,
+        "feedback": ""
       },
       {
         "text": "Átomos de um mesmo elemento possuem massas idênticas e propriedades iguais.",
-        "feedback": "",
-        "correct": false
+        "correct": false,
+        "feedback": ""
       },
       {
         "text": "Os elementos químicos são formados por átomos que não podem ser criados nem destruídos.",
-        "feedback": "",
-        "correct": false
+        "correct": false,
+        "feedback": ""
       },
       {
         "text": "Um átomo de um elemento pode ser transformado em outro através de reações químicas.",
-        "feedback": "",
-        "correct": false
+        "correct": false,
+        "feedback": ""
       },
       {
         "text": "A combinação de elementos diferentes ocorre em proporções numéricas fixas.",
-        "feedback": "",
-        "correct": false
+        "correct": false,
+        "feedback": ""
       }
     ],
     "explanation": ""
-  },
-  "slug": "missao-ilhas-da-quimica-prenat-v1",
-  "brand": "PRENAT+",
-  "missionName": "Missão Ilhas da Química",
-  "missionKicker": "CAMPO DE TREINO PRENAT+",
-  "subtitle": "Uma jornada gamificada pela Química do zero ao Boss Final.",
-  "intro": "A tartaruga PRENAT+ vai atravessar ilhas temáticas de Química. Cada ilha é uma revisão estratégica: acerte, preserve vidas, ganhe estrelas, acumule XP e desbloqueie a próxima travessia.",
-  "studentThemeNote": "Cada rodada sorteia perguntas do banco da ilha. Você pode colocar muitas questões no professor; o jogo seleciona apenas a quantidade configurada para aquela fase.",
-  "showMetaToStudent": false,
-  "logo": "logo-prenat.png",
-  "fontBodyKey": "inter",
-  "fontHeadingKey": "inter",
-  "starsMax": 5,
-  "starThresholds": [
-    60,
-    65,
-    70,
-    75,
-    80
-  ],
-  "xpPerCorrect": 10,
-  "xpPerStar": 60,
-  "xpCompletionBonus": 100,
-  "coinPerStar": 4,
-  "coinCompletionBonus": 10,
-  "ranks": [
-    {
-      "name": "Ovo de Laboratório",
-      "icon": "🥚",
-      "visualStage": 0,
-      "description": "Você está começando a travessia. A casca protege sua base antes da primeira reação."
-    },
-    {
-      "name": "Filhote do Casco Atômico",
-      "icon": "🐢",
-      "visualStage": 1,
-      "description": "Você rompeu a casca e começou a enxergar a matéria com olhar químico."
-    },
-    {
-      "name": "Explorador das Misturas",
-      "icon": "🐢",
-      "visualStage": 2,
-      "description": "Você já identifica sistemas, fases e propriedades usadas para separar componentes."
-    },
-    {
-      "name": "Guardião das Ligações",
-      "icon": "🐢",
-      "visualStage": 3,
-      "description": "Você começa a prever estruturas, interações e propriedades das substâncias."
-    },
-    {
-      "name": "Navegador dos Cálculos",
-      "icon": "🐢",
-      "visualStage": 4,
-      "description": "Você atravessa proporções, dados e raciocínios quantitativos com mais segurança."
-    },
-    {
-      "name": "Mestre das Reações",
-      "icon": "🐢",
-      "visualStage": 5,
-      "description": "Você domina transformações, energia, equilíbrio e velocidade das reações."
-    },
-    {
-      "name": "Alquimista PRENAT+",
-      "icon": "🐢",
-      "visualStage": 6,
-      "description": "Você integra toda a Química e se aproxima do Boss Final."
-    },
-    {
-      "name": "Grande Mestre da Travessia Química",
-      "icon": "🏆",
-      "visualStage": 7,
-      "description": "Você venceu o desafio cumulativo e concluiu a Missão Ilhas da Química."
-    }
-  ],
-  "phases": [
-    {
-      "id": 1,
-      "name": "Ilha de Dalton",
-      "title": "Matéria, Energia e Modelos Atômicos",
-      "story": "Nesta primeira ilha, você vai romper a casca da Química: matéria, energia, mudanças de estado, estrutura atômica e modelos atômicos. Proteja suas vidas e construa sua base.",
-      "minPercent": 60,
-      "lives": 3,
-      "questionLimit": 10,
-      "shuffle": true,
-      "rewardRankIndex": 1,
-      "difficultyLabel": "Aquecimento",
-      "iconStage": 0,
-      "icon": "⚛️",
-      "x": 8,
-      "y": 11
-    },
-    {
-      "id": 2,
-      "name": "Praia das Misturas",
-      "title": "Misturas e Separação",
-      "story": "Aqui você vai atravessar sistemas homogêneos e heterogêneos, fases, componentes e métodos de separação. Observe propriedades, não apenas nomes decorados.",
-      "minPercent": 60,
-      "lives": 3,
-      "questionLimit": 10,
-      "shuffle": true,
-      "rewardRankIndex": 2,
-      "difficultyLabel": "Base contextual",
-      "iconStage": 1,
-      "icon": "🧪",
-      "x": 30,
-      "y": 24
-    },
-    {
-      "id": 3,
-      "name": "Ponte das Ligações",
-      "title": "Ligações Químicas",
-      "story": "Você vai cruzar pontes entre átomos: ligação iônica, covalente, metálica, polaridade, geometria e propriedades das substâncias.",
-      "minPercent": 65,
-      "lives": 4,
-      "questionLimit": 15,
-      "shuffle": true,
-      "rewardRankIndex": 3,
-      "difficultyLabel": "Interpretação",
-      "iconStage": 2,
-      "icon": "🔗",
-      "x": 56,
-      "y": 13
-    },
-    {
-      "id": 4,
-      "name": "Gruta das Funções",
-      "title": "Funções Inorgânicas e Interações",
-      "story": "Nesta ilha, você vai reconhecer ácidos, bases, sais, óxidos, geometria molecular e forças intermoleculares em situações do cotidiano.",
-      "minPercent": 65,
-      "lives": 4,
-      "questionLimit": 15,
-      "shuffle": true,
-      "rewardRankIndex": 3,
-      "difficultyLabel": "Conceitual forte",
-      "iconStage": 3,
-      "icon": "💧",
-      "x": 79,
-      "y": 28
-    },
-    {
-      "id": 5,
-      "name": "Balança Estequiométrica",
-      "title": "Estequiometria",
-      "story": "Agora a travessia pede proporção, conservação de massa, reagente limitante, excesso, rendimento e leitura cuidadosa de dados.",
-      "minPercent": 70,
-      "lives": 5,
-      "questionLimit": 20,
-      "shuffle": true,
-      "rewardRankIndex": 4,
-      "difficultyLabel": "Cálculo guiado",
-      "iconStage": 4,
-      "icon": "⚖️",
-      "x": 52,
-      "y": 43
-    },
-    {
-      "id": 6,
-      "name": "Farol Radioativo",
-      "title": "Radioatividade",
-      "story": "Nesta ilha, você vai lidar com emissões, meia-vida, aplicações médicas, riscos ambientais e leitura crítica de contextos nucleares.",
-      "minPercent": 70,
-      "lives": 5,
-      "questionLimit": 20,
-      "shuffle": true,
-      "rewardRankIndex": 4,
-      "difficultyLabel": "Aplicações",
-      "iconStage": 5,
-      "icon": "☢️",
-      "x": 24,
-      "y": 47
-    },
-    {
-      "id": 7,
-      "name": "Corrente Cinética",
-      "title": "Cinética Química",
-      "story": "Você vai enfrentar velocidade das reações, catalisadores, temperatura, superfície de contato, concentração e colisões efetivas.",
-      "minPercent": 75,
-      "lives": 6,
-      "questionLimit": 25,
-      "shuffle": true,
-      "rewardRankIndex": 5,
-      "difficultyLabel": "Médio-forte",
-      "iconStage": 6,
-      "icon": "⏱️",
-      "x": 10,
-      "y": 62
-    },
-    {
-      "id": 8,
-      "name": "Lago das Soluções",
-      "title": "Soluções",
-      "story": "Aqui aparecem concentração, diluição, mistura de soluções, solubilidade, curvas, unidades e interpretação de preparo de soluções.",
-      "minPercent": 75,
-      "lives": 6,
-      "questionLimit": 25,
-      "shuffle": true,
-      "rewardRankIndex": 5,
-      "difficultyLabel": "Dados e gráficos",
-      "iconStage": 7,
-      "icon": "🌊",
-      "x": 37,
-      "y": 67
-    },
-    {
-      "id": 9,
-      "name": "Usina Eletroquímica",
-      "title": "Eletroquímica",
-      "story": "Nesta ilha, você vai percorrer oxirredução, NOX, pilhas, eletrólise, corrosão e aplicações tecnológicas.",
-      "minPercent": 80,
-      "lives": 7,
-      "questionLimit": 30,
-      "shuffle": true,
-      "rewardRankIndex": 6,
-      "difficultyLabel": "Avançado",
-      "iconStage": 8,
-      "icon": "🔋",
-      "x": 64,
-      "y": 57
-    },
-    {
-      "id": 10,
-      "name": "Vulcão do Equilíbrio",
-      "title": "Equilíbrio Químico",
-      "story": "Você vai controlar o vulcão das reações reversíveis: Kc, deslocamento, Le Châtelier, pH, hidrólise e aplicações industriais.",
-      "minPercent": 80,
-      "lives": 7,
-      "questionLimit": 30,
-      "shuffle": true,
-      "rewardRankIndex": 6,
-      "difficultyLabel": "Avançado",
-      "iconStage": 9,
-      "icon": "🌋",
-      "x": 84,
-      "y": 70
-    },
-    {
-      "id": 11,
-      "name": "Caldeira Termoquímica",
-      "title": "Termoquímica",
-      "story": "Nesta caldeira, você vai interpretar calor, entalpia, reações exotérmicas e endotérmicas, energia de ligação e combustíveis.",
-      "minPercent": 82,
-      "lives": 8,
-      "questionLimit": 35,
-      "shuffle": true,
-      "rewardRankIndex": 6,
-      "difficultyLabel": "Hard controlado",
-      "iconStage": 10,
-      "icon": "🔥",
-      "x": 55,
-      "y": 84
-    },
-    {
-      "id": 12,
-      "name": "Floresta Orgânica",
-      "title": "Química Orgânica",
-      "story": "Você vai atravessar cadeias carbônicas, funções orgânicas, isomeria, propriedades e aplicações em saúde, ambiente e cotidiano.",
-      "minPercent": 85,
-      "lives": 8,
-      "questionLimit": 40,
-      "shuffle": true,
-      "rewardRankIndex": 7,
-      "difficultyLabel": "Hard estratégico",
-      "iconStage": 11,
-      "icon": "🌿",
-      "x": 28,
-      "y": 86
-    },
-    {
-      "id": 13,
-      "name": "Boss Final",
-      "title": "Grande Travessia Química",
-      "story": "Chegou o Boss Final. Pode cair qualquer conteúdo das ilhas anteriores. Respire, leia com estratégia, preserve vidas e mostre domínio cumulativo.",
-      "minPercent": 85,
-      "lives": 9,
-      "questionLimit": 45,
-      "shuffle": true,
-      "rewardRankIndex": 7,
-      "difficultyLabel": "Boss cumulativo",
-      "iconStage": 12,
-      "icon": "🏆🦈",
-      "cumulative": true,
-      "cumulativeFromPrevious": true,
-      "x": 82,
-      "y": 91
-    }
-  ]
-}
+  }
+]

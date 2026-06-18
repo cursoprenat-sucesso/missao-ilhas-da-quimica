@@ -294,11 +294,199 @@
     ]
   };
 
+
+  // ===== PRENAT+ SAFE TEACHER SAVE PATCH =====
+  function safeClone(data) {
+    return JSON.parse(JSON.stringify(data ?? null));
+  }
+
+  function missionSlugSafe() {
+    return String((settings && settings.slug) || (DEFAULT_SETTINGS && DEFAULT_SETTINGS.slug) || location.pathname || 'prenat_missao').replace(/[^\w\-]+/g, '_');
+  }
+
+  function teacherStorageKeys() {
+    const slug = missionSlugSafe();
+    return {
+      questions: `prenat_teacher_questions_${slug}`,
+      settings: `prenat_teacher_settings_${slug}`,
+      backup: `prenat_teacher_backup_${slug}`,
+      last: `prenat_teacher_last_backup_${slug}`
+    };
+  }
+
+  function extractQuestionArraySafe(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.questions)) return data.questions;
+    if (data && typeof data === 'object') {
+      const numeric = Object.keys(data)
+        .filter(k => /^\d+$/.test(k))
+        .sort((a,b) => Number(a) - Number(b))
+        .map(k => data[k])
+        .filter(q => q && typeof q === 'object' && (q.statement || q.text || Array.isArray(q.options)));
+      if (numeric.length) return numeric;
+    }
+    return [];
+  }
+
+  function sanitizeSettingsSafe(data) {
+    const source = data && typeof data === 'object' ? data : {};
+    const copy = {};
+    Object.keys(source).forEach(key => {
+      if (/^\d+$/.test(key)) return;
+      if (['questions','options','statement','correctIndex','explanation'].includes(key)) return;
+      copy[key] = source[key];
+    });
+    if (!Array.isArray(copy.phases) && DEFAULT_SETTINGS?.phases) copy.phases = safeClone(DEFAULT_SETTINGS.phases);
+    if (!Array.isArray(copy.ranks) && DEFAULT_SETTINGS?.ranks) copy.ranks = safeClone(DEFAULT_SETTINGS.ranks);
+    return copy;
+  }
+
+  function readJsonStorageSafe(key) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function findLegacyQuestionBankSafe() {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (/prenat.*(questions|questoes|backup)/i.test(key || '')) keys.push(key);
+    }
+    let best = [];
+    keys.forEach(key => {
+      const data = readJsonStorageSafe(key);
+      const arr = extractQuestionArraySafe(data);
+      if (arr.length > best.length) best = arr;
+      if (data && Array.isArray(data.questions) && data.questions.length > best.length) best = data.questions;
+    });
+    return best;
+  }
+
+  function loadLocalDraftsSafe() {
+    const keys = teacherStorageKeys();
+    const localSettings = readJsonStorageSafe(keys.settings) || readJsonStorageSafe('prenat_teacher_settings');
+    if (localSettings && typeof localSettings === 'object') {
+      settings = { ...settings, ...sanitizeSettingsSafe(localSettings) };
+    }
+
+    const localQuestions = readJsonStorageSafe(keys.questions) || readJsonStorageSafe('prenat_teacher_questions');
+    let localBank = extractQuestionArraySafe(localQuestions);
+
+    if (!localBank.length) {
+      const backup = readJsonStorageSafe(keys.backup);
+      if (backup?.questions) localBank = extractQuestionArraySafe(backup.questions);
+    }
+
+    if (!localBank.length) {
+      localBank = findLegacyQuestionBankSafe();
+    }
+
+    if (localBank.length) {
+      questions = localBank.map(normalizeQuestion);
+    }
+  }
+
+  function persistTeacherDraftSafe(message) {
+    const keys = teacherStorageKeys();
+    const cleanSettings = sanitizeSettingsSafe(settings);
+    const cleanQuestions = stripOptionFeedbackForGeneralOnly(questions).map(normalizeQuestion);
+    questions = cleanQuestions;
+
+    localStorage.setItem(keys.questions, JSON.stringify(cleanQuestions));
+    localStorage.setItem(keys.settings, JSON.stringify(cleanSettings));
+
+    const backup = {
+      type: 'prenat_teacher_emergency_backup',
+      version: 2,
+      savedAt: new Date().toISOString(),
+      missionSlug: missionSlugSafe(),
+      settings: cleanSettings,
+      questions: cleanQuestions
+    };
+    localStorage.setItem(keys.backup, JSON.stringify(backup));
+    localStorage.setItem(keys.last, backup.savedAt);
+
+    updateTeacherSafeStatus(message || 'Banco salvo automaticamente no navegador.');
+  }
+
+  function updateTeacherSafeStatus(message) {
+    const totalEl = document.getElementById('bankCountTotal');
+    const phaseEl = document.getElementById('bankCountByPhase');
+    const statusEl = document.getElementById('teacherSaveStatus');
+    const lastEl = document.getElementById('lastBackupTime');
+    if (!totalEl && !phaseEl && !statusEl && !lastEl) return;
+
+    const cleanQuestions = extractQuestionArraySafe(questions);
+    const counts = {};
+    cleanQuestions.forEach(q => { counts[Number(q.phase || 1)] = (counts[Number(q.phase || 1)] || 0) + 1; });
+
+    if (totalEl) totalEl.textContent = String(cleanQuestions.length);
+    if (statusEl) {
+      statusEl.textContent = cleanQuestions.length
+        ? (message || `Há ${cleanQuestions.length} questão(ões) salvas no banco local deste navegador.`)
+        : 'Banco local vazio. Se você já tinha questões, importe um backup ou um questions.json.';
+    }
+    if (lastEl) {
+      const saved = localStorage.getItem(teacherStorageKeys().last);
+      if (saved) {
+        try { lastEl.textContent = new Date(saved).toLocaleString('pt-BR'); }
+        catch { lastEl.textContent = saved; }
+      } else {
+        lastEl.textContent = '—';
+      }
+    }
+    if (phaseEl) {
+      phaseEl.innerHTML = (settings.phases || []).map(p => `<span>${escapeHtml(p.name || ('Ilha ' + p.id))}: <strong>${counts[Number(p.id)] || 0}</strong></span>`).join('');
+    }
+  }
+
+  function downloadEmergencyBackupSafe() {
+    collectConfigFromForm?.();
+    persistTeacherDraftSafe('Backup de emergência atualizado.');
+    const backup = readJsonStorageSafe(teacherStorageKeys().backup);
+    downloadJson(`backup-emergencia-${missionSlugSafe()}.json`, backup);
+  }
+
+  function importEmergencyBackupSafe(event) {
+    importJsonFile(event, data => {
+      const importedSettings = sanitizeSettingsSafe(data?.settings || data);
+      const importedQuestions = extractQuestionArraySafe(data?.questions || data);
+      if (importedSettings && Object.keys(importedSettings).length) settings = { ...settings, ...importedSettings };
+      if (importedQuestions.length) questions = importedQuestions.map(normalizeQuestion);
+      populateConfigForm?.();
+      renderPhaseEditors?.();
+      renderQuestionForm?.();
+      renderQuestionBank?.();
+      persistTeacherDraftSafe(`Backup importado com ${questions.length} questão(ões).`);
+      alert(`Backup importado. Banco atual: ${questions.length} questão(ões).`);
+    });
+  }
+
+  function moveVisibleQuestionsToSelectedPhaseSafe() {
+    const filter = document.getElementById('bankPhaseFilter')?.value || 'all';
+    const target = Number(document.getElementById('qPhase')?.value || settings.phases?.[0]?.id || 1);
+    const phaseName = settings.phases?.find(p => Number(p.id) === target)?.name || `Ilha ${target}`;
+    if (!confirm(`Mover as questões ${filter === 'all' ? 'do banco inteiro' : 'do filtro atual'} para ${phaseName}?`)) return;
+    questions = questions.map(q => {
+      if (filter === 'all' || Number(q.phase) === Number(filter)) return { ...q, phase: target };
+      return q;
+    });
+    renderQuestionBank?.();
+    persistTeacherDraftSafe(`Questões movidas para ${phaseName}.`);
+  }
+  // ===== FIM DO PATCH =====
+
   init();
 
   async function init() {
     settings = await fetchJson('settings.json', DEFAULT_SETTINGS);
     questions = await fetchJson('questions.json', []);
+    normalize();
+    loadLocalDraftsSafe();
     normalize();
     setupLinks();
     setupTabs();
@@ -309,6 +497,7 @@
     setupButtons();
     setupRichTextHelpers();
     setupImageTools();
+    updateTeacherSafeStatus('Painel carregado com salvamento seguro.');
   }
 
   async function fetchJson(url, fallback) {
@@ -371,8 +560,8 @@
   function setupButtons() {
     document.getElementById('saveConfigLocal')?.addEventListener('click', () => {
       collectConfigFromForm();
-      localStorage.setItem('prenat_teacher_settings', JSON.stringify(settings));
-      alert('Configuração salva no navegador. Para atualizar o jogo publicado, baixe o settings.json e envie no GitHub.');
+      persistTeacherDraftSafe('Configuração e banco salvos automaticamente no navegador.');
+      alert('Configuração salva. O banco também foi preservado no navegador e no backup de emergência.');
       renderQuestionForm();
       renderQuestionBank();
     });
@@ -385,21 +574,30 @@
     });
     document.getElementById('saveQuestionBtn')?.addEventListener('click', saveQuestionFromForm);
     document.getElementById('clearQuestionBtn')?.addEventListener('click', clearQuestionForm);
-    document.getElementById('downloadSettings')?.addEventListener('click', () => { collectConfigFromForm(); downloadJson('settings.json', settings); });
-    document.getElementById('downloadQuestions')?.addEventListener('click', () => downloadJson('questions.json', questions));
+    document.getElementById('downloadSettings')?.addEventListener('click', () => { collectConfigFromForm(); persistTeacherDraftSafe('settings.json limpo preparado.'); downloadJson('settings.json', sanitizeSettingsSafe(settings)); });
+    document.getElementById('downloadQuestions')?.addEventListener('click', () => { persistTeacherDraftSafe('questions.json atualizado preparado.'); downloadJson('questions.json', stripOptionFeedbackForGeneralOnly(questions).map(normalizeQuestion)); });
     document.getElementById('importSettings')?.addEventListener('change', e => importJsonFile(e, data => {
-      settings = { ...DEFAULT_SETTINGS, ...data };
+      settings = { ...DEFAULT_SETTINGS, ...sanitizeSettingsSafe(data) };
+      normalize();
+      loadLocalDraftsSafe();
       normalize();
       populateConfigForm();
       renderPhaseEditors();
       renderQuestionForm();
-      alert('settings.json importado.');
+      persistTeacherDraftSafe('settings.json limpo importado.');
+      alert('settings.json importado sem misturar questões.');
     }));
     document.getElementById('importQuestions')?.addEventListener('change', e => importJsonFile(e, data => {
-      questions = Array.isArray(data) ? data.map(normalizeQuestion) : [];
+      questions = extractQuestionArraySafe(data).map(normalizeQuestion);
       renderQuestionBank();
-      alert('questions.json importado.');
+      persistTeacherDraftSafe(`questions.json importado com ${questions.length} questão(ões).`);
+      alert(`questions.json importado com ${questions.length} questão(ões).`);
     }));
+    document.getElementById('downloadQuestionsTop')?.addEventListener('click', () => { persistTeacherDraftSafe('questions.json atualizado preparado.'); downloadJson('questions.json', stripOptionFeedbackForGeneralOnly(questions).map(normalizeQuestion)); });
+    document.getElementById('downloadEmergencyBackup')?.addEventListener('click', downloadEmergencyBackupSafe);
+    document.getElementById('downloadEmergencyBackupExport')?.addEventListener('click', downloadEmergencyBackupSafe);
+    document.getElementById('importEmergencyBackup')?.addEventListener('change', importEmergencyBackupSafe);
+    document.getElementById('moveAllVisibleToPhase')?.addEventListener('click', moveVisibleQuestionsToSelectedPhaseSafe);
     document.getElementById('qImage')?.addEventListener('input', updateImagePreview);
     document.getElementById('clearImageBtn')?.addEventListener('click', () => {
       setValue('qImage', '');
@@ -499,18 +697,28 @@
         <div class="phase-editor-head"><h3>Alternativa ${letter}</h3><label><input type="radio" name="correctOption" value="${index}" ${index === 0 ? 'checked' : ''}> Correta</label></div>
         <div class="form-grid" style="margin-top:12px">
           <div class="form-field full rich-field"><label>Texto da alternativa ${letter}</label><textarea id="opt_${index}_text" data-rich="true"></textarea></div>
-          <div class="form-field full rich-field"><label>Comentário/distrator da alternativa ${letter}</label><textarea id="opt_${index}_feedback" data-rich="true" placeholder="Explique por que essa alternativa está certa ou errada."></textarea></div>
         </div>`;
       options.appendChild(card);
     });
     setupRichTextHelpers();
   }
 
+
+  function stripOptionFeedbackForGeneralOnly(bank) {
+    const arr = extractQuestionArraySafe ? extractQuestionArraySafe(bank) : (Array.isArray(bank) ? bank : []);
+    return arr.map(q => ({
+      ...q,
+      options: Array.isArray(q.options)
+        ? q.options.map(op => ({ ...op, feedback: '' }))
+        : []
+    }));
+  }
+
   function saveQuestionFromForm() {
     const statement = getValue('qStatement').trim();
     const options = letters.map((_, i) => ({
       text: getValue(`opt_${i}_text`).trim(),
-      feedback: getValue(`opt_${i}_feedback`).trim(),
+      feedback: '',
       correct: Number(document.querySelector('input[name="correctOption"]:checked')?.value || 0) === i
     })).filter(op => op.text);
 
@@ -537,7 +745,8 @@
 
     clearQuestionForm();
     renderQuestionBank();
-    alert('Questão salva no painel. Para atualizar o site publicado, baixe o questions.json e envie no GitHub.');
+    persistTeacherDraftSafe(`Questão salva. Banco atual: ${questions.length} questão(ões).`);
+    alert(`Questão salva e preservada no navegador. O comentário será usado apenas no gabarito geral. Banco atual: ${questions.length} questão(ões).`);
   }
 
   function editQuestion(id) {
@@ -557,7 +766,6 @@
     letters.forEach((_, i) => {
       const op = q.options[i] || { text:'', feedback:'', correct:false };
       setValue(`opt_${i}_text`, op.text);
-      setValue(`opt_${i}_feedback`, op.feedback);
       const radio = document.querySelector(`input[name="correctOption"][value="${i}"]`);
       if (radio) radio.checked = Boolean(op.correct);
     });
@@ -569,6 +777,7 @@
     if (!confirm('Excluir esta questão do banco?')) return;
     questions = questions.filter(q => q.id !== id);
     renderQuestionBank();
+    persistTeacherDraftSafe(`Questão excluída. Banco atual: ${questions.length} questão(ões).`);
   }
 
   function clearQuestionForm() {
@@ -576,7 +785,6 @@
     setValue('qPhase', settings.phases[0]?.id || 1);
     letters.forEach((_, i) => {
       setValue(`opt_${i}_text`, '');
-      setValue(`opt_${i}_feedback`, '');
       const radio = document.querySelector(`input[name="correctOption"][value="${i}"]`);
       if (radio) radio.checked = i === 0;
     });
@@ -587,10 +795,11 @@
     const list = document.getElementById('questionBankList');
     const stats = document.getElementById('phaseQuestionStats');
     const filter = document.getElementById('bankPhaseFilter')?.value || 'all';
-    if (!list) return;
+    if (!list) { updateTeacherSafeStatus(); return; }
 
     const counts = {};
     questions.forEach(q => { counts[q.phase] = (counts[q.phase] || 0) + 1; });
+    updateTeacherSafeStatus();
 
     if (stats) {
       const selectedPhase = filter === 'all' ? null : settings.phases.find(p => Number(p.id) === Number(filter));

@@ -1,10 +1,20 @@
-# Como publicar
+# Guia — Missão Ilhas da Química V15
 
-1. Extraia o ZIP.
-2. Envie todos os arquivos para o repositório `missao-ilhas-da-quimica`.
-3. Ative o GitHub Pages em Settings > Pages > Deploy from a branch > main > / root.
-4. Teste com `?v=9` para evitar cache antigo.
+## Cadastro seguro
 
+1. Cadastre a questão.
+2. Escolha a alternativa correta.
+3. Preencha apenas o **comentário geral do gabarito**.
+4. Clique em **Salvar questão**.
+5. Veja o contador aumentar.
+6. A cada bloco, clique em **Exportar backup de emergência**.
+7. Para publicar, clique em **Baixar questions.json atualizado**.
+8. Substitua o `questions.json` no GitHub.
 
-## V13 — banco por ilha
-Cada questão cadastrada no professor fica vinculada a uma ilha/fase pelo campo “Fase/ilha”. O aluno só recebe questões daquela ilha. O Boss Final é cumulativo e pode sortear questões das ilhas anteriores e do próprio Boss.
+## Links
+
+Aluno:
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=15
+
+Professor:
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=15

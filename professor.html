@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Área do Professor | PRENAT+ Química</title>
-  <link rel="stylesheet" href="style-quimica.css?v=13" />
+  <link rel="stylesheet" href="style-quimica.css?v=15" />
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] }, svg: { fontCache: 'global' } };
   </script>
@@ -27,7 +27,7 @@
       <div>
         <span class="kicker">Painel do professor</span>
         <h1>Monte sua missão química sem mexer em código</h1>
-        <p>Configure fases, metas, vidas, patentes e cadastre questões com imagens, fórmulas, comentários e distratores.</p>
+        <p>Configure fases, metas, vidas, patentes e cadastre questões com imagens, fórmulas e comentário geral do gabarito.</p>
       </div>
       <div class="rank-orb">🧭</div>
     </section>
@@ -115,7 +115,7 @@
         </div>
         <h2 style="margin-top:24px">Alternativas</h2>
         <div id="optionsEditor"></div>
-        <div class="form-field full rich-field" style="margin-top:14px"><label>Comentário geral do gabarito</label><textarea id="qExplanation" data-rich="true" placeholder="Explique o raciocínio da resposta correta. Pode usar subscrito, sobrescrito e fórmulas."></textarea></div>
+        <div class="form-field full rich-field" style="margin-top:14px"><label>Comentário geral do gabarito</label><textarea id="qExplanation" data-rich="true" placeholder="Explique, em um único comentário, por que a alternativa correta está certa e por que as demais estão erradas. Pode usar subscrito, sobrescrito e fórmulas."></textarea></div>
         <div class="teacher-actions">
           <button class="btn btn-primary" id="saveQuestionBtn">Salvar questão</button>
           <button class="btn btn-soft" id="clearQuestionBtn">Limpar formulário</button>
@@ -128,6 +128,26 @@
           </div>
           <div id="phaseQuestionStats" class="phase-question-stats"></div>
         </div>
+        
+        <div class="safe-save-panel" id="safeSavePanel">
+          <div>
+            <strong>Salvamento seguro ativado</strong>
+            <p id="teacherSaveStatus">O painel salva automaticamente no navegador enquanto você cadastra. Para publicar para os alunos, baixe e envie o questions.json no GitHub.</p>
+          </div>
+          <div class="safe-save-grid">
+            <span>Banco local: <strong id="bankCountTotal">0</strong> questão(ões)</span>
+            <span>Último backup: <strong id="lastBackupTime">—</strong></span>
+          </div>
+          <div id="bankCountByPhase" class="safe-save-chips"></div>
+          <div class="teacher-actions safe-save-actions">
+            <button type="button" class="btn btn-primary" id="downloadQuestionsTop">Baixar questions.json atualizado</button>
+            <button type="button" class="btn btn-soft" id="downloadEmergencyBackup">Exportar backup de emergência</button>
+            <label class="btn btn-soft file-like">Importar backup de emergência <input type="file" id="importEmergencyBackup" accept="application/json,.json" hidden></label>
+            <button type="button" class="btn btn-soft" id="moveAllVisibleToPhase">Mover questões filtradas para a ilha selecionada</button>
+          </div>
+          <p class="safe-save-warning">Atenção: salvar no painel não publica para os alunos. O aluno só vê depois que o arquivo <strong>questions.json</strong> atualizado substituir o antigo no GitHub.</p>
+        </div>
+
         <div id="questionBankList" class="question-bank-list"></div>
       </section>
 
@@ -137,6 +157,7 @@
         <div class="teacher-actions">
           <button class="btn btn-primary" id="downloadSettings">Baixar settings.json</button>
           <button class="btn btn-primary" id="downloadQuestions">Baixar questions.json</button>
+          <button class="btn btn-soft" id="downloadEmergencyBackupExport">Baixar backup de emergência</button>
         </div>
         <h2 style="margin-top:28px">Importar arquivos existentes</h2>
         <p>Use isso quando você já tiver um <strong>settings.json</strong> ou <strong>questions.json</strong> salvo no computador e quiser continuar editando.</p>
@@ -156,6 +177,6 @@
     </section>
   </main>
 
-  <script src="professor-quimica.js?v=13"></script>
+  <script src="professor-quimica.js?v=15"></script>
 </body>
 </html>

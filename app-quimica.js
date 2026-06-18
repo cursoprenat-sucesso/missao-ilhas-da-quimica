@@ -76,7 +76,22 @@
     }
   }
 
-  function normalizeData() {
+  
+  function extractQuestionArrayStudentSafe(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.questions)) return data.questions;
+    if (data && typeof data === 'object') {
+      const numeric = Object.keys(data)
+        .filter(k => /^\d+$/.test(k))
+        .sort((a,b) => Number(a) - Number(b))
+        .map(k => data[k])
+        .filter(q => q && typeof q === 'object' && (q.statement || q.text || Array.isArray(q.options)));
+      if (numeric.length) return numeric;
+    }
+    return [];
+  }
+
+function normalizeData() {
     settings = { ...DEFAULT_SETTINGS, ...settings };
     settings.starsMax = Number(settings.starsMax || 5);
     settings.starThresholds = Array.isArray(settings.starThresholds) && settings.starThresholds.length
@@ -111,7 +126,7 @@
       x: clamp(Number(phase.x ?? mapX(index)), 4, 92),
       y: clamp(Number(phase.y ?? mapY(index)), 8, 92)
     })) : [];
-    questions = Array.isArray(questions) ? questions.map((q, index) => normalizeQuestion(q, index)) : [];
+    questions = extractQuestionArrayStudentSafe(questions).map((q, index) => normalizeQuestion(q, index));
   }
 
   function normalizeQuestion(q, index) {
@@ -427,7 +442,7 @@
     panel.classList.toggle('wrong-feedback', !isCorrect);
     app.querySelector('[data-feedback-title]').textContent = isCorrect ? 'Boa! A rota iluminou.' : (run.lives <= 0 ? 'As vidas acabaram nesta rodada.' : 'Armadilha encontrada — ajuste a estratégia.');
     app.querySelector('[data-feedback-text]').innerHTML = buildFeedbackText(isCorrect, q, selected);
-    app.querySelector('[data-feedback-descriptor]').innerHTML = selected?.feedback || (isCorrect ? 'Você identificou o ponto químico central.' : 'Esse distrator parece bom, mas ignora uma condição do enunciado.');
+    app.querySelector('[data-feedback-descriptor]').innerHTML = q.explanation || '';
     const nextButton = app.querySelector('[data-action="next-question"]');
     nextButton.textContent = run.lives <= 0 ? 'Ver resultado' : (run.index >= run.questions.length - 1 ? 'Concluir ilha' : 'Continuar travessia');
     nextButton.addEventListener('click', nextStep);

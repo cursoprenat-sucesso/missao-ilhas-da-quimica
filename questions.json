@@ -11,27 +11,27 @@
       {
         "text": "a composição da substância permanece a mesma, embora o estado físico mude.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "ocorre formação de novas substâncias em todas as etapas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a massa deixa de existir quando a água evapora.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o gelo se transforma em outra substância por reação química.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a água perde seus átomos de hidrogênio durante a evaporação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Derretimento e evaporação são transformações físicas: alteram estado físico, não a composição química da água."
@@ -48,34 +48,34 @@
       {
         "text": "o espalhamento de partículas alfa indicou a existência de um núcleo pequeno, denso e positivo.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "a descoberta do nêutron mostrou que elétrons ficam presos no núcleo.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o modelo de Thomson já previa níveis quantizados de energia.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "Rutherford demonstrou que o átomo era maciço e indivisível.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "Bohr provou que os elétrons não existem em átomos reais.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "O experimento da lâmina de ouro sugeriu que a massa e a carga positiva estavam concentradas em uma região nuclear pequena."
   },
   {
     "id": "q003",
-    "phase": 2,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Misturas",
     "difficulty": "Exemplo inicial",
@@ -85,34 +85,34 @@
       {
         "text": "decantação.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "destilação fracionada.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "cromatografia.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "sublimação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "liquefação fracionada.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Na decantação, componentes se separam pela diferença de densidade após repouso ou escoamento cuidadoso."
   },
   {
     "id": "q004",
-    "phase": 2,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Separação de misturas",
     "difficulty": "Exemplo inicial",
@@ -122,34 +122,34 @@
       {
         "text": "floculação, pois forma flocos maiores que sedimentam com mais facilidade.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "destilação, pois vaporiza apenas a água pura.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "levigação, pois usa corrente de ar para separar sólidos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "catação, pois remove manualmente partículas microscópicas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "cristalização, pois transforma impurezas em cristais solúveis.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "A floculação agrega partículas dispersas, favorecendo a sedimentação e a etapa de decantação."
   },
   {
     "id": "q005",
-    "phase": 3,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Ligações químicas",
     "difficulty": "Exemplo inicial",
@@ -159,34 +159,34 @@
       {
         "text": "rede iônica formada por íons mantidos por forte atração eletrostática.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "moléculas apolares unidas por forças de London fracas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "átomos metálicos compartilhando elétrons apenas em pares localizados.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "pontes de hidrogênio entre moléculas de sal.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ligações covalentes simples entre Na e Cl formando moléculas isoladas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Compostos iônicos têm retículo cristalino e íons móveis quando fundidos ou em solução."
   },
   {
     "id": "q006",
-    "phase": 3,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Geometria e polaridade",
     "difficulty": "Exemplo inicial",
@@ -196,34 +196,34 @@
       {
         "text": "sua geometria distribui os dipolos de forma simétrica, anulando o momento dipolar resultante.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "todos os átomos têm massas iguais.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "possui obrigatoriamente ligação de hidrogênio.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "é formada apenas por metais.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "apresenta qualquer átomo eletronegativo em sua estrutura.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "A polaridade molecular depende da soma vetorial dos dipolos e da geometria molecular."
   },
   {
     "id": "q007",
-    "phase": 4,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Funções inorgânicas",
     "difficulty": "Exemplo inicial",
@@ -233,34 +233,34 @@
       {
         "text": "apresentar íons OH<sup>-</sup> em solução aquosa ou aumentar sua concentração no meio.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "liberar sempre gás carbônico ao entrar em água.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ser necessariamente insolúvel em água.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ter pH menor que 7 em solução aquosa.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "neutralizar apenas substâncias neutras.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Bases em água estão relacionadas ao aumento da concentração de OH<sup>-</sup> e a pH geralmente maior que 7."
   },
   {
     "id": "q008",
-    "phase": 4,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Forças intermoleculares",
     "difficulty": "Exemplo inicial",
@@ -270,34 +270,34 @@
       {
         "text": "formam ligações de hidrogênio entre si.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "são completamente apolares.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "apresentam apenas forças de London muito fracas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "não interagem no estado líquido.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "têm ligação iônica entre H e O.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Ligações de hidrogênio são interações fortes entre moléculas com H ligado a F, O ou N."
   },
   {
     "id": "q009",
-    "phase": 5,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Estequiometria",
     "difficulty": "Exemplo inicial",
@@ -307,34 +307,34 @@
       {
         "text": "é consumido primeiro e determina a quantidade máxima de produto formada.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "tem sempre maior massa inicial.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "fica sempre em excesso ao final.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "não participa da proporção da equação balanceada.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "é escolhido pela ordem em que aparece na equação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "O limitante deve ser identificado pela proporção estequiométrica, não apenas pela massa disponível."
   },
   {
     "id": "q010",
-    "phase": 5,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Conservação de massa",
     "difficulty": "Exemplo inicial",
@@ -344,34 +344,34 @@
       {
         "text": "os átomos são rearranjados, mas não desaparecem nem surgem do nada.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "os produtos sempre pesam menos que os reagentes.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a energia se transforma integralmente em matéria.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "toda reação libera gás que sai do sistema.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "os reagentes deixam de ter átomos após reagirem.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "A conservação da massa decorre da conservação dos átomos em sistema fechado."
   },
   {
     "id": "q011",
-    "phase": 6,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Radioatividade",
     "difficulty": "Exemplo inicial",
@@ -381,34 +381,34 @@
       {
         "text": "o tempo necessário para que metade dos núcleos radioativos da amostra decaia.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "o tempo para todos os átomos virarem carbono estável instantaneamente.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a massa inicial de qualquer fóssil.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a temperatura em que o carbono evapora.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o número de ligações covalentes do carbono.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Meia-vida é um conceito estatístico de decaimento nuclear."
   },
   {
     "id": "q012",
-    "phase": 6,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Aplicações nucleares",
     "difficulty": "Exemplo inicial",
@@ -418,34 +418,34 @@
       {
         "text": "a radiação pode ionizar tecidos, exigindo dose, tempo e proteção adequados.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "a radioatividade sempre transforma qualquer tecido em metal.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a radiação só existe em laboratório e não afeta organismos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "todo radioisótopo é inofensivo quando diluído em água.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "partículas alfa atravessam qualquer barreira sem interação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Radiações ionizantes podem causar danos biológicos, mas também têm aplicações diagnósticas e terapêuticas controladas."
   },
   {
     "id": "q013",
-    "phase": 7,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Cinética química",
     "difficulty": "Exemplo inicial",
@@ -455,34 +455,34 @@
       {
         "text": "o aumento da superfície de contato favorece colisões efetivas.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "a massa total aumenta quando o alimento é cortado.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a temperatura deixa de influenciar a reação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o catalisador é sempre produzido pelo corte.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "as moléculas param de se mover em pedaços pequenos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Maior superfície de contato aumenta a frequência de colisões entre reagentes."
   },
   {
     "id": "q014",
-    "phase": 7,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Catalisador",
     "difficulty": "Exemplo inicial",
@@ -492,34 +492,34 @@
       {
         "text": "oferece um caminho reacional com menor energia de ativação.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "aumenta obrigatoriamente a quantidade final de produto no equilíbrio.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "é consumido totalmente como reagente principal.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "impede colisões entre moléculas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "transforma reação endotérmica em nuclear.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Catalisadores alteram a rota e reduzem a energia de ativação, sem serem consumidos globalmente."
   },
   {
     "id": "q015",
-    "phase": 8,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Soluções",
     "difficulty": "Exemplo inicial",
@@ -529,34 +529,34 @@
       {
         "text": "a concentração interfere no fluxo de água entre solução e células.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "soluções sempre têm a mesma concentração independentemente da massa.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "sal e açúcar deixam de ser solutos em água.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "quanto mais soluto, sempre melhor para hidratação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a água pura não participa de interações com solutos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Concentração adequada evita soluções muito hipertônicas ou hipotônicas em relação ao organismo."
   },
   {
     "id": "q016",
-    "phase": 8,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Solubilidade",
     "difficulty": "Exemplo inicial",
@@ -566,34 +566,34 @@
       {
         "text": "a quantidade máxima de soluto que pode dissolver em certa quantidade de solvente a uma dada temperatura.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "a massa molar de qualquer gás sem dados adicionais.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o número de prótons de um elemento.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a geometria molecular de sais iônicos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a velocidade exata de toda reação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Curvas de solubilidade relacionam temperatura e quantidade de soluto dissolvido no equilíbrio de saturação."
   },
   {
     "id": "q017",
-    "phase": 9,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Oxirredução",
     "difficulty": "Exemplo inicial",
@@ -603,34 +603,34 @@
       {
         "text": "perde elétrons e aumenta seu número de oxidação.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "ganha elétrons e diminui seu número de oxidação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "não participa da transferência de elétrons.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "sempre vira gás nobre.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "tem necessariamente carga zero.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Oxidação é perda de elétrons; redução é ganho de elétrons."
   },
   {
     "id": "q018",
-    "phase": 9,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Pilhas",
     "difficulty": "Exemplo inicial",
@@ -640,34 +640,34 @@
       {
         "text": "energia química em energia elétrica por reações espontâneas de oxirredução.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "energia elétrica em energia química sem reação redox.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "calor em massa nuclear.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "luz em pressão osmótica.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "energia sonora em ligação iônica.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Pilhas eletroquímicas usam reações redox espontâneas para gerar corrente elétrica."
   },
   {
     "id": "q019",
-    "phase": 10,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Equilíbrio químico",
     "difficulty": "Exemplo inicial",
@@ -677,34 +677,34 @@
       {
         "text": "tende a se deslocar no sentido que minimiza a perturbação imposta.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "interrompe completamente todas as reações.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "forma sempre mais reagentes, independentemente da perturbação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "deixa de ter reação direta e inversa.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "mantém concentrações sempre iguais entre reagentes e produtos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "No equilíbrio dinâmico, o sistema responde a alterações de concentração, pressão ou temperatura."
   },
   {
     "id": "q020",
-    "phase": 10,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Kc",
     "difficulty": "Exemplo inicial",
@@ -714,34 +714,34 @@
       {
         "text": "suas atividades são consideradas constantes nas condições do equilíbrio.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "não possuem partículas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "sempre evaporam antes da reação.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "não participam de reações químicas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "têm concentração variável infinita.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "A concentração efetiva de sólidos e líquidos puros não varia de forma relevante na expressão de equilíbrio."
   },
   {
     "id": "q021",
-    "phase": 11,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Termoquímica",
     "difficulty": "Exemplo inicial",
@@ -751,34 +751,34 @@
       {
         "text": "libera energia para o meio, geralmente com ΔH negativo.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "absorve energia e sempre apresenta ΔH positivo.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "não troca calor em nenhuma condição.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ocorre apenas em organismos vivos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "é sempre uma reação nuclear.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Em reações exotérmicas, a entalpia dos produtos é menor que a dos reagentes."
   },
   {
     "id": "q022",
-    "phase": 11,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Combustíveis",
     "difficulty": "Exemplo inicial",
@@ -788,34 +788,34 @@
       {
         "text": "impactos ambientais, disponibilidade, custo e produtos da combustão.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "apenas a cor da chama.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "somente o estado físico do combustível.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a massa do recipiente onde ocorre a combustão.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a impossibilidade de formar gases.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Questões contextualizadas costumam integrar energia, ambiente, rendimento e poluentes."
   },
   {
     "id": "q023",
-    "phase": 12,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Orgânica",
     "difficulty": "Exemplo inicial",
@@ -825,34 +825,34 @@
       {
         "text": "pelo menos uma ligação dupla ou tripla entre carbonos.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "apenas ligações simples entre todos os carbonos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "somente átomos de carbono e hidrogênio com ligações iônicas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "nenhum átomo de carbono.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "obrigatoriamente um metal na cadeia.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Insaturação em orgânica está associada a ligações múltiplas entre carbonos."
   },
   {
     "id": "q024",
-    "phase": 12,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Funções orgânicas",
     "difficulty": "Exemplo inicial",
@@ -862,34 +862,34 @@
       {
         "text": "possuem grupos funcionais diferentes, capazes de interações e ionização em graus distintos.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "todo composto orgânico é apolar e insolúvel.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "funções orgânicas não alteram propriedades.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "o carbono impede qualquer interação com água.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ácidos carboxílicos são sempre gases nobres.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "O grupo funcional influencia polaridade, forças intermoleculares, acidez/basicidade e solubilidade."
   },
   {
     "id": "q025",
-    "phase": 13,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Revisão cumulativa",
     "difficulty": "Exemplo inicial",
@@ -899,34 +899,34 @@
       {
         "text": "integre conceitos, leia o contexto e escolha a propriedade relevante para resolver o problema.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "decore apenas uma palavra-chave sem analisar o enunciado.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "ignore dados numéricos e gráficos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "considere todos os processos como reações nucleares.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "use sempre a mesma fórmula, independentemente do tema.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "O Boss Final mistura conteúdos; a estratégia é identificar o conceito dominante e eliminar distratores."
   },
   {
     "id": "q026",
-    "phase": 13,
+    "phase": 1,
     "discipline": "Química",
     "topic": "Boss Final",
     "difficulty": "Exemplo inicial",
@@ -936,27 +936,27 @@
       {
         "text": "polaridade, forças intermoleculares, solubilidade e impactos no meio.",
         "correct": true,
-        "feedback": "Correta: identifica o conceito central da situação."
+        "feedback": ""
       },
       {
         "text": "apenas número de nêutrons dos átomos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "somente meia-vida radioativa.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "exclusivamente geometria de compostos iônicos.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       },
       {
         "text": "a impossibilidade de misturas líquidas.",
         "correct": false,
-        "feedback": "Distrator: parece plausível, mas troca o conceito ou ignora uma condição do enunciado."
+        "feedback": ""
       }
     ],
     "explanation": "Muitos contextos ambientais integram interações intermoleculares, solubilidade e propriedades das substâncias."

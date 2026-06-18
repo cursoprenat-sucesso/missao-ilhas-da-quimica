@@ -1,15 +1,27 @@
-# PRENAT+ | Missão Ilhas da Química — V9 Lapidada Final
+# PRENAT+ | Missão Ilhas da Química — Professor Simplificado V15
 
-Versão com mapa de ilhas, trilha-base creme, progresso pink PRENAT+, tartarugas visíveis no oceano, nomes das ilhas mais legíveis, vidas, estrelas, XP, moedas, evolução da tartaruga e painel do professor.
+Versão com salvamento seguro e professor simplificado.
 
+## O que mudou
 
-## V11
-Ajuste final: trilha creme menor em formato de correntinha, progresso pink fino, tartarugas e peixinhos visíveis nadando no mapa.
+- Mantém salvamento automático no navegador.
+- Mantém contador real de questões.
+- Mantém contador por ilha.
+- Mantém backup automático de emergência.
+- Mantém botão para baixar `questions.json` atualizado.
+- Mantém botão para exportar/importar backup.
+- Remove campos de comentário por alternativa.
+- Mantém apenas o **comentário geral do gabarito**.
+- Ao salvar, os comentários individuais das alternativas ficam vazios.
+- O aluno passa a priorizar o comentário geral.
 
+## Fluxo correto
 
-## V12
-Oceano com sprites visíveis de tartarugas/peixes, bolhas adicionais e animação mais perceptível da água.
+Você pode cadastrar muitas questões no painel. Elas ficam salvas no navegador.
+Quando quiser publicar para os alunos, baixe o `questions.json` atualizado e substitua o arquivo no GitHub.
 
+Aluno:
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=15
 
-## V13 — banco por ilha
-Cada questão cadastrada no professor fica vinculada a uma ilha/fase pelo campo “Fase/ilha”. O aluno só recebe questões daquela ilha. O Boss Final é cumulativo e pode sortear questões das ilhas anteriores e do próprio Boss.
+Professor:
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=15

@@ -130,11 +130,13 @@ function normalizeData() {
   }
 
   function normalizeQuestion(q, index) {
+    const fallbackPositive = q.feedbackPositive || q.positiveFeedback || q.feedback_pos || q.explanation || '';
+    const fallbackNegative = q.feedbackNegative || q.negativeFeedback || q.feedback_neg || q.explanation || '';
     let options = [];
     if (Array.isArray(q.options)) {
       options = q.options.map((op, i) => typeof op === 'string'
         ? { text: op, correct: Number(q.correctIndex) === i, feedback: '' }
-        : { text: op.text || '', correct: Boolean(op.correct), feedback: op.feedback || '' });
+        : { text: op.text || '', correct: Boolean(op.correct), feedback: '' });
     }
     if (!options.some(op => op.correct) && Number.isInteger(q.correctIndex) && options[q.correctIndex]) options[q.correctIndex].correct = true;
     return {
@@ -146,7 +148,10 @@ function normalizeData() {
       statement: q.statement || q.text || '',
       image: q.image || '',
       options,
-      explanation: q.explanation || ''
+      feedbackPositive: fallbackPositive,
+      feedbackNegative: fallbackNegative,
+      explanation: q.explanation || fallbackPositive || fallbackNegative || '',
+      metadata: q.metadata || {}
     };
   }
 
@@ -440,19 +445,27 @@ function normalizeData() {
     panel.classList.remove('hidden');
     panel.classList.toggle('correct-feedback', isCorrect);
     panel.classList.toggle('wrong-feedback', !isCorrect);
-    app.querySelector('[data-feedback-title]').textContent = isCorrect ? 'Boa! A rota iluminou.' : (run.lives <= 0 ? 'As vidas acabaram nesta rodada.' : 'Armadilha encontrada — ajuste a estratégia.');
+    app.querySelector('[data-feedback-title]').textContent = isCorrect ? '🎉 Muito bem! A tartaruga avançou.' : (run.lives <= 0 ? '🐢 As vidas acabaram nesta rodada.' : '🐢 Você caiu em uma armadilha.');
     app.querySelector('[data-feedback-text]').innerHTML = buildFeedbackText(isCorrect, q, selected);
-    app.querySelector('[data-feedback-descriptor]').innerHTML = q.explanation || '';
+    app.querySelector('[data-feedback-descriptor]').innerHTML = getQuestionFeedback(isCorrect, q);
     const nextButton = app.querySelector('[data-action="next-question"]');
     nextButton.textContent = run.lives <= 0 ? 'Ver resultado' : (run.index >= run.questions.length - 1 ? 'Concluir ilha' : 'Continuar travessia');
     nextButton.addEventListener('click', nextStep);
     typesetMath();
   }
 
+  function getQuestionFeedback(isCorrect, q) {
+    if (isCorrect) {
+      return q.feedbackPositive || q.explanation || '🎉 Muito bem! Você acertou e avançou na travessia.';
+    }
+    return q.feedbackNegative || q.explanation || '🐢 Você caiu em uma armadilha. Revise o conceito e tente novamente.';
+  }
+
   function buildFeedbackText(isCorrect, q) {
-    const explanation = q.explanation || '';
-    if (isCorrect) return explanation ? `<strong>Mandou bem.</strong> ${explanation}` : '<strong>Mandou bem.</strong> Você venceu a armadilha desta questão.';
-    return explanation ? `<strong>Boa tentativa.</strong> ${explanation}<br><br>Respire, proteja o casco e continue. Errar aqui também faz parte do treino.` : '<strong>Boa tentativa.</strong> Essa alternativa tinha uma armadilha. Respire e siga.';
+    if (isCorrect) {
+      return '<strong>🎉 Acerto confirmado!</strong> A tartaruga PRENAT+ avançou mais uma etapa. Veja a explicação abaixo.';
+    }
+    return '<strong>🐢 Armadilha encontrada.</strong> Errar aqui também faz parte do treino. Veja a explicação abaixo para ajustar sua estratégia.';
   }
 
   function nextStep() {

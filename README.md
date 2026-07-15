@@ -1,27 +1,34 @@
-# PRENAT+ | Missão Ilhas da Química — Professor Simplificado V15
+# PRENAT+ | Missão Ilhas da Química — Importador CSV V17
 
-Versão com salvamento seguro e professor simplificado.
+Versão com professor renovado para importação em lote de questões.
 
-## O que mudou
+## Novidades
 
-- Mantém salvamento automático no navegador.
-- Mantém contador real de questões.
-- Mantém contador por ilha.
-- Mantém backup automático de emergência.
-- Mantém botão para baixar `questions.json` atualizado.
-- Mantém botão para exportar/importar backup.
-- Remove campos de comentário por alternativa.
-- Mantém apenas o **comentário geral do gabarito**.
-- Ao salvar, os comentários individuais das alternativas ficam vazios.
-- O aluno passa a priorizar o comentário geral.
+- Importar planilha CSV com várias questões de uma vez.
+- Feedback positivo para quando o aluno acerta.
+- Feedback negativo para quando o aluno erra.
+- Comentários por alternativa continuam desativados.
+- Alternativas, imagem, subscrito, sobrescrito e fórmulas continuam funcionando.
+- Salvamento seguro no navegador.
+- Backup automático ao salvar/importar.
+- Botão para baixar `questions.json` atualizado.
+- Arquivo `MODELO_IMPORTACAO_QUESTOES.csv` incluído.
 
-## Fluxo correto
+## Colunas aceitas no CSV
 
-Você pode cadastrar muitas questões no painel. Elas ficam salvas no navegador.
-Quando quiser publicar para os alunos, baixe o `questions.json` atualizado e substitua o arquivo no GitHub.
+- Enunciado
+- Categoria
+- Feedback Positivo
+- Feedback Negativo
+- Alternativa 1 até Alternativa 8
+- Alternativa 1 Correta até Alternativa 8 Correta
+- Metadado 1 / Valor 1, etc.
+- Ilha/Fase
+
+## Links
 
 Aluno:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=15
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=17
 
 Professor:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=15
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=17

@@ -1848,3 +1848,62 @@
   color:#785806;
   font-weight:900;
 }
+
+
+/* =========================================================
+   PRENAT+ BACKUP AUTOMÁTICO
+   Depois de salvar questão, baixa um backup físico no computador.
+   ========================================================= */
+.auto-backup-toggle{
+  margin-top:12px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(208,24,144,.07);
+  border:1px solid rgba(208,24,144,.18);
+  color:#055274;
+  font-weight:850;
+}
+.auto-backup-toggle input{margin-top:3px;transform:scale(1.1)}
+.auto-backup-toggle span{line-height:1.35}
+.auto-backup-toggle small{display:block;color:#526d79;font-weight:750;margin-top:2px}
+
+
+/* =========================================================
+   PRENAT+ IMPORTADOR CSV + FEEDBACK POSITIVO/NEGATIVO
+   ========================================================= */
+.csv-import-panel{
+  margin-top:14px;
+  padding:14px;
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(208,24,144,.08),rgba(9,153,159,.08));
+  border:1px solid rgba(9,153,159,.18);
+}
+.csv-import-panel strong{
+  color:#055274;
+  font-size:1.02rem;
+}
+.csv-import-panel p{
+  margin:6px 0 10px;
+  color:#526d79;
+  line-height:1.42;
+  font-weight:750;
+}
+.csv-import-actions{
+  gap:10px;
+  flex-wrap:wrap;
+}
+.feedback-duo{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:14px;
+}
+.feedback-duo .form-field textarea{
+  min-height:150px;
+}
+@media(max-width:850px){
+  .feedback-duo{grid-template-columns:1fr}
+}

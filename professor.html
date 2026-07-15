@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Área do Professor | PRENAT+ Química</title>
-  <link rel="stylesheet" href="style-quimica.css?v=15" />
+  <link rel="stylesheet" href="style-quimica.css?v=17" />
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] }, svg: { fontCache: 'global' } };
   </script>
@@ -115,7 +115,10 @@
         </div>
         <h2 style="margin-top:24px">Alternativas</h2>
         <div id="optionsEditor"></div>
-        <div class="form-field full rich-field" style="margin-top:14px"><label>Comentário geral do gabarito</label><textarea id="qExplanation" data-rich="true" placeholder="Explique, em um único comentário, por que a alternativa correta está certa e por que as demais estão erradas. Pode usar subscrito, sobrescrito e fórmulas."></textarea></div>
+        <div class="feedback-duo">
+          <div class="form-field rich-field"><label>Feedback positivo quando o aluno acertar</label><textarea id="qFeedbackPositive" data-rich="true" placeholder="Ex.: 🎉 Muito bem! A tartaruga PRENAT+ avançou. Explique por que a alternativa correta está certa."></textarea></div>
+          <div class="form-field rich-field"><label>Feedback negativo quando o aluno errar</label><textarea id="qFeedbackNegative" data-rich="true" placeholder="Ex.: 🐢 Você caiu na armadilha. Explique o erro e conduza o aluno ao raciocínio correto."></textarea></div>
+        </div>
         <div class="teacher-actions">
           <button class="btn btn-primary" id="saveQuestionBtn">Salvar questão</button>
           <button class="btn btn-soft" id="clearQuestionBtn">Limpar formulário</button>
@@ -145,7 +148,25 @@
             <label class="btn btn-soft file-like">Importar backup de emergência <input type="file" id="importEmergencyBackup" accept="application/json,.json" hidden></label>
             <button type="button" class="btn btn-soft" id="moveAllVisibleToPhase">Mover questões filtradas para a ilha selecionada</button>
           </div>
-          <p class="safe-save-warning">Atenção: salvar no painel não publica para os alunos. O aluno só vê depois que o arquivo <strong>questions.json</strong> atualizado substituir o antigo no GitHub.</p>
+          
+          <label class="auto-backup-toggle">
+            <input type="checkbox" id="autoDownloadBackupOnSave" checked>
+            <span>Baixar backup automaticamente quando salvar questão
+              <small>Mais seguro: mesmo que o navegador esqueça o banco, ficará um arquivo de backup na pasta Downloads.</small>
+            </span>
+          </label>
+
+          
+          <div class="csv-import-panel">
+            <strong>Importação em lote por planilha</strong>
+            <p>Use CSV com colunas: Enunciado, Categoria, Feedback Positivo, Feedback Negativo, Alternativas e Correta. Se a planilha não informar ilha, as questões entram na fase/ilha selecionada no formulário.</p>
+            <div class="teacher-actions csv-import-actions">
+              <label class="btn btn-primary file-like">Importar planilha CSV <input type="file" id="importQuestionsCsv" accept=".csv,text/csv" hidden></label>
+              <button type="button" class="btn btn-soft" id="downloadCsvTemplate">Baixar modelo CSV</button>
+            </div>
+          </div>
+
+          <p class="safe-save-warning">Atenção: salvar no painel não publica para os alunos. O backup automático baixa uma cópia no computador. O aluno só vê depois que o arquivo <strong>questions.json</strong> atualizado substituir o antigo no GitHub.</p>
         </div>
 
         <div id="questionBankList" class="question-bank-list"></div>
@@ -177,6 +198,6 @@
     </section>
   </main>
 
-  <script src="professor-quimica.js?v=15"></script>
+  <script src="professor-quimica.js?v=17"></script>
 </body>
 </html>

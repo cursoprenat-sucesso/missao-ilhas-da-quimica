@@ -462,7 +462,7 @@
       renderQuestionForm?.();
       renderQuestionBank?.();
       persistTeacherDraftSafe(`Backup importado com ${questions.length} questão(ões).`);
-      alert(`Backup importado. Banco atual: ${questions.length} questão(ões).`);
+      alert(`Backup importado. Banco atual: ${questions.length} questão(ões). Se o backup automático estiver ligado, confira o arquivo baixado na pasta Downloads.`);
     });
   }
 
@@ -478,6 +478,246 @@
     renderQuestionBank?.();
     persistTeacherDraftSafe(`Questões movidas para ${phaseName}.`);
   }
+
+  function timestampForFileSafe() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+  }
+
+  function shouldAutoDownloadBackupSafe() {
+    const box = document.getElementById('autoDownloadBackupOnSave');
+    return box ? box.checked : true;
+  }
+
+  function autoDownloadBackupAfterSaveSafe() {
+    if (!shouldAutoDownloadBackupSafe()) return;
+    const cleanQuestions = stripOptionFeedbackForGeneralOnly
+      ? stripOptionFeedbackForGeneralOnly(questions).map(normalizeQuestion)
+      : extractQuestionArraySafe(questions).map(normalizeQuestion);
+    const backup = {
+      type: 'prenat_teacher_auto_backup_after_save',
+      version: 3,
+      savedAt: new Date().toISOString(),
+      missionSlug: missionSlugSafe(),
+      totalQuestions: cleanQuestions.length,
+      settings: sanitizeSettingsSafe(settings),
+      questions: cleanQuestions
+    };
+    downloadJson(`backup-automatico-${missionSlugSafe()}-${timestampForFileSafe()}.json`, backup);
+  }
+
+
+  // ===== PRENAT+ CSV IMPORT + FEEDBACK POSITIVO/NEGATIVO =====
+  function normalizeHeaderSafe(value) {
+    return String(value || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
+  function pickCsvCell(row, names) {
+    const wanted = names.map(normalizeHeaderSafe);
+    for (const key of Object.keys(row || {})) {
+      if (wanted.includes(normalizeHeaderSafe(key))) return String(row[key] ?? '').trim();
+    }
+    return '';
+  }
+
+  function isTruthyCsv(value) {
+    const v = normalizeHeaderSafe(value);
+    return ['sim','s','yes','y','true','verdadeiro','correta','correto','x','1'].includes(v);
+  }
+
+  function detectCsvDelimiter(firstLine) {
+    const semicolon = (firstLine.match(/;/g) || []).length;
+    const comma = (firstLine.match(/,/g) || []).length;
+    return semicolon >= comma ? ';' : ',';
+  }
+
+  function parseCsvTextSafe(text) {
+    const clean = String(text || '').replace(/^\uFEFF/, '');
+    const firstLine = clean.split(/\r?\n/)[0] || '';
+    const delimiter = detectCsvDelimiter(firstLine);
+    const rows = [];
+    let row = [];
+    let cell = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < clean.length; i++) {
+      const ch = clean[i];
+      const next = clean[i + 1];
+
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          cell += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (!inQuotes && ch === delimiter) {
+        row.push(cell);
+        cell = '';
+        continue;
+      }
+
+      if (!inQuotes && (ch === '\n' || ch === '\r')) {
+        if (ch === '\r' && next === '\n') i++;
+        row.push(cell);
+        if (row.some(v => String(v).trim() !== '')) rows.push(row);
+        row = [];
+        cell = '';
+        continue;
+      }
+
+      cell += ch;
+    }
+    row.push(cell);
+    if (row.some(v => String(v).trim() !== '')) rows.push(row);
+
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(h => String(h || '').trim());
+    return rows.slice(1).map(values => {
+      const obj = {};
+      headers.forEach((h, idx) => { obj[h] = String(values[idx] ?? '').trim(); });
+      return obj;
+    });
+  }
+
+  function resolvePhaseFromCsv(row) {
+    const raw = pickCsvCell(row, ['Fase','Ilha','Phase','Ilha/Fase','Fase/Ilha','Número da Ilha','Numero da Ilha','ID da Ilha']);
+    const fallback = Number(getValue('qPhase') || settings.phases?.[0]?.id || 1);
+    if (!raw) return fallback;
+
+    const numeric = Number(String(raw).replace(/[^\d]/g, ''));
+    if (numeric && settings.phases?.some(p => Number(p.id) === numeric)) return numeric;
+
+    const normalized = normalizeHeaderSafe(raw);
+    const found = settings.phases?.find(p => {
+      const name = normalizeHeaderSafe(p.name);
+      const title = normalizeHeaderSafe(p.title);
+      return name.includes(normalized) || title.includes(normalized) || normalized.includes(name) || normalized.includes(title);
+    });
+    return found ? Number(found.id) : fallback;
+  }
+
+  function metadataFromCsv(row) {
+    const meta = {};
+    for (let i = 1; i <= 8; i++) {
+      const key = pickCsvCell(row, [`Metadado ${i}`, `Metadata ${i}`]);
+      const value = pickCsvCell(row, [`Valor ${i}`, `Value ${i}`]);
+      if (key || value) meta[key || `Metadado ${i}`] = value;
+    }
+    return meta;
+  }
+
+  function questionFromCsvRow(row, index) {
+    const statement = pickCsvCell(row, ['Enunciado','Questão','Questao','Pergunta','Texto','Statement']);
+    if (!statement) return null;
+
+    const sample = normalizeHeaderSafe(statement);
+    if (sample.includes('este e o exemplo de um enunciado') || sample.includes('escreva aqui o enunciado completo')) return null;
+
+    const meta = metadataFromCsv(row);
+    const category = pickCsvCell(row, ['Categoria','Categoria(s)','Tema','Tópico','Topico','Assunto','Category']);
+    const discipline = pickCsvCell(row, ['Disciplina','Materia','Matéria','Area','Área']) || getValue('qDiscipline');
+    const difficulty =
+      pickCsvCell(row, ['Dificuldade','Nível','Nivel','Difficulty']) ||
+      meta['Dificuldade'] ||
+      '';
+
+    const options = [];
+    for (let i = 1; i <= 8; i++) {
+      const text = pickCsvCell(row, [`Alternativa ${i}`, `Opção ${i}`, `Opcao ${i}`, `Alternative ${i}`]);
+      if (!text) continue;
+      const correct = isTruthyCsv(pickCsvCell(row, [`Alternativa ${i} Correta`, `Opção ${i} Correta`, `Opcao ${i} Correta`, `Correta ${i}`, `Gabarito ${i}`]));
+      options.push({ text, correct, feedback: '' });
+    }
+    if (options.length < 2) return null;
+    if (!options.some(op => op.correct)) options[0].correct = true;
+
+    const positive =
+      pickCsvCell(row, ['Feedback Positivo','Comentário Positivo','Comentario Positivo','Feedback Acerto','Feedback Correto','Positivo']) ||
+      '🎉 Muito bem! A tartaruga PRENAT+ avançou. Você identificou o caminho correto da questão.';
+    const negative =
+      pickCsvCell(row, ['Feedback Negativo','Comentário Negativo','Comentario Negativo','Feedback Erro','Feedback Errado','Negativo']) ||
+      '🐢 Você caiu em uma armadilha da travessia. Revise o raciocínio e observe por que a alternativa correta resolve melhor o problema.';
+
+    return normalizeQuestion({
+      id: `q_csv_${Date.now()}_${index}_${Math.random().toString(16).slice(2, 8)}`,
+      phase: resolvePhaseFromCsv(row),
+      discipline,
+      topic: category,
+      difficulty,
+      statement,
+      image: pickCsvCell(row, ['Imagem','Image','URL da Imagem','Link da Imagem']),
+      options,
+      feedbackPositive: positive,
+      feedbackNegative: negative,
+      explanation: positive,
+      metadata: meta
+    });
+  }
+
+  function importQuestionsFromCsvFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const rows = parseCsvTextSafe(reader.result);
+        const imported = rows.map(questionFromCsvRow).filter(Boolean);
+        if (!imported.length) {
+          alert('Nenhuma questão válida foi encontrada na planilha. Confira as colunas Enunciado, Alternativas e Correta.');
+          event.target.value = '';
+          return;
+        }
+
+        const byPhase = {};
+        imported.forEach(q => { byPhase[q.phase] = (byPhase[q.phase] || 0) + 1; });
+        const resumo = Object.entries(byPhase).map(([phase, count]) => {
+          const p = settings.phases?.find(item => Number(item.id) === Number(phase));
+          return `${p?.name || 'Ilha ' + phase}: ${count}`;
+        }).join('\n');
+
+        if (!confirm(`Importar ${imported.length} questão(ões) da planilha?\n\n${resumo}\n\nElas serão adicionadas ao banco atual.`)) {
+          event.target.value = '';
+          return;
+        }
+
+        questions = [...questions, ...imported].map(normalizeQuestion);
+        renderQuestionBank();
+        persistTeacherDraftSafe(`Planilha importada com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
+        autoDownloadBackupAfterSaveSafe();
+        alert(`Importação concluída.\n\nForam adicionadas ${imported.length} questão(ões).\nBanco atual: ${questions.length} questão(ões).`);
+      } catch (error) {
+        console.error(error);
+        alert('Não foi possível importar a planilha. Salve como CSV separado por ponto e vírgula e tente novamente.');
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file, 'utf-8');
+  }
+
+  function downloadCsvTemplateSafe() {
+    const csv = `"Enunciado";"Categoria";"Feedback Positivo";"Feedback Negativo";"Alternativa 1";"Alternativa 1 Correta";"Alternativa 2";"Alternativa 2 Correta";"Alternativa 3";"Alternativa 3 Correta";"Alternativa 4";"Alternativa 4 Correta";"Alternativa 5";"Alternativa 5 Correta";"Alternativa 6";"Alternativa 6 Correta";"Alternativa 7";"Alternativa 7 Correta";"Alternativa 8";"Alternativa 8 Correta";"Metadado 1";"Valor 1";"Metadado 2";"Valor 2";"Metadado 3";"Valor 3";"Ilha/Fase"
+"Digite aqui o enunciado";"Tema";"🎉 Muito bem! Explique por que a alternativa correta está certa.";"🐢 Você caiu na armadilha. Explique o erro e o raciocínio correto.";"Alternativa correta";"Sim";"Distrator 1";"Não";"Distrator 2";"Não";"Distrator 3";"Não";"Distrator 4";"Não";"";"";"";"";"";"";"Ano";"2026";"Banca";"ENEM";"Dificuldade";"Média";"1"`;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `modelo-importacao-${missionSlugSafe()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  }
+  // ===== FIM CSV IMPORT =====
+
   // ===== FIM DO PATCH =====
 
   init();
@@ -521,9 +761,11 @@
   }
 
   function normalizeQuestion(q) {
+    const fallbackPositive = q.feedbackPositive || q.positiveFeedback || q.feedback_pos || q.explanation || '';
+    const fallbackNegative = q.feedbackNegative || q.negativeFeedback || q.feedback_neg || q.explanation || '';
     const options = Array.isArray(q.options) ? q.options.map((op, i) => typeof op === 'string'
       ? { text: op, correct: Number(q.correctIndex) === i, feedback: '' }
-      : { text: op.text || '', correct: Boolean(op.correct), feedback: op.feedback || '' }) : [];
+      : { text: op.text || '', correct: Boolean(op.correct), feedback: '' }) : [];
     if (!options.some(o => o.correct) && Number.isInteger(q.correctIndex) && options[q.correctIndex]) options[q.correctIndex].correct = true;
     return {
       id: q.id || makeId(),
@@ -534,7 +776,10 @@
       statement: q.statement || q.text || '',
       image: q.image || '',
       options,
-      explanation: q.explanation || ''
+      feedbackPositive: fallbackPositive,
+      feedbackNegative: fallbackNegative,
+      explanation: q.explanation || fallbackPositive || fallbackNegative || '',
+      metadata: q.metadata || {}
     };
   }
 
@@ -598,6 +843,8 @@
     document.getElementById('downloadEmergencyBackupExport')?.addEventListener('click', downloadEmergencyBackupSafe);
     document.getElementById('importEmergencyBackup')?.addEventListener('change', importEmergencyBackupSafe);
     document.getElementById('moveAllVisibleToPhase')?.addEventListener('click', moveVisibleQuestionsToSelectedPhaseSafe);
+    document.getElementById('importQuestionsCsv')?.addEventListener('change', importQuestionsFromCsvFile);
+    document.getElementById('downloadCsvTemplate')?.addEventListener('click', downloadCsvTemplateSafe);
     document.getElementById('qImage')?.addEventListener('input', updateImagePreview);
     document.getElementById('clearImageBtn')?.addEventListener('click', () => {
       setValue('qImage', '');
@@ -708,6 +955,9 @@
     const arr = extractQuestionArraySafe ? extractQuestionArraySafe(bank) : (Array.isArray(bank) ? bank : []);
     return arr.map(q => ({
       ...q,
+      feedbackPositive: q.feedbackPositive || q.explanation || '',
+      feedbackNegative: q.feedbackNegative || q.explanation || '',
+      explanation: q.explanation || q.feedbackPositive || q.feedbackNegative || '',
       options: Array.isArray(q.options)
         ? q.options.map(op => ({ ...op, feedback: '' }))
         : []
@@ -726,8 +976,11 @@
     if (options.length < 2) return alert('Preencha pelo menos duas alternativas. O ideal é usar cinco.');
     if (!options.some(op => op.correct)) options[0].correct = true;
 
+    const positive = getValue('qFeedbackPositive').trim();
+    const negative = getValue('qFeedbackNegative').trim();
+
     const editingId = getValue('editingQuestionId');
-    const question = {
+    const question = normalizeQuestion({
       id: editingId || makeId(),
       phase: Number(getValue('qPhase') || 1),
       discipline: getValue('qDiscipline'),
@@ -736,8 +989,10 @@
       statement,
       image: getValue('qImage'),
       options,
-      explanation: getValue('qExplanation')
-    };
+      feedbackPositive: positive,
+      feedbackNegative: negative,
+      explanation: positive || negative
+    });
 
     const index = questions.findIndex(q => q.id === editingId);
     if (index >= 0) questions[index] = question;
@@ -745,8 +1000,9 @@
 
     clearQuestionForm();
     renderQuestionBank();
-    persistTeacherDraftSafe(`Questão salva. Banco atual: ${questions.length} questão(ões).`);
-    alert(`Questão salva e preservada no navegador. O comentário será usado apenas no gabarito geral. Banco atual: ${questions.length} questão(ões).`);
+    persistTeacherDraftSafe(`Questão salva. Banco atual: ${questions.length} questão(ões). Se o backup automático estiver ligado, confira o arquivo baixado na pasta Downloads.`);
+    autoDownloadBackupAfterSaveSafe();
+    alert(`Questão salva e preservada no navegador. Banco atual: ${questions.length} questão(ões). Se o backup automático estiver ligado, confira o arquivo baixado na pasta Downloads.`);
   }
 
   function editQuestion(id) {
@@ -762,7 +1018,8 @@
     setValue('qStatement', q.statement);
     setValue('qImage', q.image);
     updateImagePreview();
-    setValue('qExplanation', q.explanation);
+    setValue('qFeedbackPositive', q.feedbackPositive || q.explanation || '');
+    setValue('qFeedbackNegative', q.feedbackNegative || q.explanation || '');
     letters.forEach((_, i) => {
       const op = q.options[i] || { text:'', feedback:'', correct:false };
       setValue(`opt_${i}_text`, op.text);
@@ -777,11 +1034,11 @@
     if (!confirm('Excluir esta questão do banco?')) return;
     questions = questions.filter(q => q.id !== id);
     renderQuestionBank();
-    persistTeacherDraftSafe(`Questão excluída. Banco atual: ${questions.length} questão(ões).`);
+    persistTeacherDraftSafe(`Questão excluída. Banco atual: ${questions.length} questão(ões). Se o backup automático estiver ligado, confira o arquivo baixado na pasta Downloads.`);
   }
 
   function clearQuestionForm() {
-    ['editingQuestionId','qDiscipline','qTopic','qDifficulty','qStatement','qImage','qExplanation'].forEach(id => setValue(id, ''));
+    ['editingQuestionId','qDiscipline','qTopic','qDifficulty','qStatement','qImage','qExplanation','qFeedbackPositive','qFeedbackNegative'].forEach(id => setValue(id, ''));
     setValue('qPhase', settings.phases[0]?.id || 1);
     letters.forEach((_, i) => {
       setValue(`opt_${i}_text`, '');

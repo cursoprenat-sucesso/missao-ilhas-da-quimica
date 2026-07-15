@@ -1,20 +1,19 @@
-# Guia — Missão Ilhas da Química V15
+# Guia — Importação de questões por planilha
 
-## Cadastro seguro
+## Como importar
 
-1. Cadastre a questão.
-2. Escolha a alternativa correta.
-3. Preencha apenas o **comentário geral do gabarito**.
-4. Clique em **Salvar questão**.
-5. Veja o contador aumentar.
-6. A cada bloco, clique em **Exportar backup de emergência**.
-7. Para publicar, clique em **Baixar questions.json atualizado**.
-8. Substitua o `questions.json` no GitHub.
+1. Abra o professor.
+2. Escolha a ilha no campo **Fase/ilha**.
+3. Clique em **Importar planilha CSV**.
+4. Selecione sua planilha.
+5. Confira o resumo de importação.
+6. Confirme.
+7. Veja o contador aumentar.
+8. Clique em **Baixar questions.json atualizado** para publicar.
 
-## Links
+## Importante
 
-Aluno:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=15
+A importação salva no navegador e gera backup, mas os alunos só verão as questões depois que você substituir o arquivo `questions.json` no GitHub.
 
 Professor:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=15
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=17

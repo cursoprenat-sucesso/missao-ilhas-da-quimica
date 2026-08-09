@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PRENAT+ | Missão Ilhas da Química</title>
-  <meta name="description" content="Jogo gamificado PRENAT+ para treino de Química com mapa, ilhas, vidas, estrelas, XP e painel do professor." />
-  <link rel="stylesheet" href="style-quimica.css?v=17" />
+  <meta name="description" content="Jogo gamificado PRENAT+ de Química com cadastro de aluno, ranking, planilha e importador CSV." />
+  <link rel="stylesheet" href="style-quimica.css?v=19" />
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] }, svg: { fontCache: 'global' } };
   </script>
@@ -38,7 +38,12 @@
         <span id="missionMini">Missão Ilhas da Química</span>
       </div>
     </div>
-    <button id="resetProgress" class="btn btn-ghost">Recomeçar missão</button>
+    <div class="student-actions">
+      <span id="studentIdentity" class="student-identity" aria-live="polite"></span>
+      <button id="openRanking" class="btn btn-ranking">🏆 Ver ranking</button>
+      <button id="changeStudent" class="btn btn-ghost">Trocar aluno</button>
+      <button id="resetProgress" class="btn btn-ghost">Recomeçar missão</button>
+    </div>
   </header>
 
   <main id="app" class="app-shell chemistry-shell">
@@ -49,6 +54,62 @@
     </section>
   </main>
 
+
+
+
+  <template id="studentRegistrationTemplate">
+    <section class="registration-overlay" role="dialog" aria-modal="true" aria-labelledby="registrationTitle">
+      <article class="registration-card glass-card fade-in">
+        <img class="registration-logo" src="logo-prenat.png" alt="PRENAT+" />
+        <p class="kicker">IDENTIFICAÇÃO DO NAVEGADOR</p>
+        <h1 id="registrationTitle">Antes de iniciar a travessia</h1>
+        <p class="registration-intro"><strong>Identificação obrigatória ativa.</strong> Informe seus dados para que seu acesso, suas tentativas e suas conquistas sejam registrados no PRENAT+.</p>
+        <form id="studentRegistrationForm" class="registration-form">
+          <label>
+            <span>Nome completo</span>
+            <input name="nome" type="text" autocomplete="name" maxlength="120" required placeholder="Digite seu nome completo" />
+          </label>
+          <label>
+            <span>E-mail</span>
+            <input name="email" type="email" autocomplete="email" maxlength="160" required placeholder="Digite seu melhor e-mail" />
+          </label>
+          <label>
+            <span>Apelido de navegador</span>
+            <input name="apelido" type="text" minlength="3" maxlength="20" required placeholder="Como você aparecerá no ranking" />
+            <small>O ranking mostrará somente seu apelido, estrelas e posição.</small>
+          </label>
+          <label>
+            <span>Turma</span>
+            <select name="turma" required>
+              <option value="">Selecione sua turma</option>
+              <option value="PRENAT+ | Oceano Atlântico | Extensiva">PRENAT+ | Oceano Atlântico | Extensiva</option>
+              <option value="PRENAT+ | Oceano Pacífico | Intensiva">PRENAT+ | Oceano Pacífico | Intensiva</option>
+            </select>
+          </label>
+          <p class="registration-error" data-registration-error aria-live="polite"></p>
+          <button class="btn btn-primary btn-pulse" type="submit">INICIAR MISSÃO</button>
+        </form>
+        <p class="registration-privacy">Seus dados serão usados exclusivamente para acompanhar sua evolução pedagógica no PRENAT+.</p>
+      </article>
+    </section>
+  </template>
+
+  
+
+
+  <template id="rankingTemplate">
+    <section class="ranking-overlay" role="dialog" aria-modal="true" aria-labelledby="rankingTitle">
+      <article class="ranking-modal glass-card fade-in">
+        <button class="ranking-close" type="button" aria-label="Fechar ranking">×</button>
+        <p class="kicker">RANKING DOS NAVEGADORES</p>
+        <h1 id="rankingTitle">Pódio da Química</h1>
+        <p class="ranking-subtitle">Apenas apelido, estrelas e posição são exibidos.</p>
+        <div class="ranking-content"><div class="ranking-loading">Carregando o pódio…</div></div>
+      </article>
+    </section>
+  </template>
+
+  
   <template id="homeTemplate">
     <section class="chem-hero fade-in">
       <article class="mission-gate chemistry-gate glass-card">
@@ -204,6 +265,6 @@
     </section>
   </template>
 
-  <script src="app-quimica.js?v=17"></script>
+  <script src="app-quimica.js?v=19"></script>
 </body>
 </html>

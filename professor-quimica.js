@@ -677,6 +677,17 @@
           return;
         }
 
+        const invalidImported = [];
+        imported.forEach((q, index) => {
+          const problems = validateQuestionBeforeStoreSafe(q);
+          if (problems.length) invalidImported.push(`Linha ${index + 2}: ${problems.join('; ')}`);
+        });
+        if (invalidImported.length) {
+          alert('Problema(s) encontrado(s) na planilha:\n\n' + invalidImported.slice(0, 12).join('\n') + (invalidImported.length > 12 ? `\n... e mais ${invalidImported.length - 12} linha(s).` : '') + '\n\nCorrija o CSV antes de importar.');
+          event.target.value = '';
+          return;
+        }
+
         const byPhase = {};
         imported.forEach(q => { byPhase[q.phase] = (byPhase[q.phase] || 0) + 1; });
         const resumo = Object.entries(byPhase).map(([phase, count]) => {
@@ -964,6 +975,38 @@
     }));
   }
 
+
+  function normalizeAlternativeForCompareSafe(text) {
+    return String(text || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ');
+  }
+
+  function validateQuestionBeforeStoreSafe(question) {
+    const problems = [];
+    const options = Array.isArray(question.options) ? question.options.filter(op => String(op.text || '').trim()) : [];
+    if (!String(question.statement || '').trim()) problems.push('enunciado vazio');
+    if (options.length < 2) problems.push('menos de duas alternativas preenchidas');
+    const correctCount = options.filter(op => op.correct).length;
+    if (correctCount !== 1) problems.push('a questão precisa ter exatamente uma alternativa correta');
+    const seen = new Map();
+    options.forEach((op, index) => {
+      const key = normalizeAlternativeForCompareSafe(op.text);
+      if (!key) return;
+      if (seen.has(key)) {
+        const first = seen.get(key);
+        problems.push(`alternativas duplicadas: ${letters[first] || first + 1} e ${letters[index] || index + 1}`);
+      } else {
+        seen.set(key, index);
+      }
+    });
+    return problems;
+  }
+
   function saveQuestionFromForm() {
     const statement = getValue('qStatement').trim();
     const options = letters.map((_, i) => ({
@@ -993,6 +1036,12 @@
       feedbackNegative: negative,
       explanation: positive || negative
     });
+
+    const validationProblems = validateQuestionBeforeStoreSafe(question);
+    if (validationProblems.length) {
+      alert('Problema(s) encontrados nesta questão:\n\n- ' + validationProblems.join('\n- ') + '\n\nCorrija antes de salvar.');
+      return;
+    }
 
     const index = questions.findIndex(q => q.id === editingId);
     if (index >= 0) questions[index] = question;

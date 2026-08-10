@@ -1,35 +1,37 @@
-# PRENAT+ | Missão Ilhas da Química — V19 Identificação Obrigatória
+# PRENAT+ | Química — Banco rotativo V20
 
-Esta versão confirma explicitamente a tela de cadastro do aluno antes da travessia.
+Versão com banco rotativo de questões por aluno.
 
-## Deve aparecer no jogo do aluno
+## Regra implementada
 
-- Nome completo
-- E-mail
-- Apelido de navegador
-- Turma
-- Botão INICIAR MISSÃO
-- Botão Ver ranking
-- Botão Trocar aluno
-- Botão Recomeçar missão
+O aluno só repete uma questão depois de esgotar todo o banco daquela ilha/ciclo.
 
-## Também permanece ativo
+Exemplo: se a ilha tem 50 questões e a tentativa usa 10, as próximas tentativas vão priorizar questões ainda não vistas. Se restarem menos questões inéditas do que a quantidade da tentativa, o jogo aplica somente as restantes para encerrar o ciclo. Na tentativa seguinte, um novo ciclo é iniciado.
 
+## Permanece ativo
+
+- Cadastro do aluno
+- Ranking/registro via Google Planilhas
 - Importador CSV no professor
 - Feedback positivo
 - Feedback negativo
 - Backup automático
 - Validação contra alternativas duplicadas
-- Envio de registros para a Planilha Google via Apps Script
+- Embaralhamento de questões e alternativas
 
-## Link após subir no GitHub
+## Atenção
+
+Esse controle é salvo no navegador/dispositivo do aluno, associado ao aluno identificado no jogo. Para sincronizar entre aparelhos diferentes, será necessária uma próxima etapa com consulta ao Google Apps Script/Planilhas.
+
+## Links após subir no GitHub
 
 Aluno:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=19
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/?v=21
 
 Professor:
-https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=19
+https://cursoprenat-sucesso.github.io/missao-ilhas-da-quimica/professor.html?v=21
 
-## Observação
 
-Se abrir a página e não aparecer a identificação, então o GitHub ainda está servindo arquivos antigos ou nem todos os arquivos foram substituídos no repositório.
+## Correção V21
+
+As alternativas agora ficam fixas na ordem cadastrada. Isso evita divergência entre a letra indicada no feedback e a alternativa marcada no jogo do aluno.

@@ -380,7 +380,7 @@ function normalizeData() {
     return `prenat_quimica_progress_${settings.slug || settings.missionName || 'missao'}_${student?.idAluno || 'guest'}`;
   }
 
-  function createInitialProgress() { return { unlockedPhase: 1, completedPhases: [], rankIndex: 0, phaseScores: {}, rewardItems: [], xp: 0, coins: 0 }; }
+  function createInitialProgress() { return { unlockedPhase: 1, completedPhases: [], rankIndex: 0, phaseScores: {}, rewardItems: [], xp: 0, coins: 0, questionCycles: {} }; }
   function loadProgress() {
     try {
       const saved = localStorage.getItem(stateKey());
@@ -579,15 +579,110 @@ function normalizeData() {
     if (!phase.questionLimit || phase.questionLimit <= 0) return poolLength;
     return Math.min(phase.questionLimit, poolLength);
   }
+  
+  // ===== PRENAT+ BANCO ROTATIVO DE QUESTÕES =====
+  // Regra C: o aluno só repete uma questão depois de esgotar todo o banco daquela ilha/ciclo.
+  function getQuestionCycleId(q) {
+    if (q?.id) return String(q.id);
+    const base = `${q?.phase || ''}|${q?.statement || ''}|${Array.isArray(q?.options) ? q.options.map(op => op.text || '').join('|') : ''}`;
+    let hash = 0;
+    for (let i = 0; i < base.length; i++) {
+      hash = ((hash << 5) - hash + base.charCodeAt(i)) | 0;
+    }
+    return `auto_${Math.abs(hash)}`;
+  }
+
+  function ensureQuestionCycles() {
+    if (!progress.questionCycles || typeof progress.questionCycles !== 'object') progress.questionCycles = {};
+    return progress.questionCycles;
+  }
+
+  function getQuestionCycleStore(phaseId) {
+    const cycles = ensureQuestionCycles();
+    const key = String(phaseId);
+    const store = cycles[key] && typeof cycles[key] === 'object'
+      ? cycles[key]
+      : { used: [], cycle: 1, updatedAt: null };
+    store.used = Array.isArray(store.used) ? Array.from(new Set(store.used.map(String))) : [];
+    store.cycle = Math.max(1, Number(store.cycle || 1));
+    cycles[key] = store;
+    return store;
+  }
+
+  function syncCycleWithPool(phaseId, pool) {
+    const store = getQuestionCycleStore(phaseId);
+    const poolIds = new Set(pool.map(getQuestionCycleId));
+    const before = store.used.length;
+    store.used = store.used.filter(id => poolIds.has(id));
+    if (before !== store.used.length) {
+      store.updatedAt = new Date().toISOString();
+      saveProgress();
+    }
+    return store;
+  }
+
+  function startNewQuestionCycle(phaseId) {
+    const store = getQuestionCycleStore(phaseId);
+    store.used = [];
+    store.cycle = Math.max(1, Number(store.cycle || 1)) + 1;
+    store.updatedAt = new Date().toISOString();
+    saveProgress();
+    return store;
+  }
+
+  function markQuestionAsSeenInCycle(run, q) {
+    if (!run?.phase || !q) return;
+    const store = getQuestionCycleStore(run.phase.id);
+    const id = getQuestionCycleId(q);
+    if (!store.used.includes(id)) {
+      store.used.push(id);
+      store.updatedAt = new Date().toISOString();
+      saveProgress();
+    }
+  }
+  // ===== FIM BANCO ROTATIVO =====
+
   function selectQuestionsForAttempt(phase, pool) {
-    const shuffled = phase.shuffle ? shuffleArray(pool) : [...pool];
-    const limit = getPlayableCount(phase, shuffled.length);
-    // Cada tentativa embaralha as questões e também a ordem das alternativas.
-    // Isso mantém o banco da ilha organizado, mas evita que o aluno decore a letra.
-    return shuffled.slice(0, limit).map(q => ({
+    if (!pool.length) return [];
+
+    const limit = getPlayableCount(phase, pool.length);
+    let store = syncCycleWithPool(phase.id, pool);
+    const poolIds = pool.map(getQuestionCycleId);
+
+    if (store.used.length >= poolIds.length) {
+      store = startNewQuestionCycle(phase.id);
+      window.setTimeout(() => alert('Novo ciclo iniciado nesta ilha. Você já passou por todo o banco disponível; agora as questões podem aparecer novamente em nova ordem.'), 50);
+    }
+
+    const usedSet = new Set(store.used);
+    let freshPool = pool.filter(q => !usedSet.has(getQuestionCycleId(q)));
+
+    if (!freshPool.length) {
+      store = startNewQuestionCycle(phase.id);
+      freshPool = [...pool];
+      window.setTimeout(() => alert('Novo ciclo iniciado nesta ilha. Você já passou por todo o banco disponível; agora as questões podem aparecer novamente em nova ordem.'), 50);
+    }
+
+    const freshBefore = freshPool.length;
+    const shuffled = phase.shuffle ? shuffleArray(freshPool) : [...freshPool];
+    const selected = shuffled.slice(0, Math.min(limit, shuffled.length));
+
+    if (freshBefore < limit && freshBefore > 0) {
+      window.setTimeout(() => alert(`Você está concluindo o ciclo desta ilha. Restavam apenas ${freshBefore} questão(ões) inédita(s). Depois desta rodada, um novo ciclo será iniciado.`), 50);
+    }
+
+    const output = selected.map(q => ({
       ...q,
-      options: Array.isArray(q.options) ? shuffleArray(q.options) : []
+      options: Array.isArray(q.options) ? [...q.options] : []
     }));
+    output.__cycleInfo = {
+      cycle: store.cycle,
+      total: pool.length,
+      remainingBefore: freshBefore,
+      selectedCount: output.length,
+      limit
+    };
+    return output;
   }
 
   function startPhase(phaseId) {
@@ -596,7 +691,8 @@ function normalizeData() {
     const pool = getQuestionsForPhase(phase.id);
     if (!pool.length) { alert('Esta ilha ainda não possui questões cadastradas.'); return renderHome(); }
     const phaseQuestions = selectQuestionsForAttempt(phase, pool);
-    currentRun = { phase, poolSize: pool.length, questions: phaseQuestions, index: 0, lives: phase.lives, score: 0, answered: false };
+    if (!phaseQuestions.length) { alert('Nenhuma questão inédita disponível nesta ilha. Um novo ciclo será iniciado na próxima tentativa.'); return renderHome(); }
+    currentRun = { phase, poolSize: pool.length, cycleInfo: phaseQuestions.__cycleInfo || null, questions: phaseQuestions, index: 0, lives: phase.lives, score: 0, answered: false };
     renderQuestion();
   }
 
@@ -612,7 +708,8 @@ function normalizeData() {
     app.querySelector('[data-lives]').textContent = '❤️'.repeat(run.lives) || '0';
     app.querySelector('[data-minpercent]').textContent = `${run.phase.minPercent}%`;
     app.querySelector('[data-score]').textContent = `${run.score}/${run.questions.length}`;
-    app.querySelector('[data-question-count]').textContent = `Questão ${run.index + 1} de ${run.questions.length} · sorteada de ${run.poolSize} ${run.phase.cumulative ? 'do banco cumulativo do Boss Final' : 'do banco desta ilha'}`;
+    const cycleText = run.cycleInfo ? ` · ciclo ${run.cycleInfo.cycle} · inéditas antes da rodada: ${run.cycleInfo.remainingBefore}/${run.cycleInfo.total}` : '';
+    app.querySelector('[data-question-count]').textContent = `Questão ${run.index + 1} de ${run.questions.length} · banco rotativo${cycleText}`;
     app.querySelector('[data-quiz-progress]').style.width = `${(run.index / run.questions.length) * 100}%`;
     app.querySelector('[data-question-index]').textContent = `Questão ${run.index + 1}`;
     app.querySelector('[data-question-meta]').textContent = settings.showMetaToStudent
@@ -638,6 +735,7 @@ function normalizeData() {
     if (run.answered) return;
     run.answered = true;
     const q = run.questions[run.index];
+    markQuestionAsSeenInCycle(run, q);
     const selected = q.options[selectedIndex];
     const correctIndex = q.options.findIndex(op => op.correct);
     const isCorrect = Boolean(selected?.correct);

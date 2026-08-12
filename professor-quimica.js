@@ -716,8 +716,8 @@
   }
 
   function downloadCsvTemplateSafe() {
-    const csv = `"Enunciado";"Categoria";"Feedback Positivo";"Feedback Negativo";"Alternativa 1";"Alternativa 1 Correta";"Alternativa 2";"Alternativa 2 Correta";"Alternativa 3";"Alternativa 3 Correta";"Alternativa 4";"Alternativa 4 Correta";"Alternativa 5";"Alternativa 5 Correta";"Alternativa 6";"Alternativa 6 Correta";"Alternativa 7";"Alternativa 7 Correta";"Alternativa 8";"Alternativa 8 Correta";"Metadado 1";"Valor 1";"Metadado 2";"Valor 2";"Metadado 3";"Valor 3";"Ilha/Fase"
-"Digite aqui o enunciado";"Tema";"🎉 Muito bem! Explique por que a alternativa correta está certa.";"🐢 Você caiu na armadilha. Explique o erro e o raciocínio correto.";"Alternativa correta";"Sim";"Distrator 1";"Não";"Distrator 2";"Não";"Distrator 3";"Não";"Distrator 4";"Não";"";"";"";"";"";"";"Ano";"2026";"Banca";"ENEM";"Dificuldade";"Média";"1"`;
+    const csv = `"Enunciado";"Categoria";"Feedback Positivo";"Feedback Negativo";"Alternativa 1";"Alternativa 1 Correta";"Alternativa 2";"Alternativa 2 Correta";"Alternativa 3";"Alternativa 3 Correta";"Alternativa 4";"Alternativa 4 Correta";"Alternativa 5";"Alternativa 5 Correta";"Alternativa 6";"Alternativa 6 Correta";"Alternativa 7";"Alternativa 7 Correta";"Alternativa 8";"Alternativa 8 Correta";"Metadado 1";"Valor 1";"Metadado 2";"Valor 2";"Metadado 3";"Valor 3";"Ilha/Fase";"Imagem"
+"Digite aqui o enunciado";"Tema";"🎉 Muito bem! Explique por que a alternativa correta está certa.";"🐢 Você caiu na armadilha. Explique o erro e o raciocínio correto.";"Alternativa correta";"Sim";"Distrator 1";"Não";"Distrator 2";"Não";"Distrator 3";"Não";"Distrator 4";"Não";"";"";"";"";"";"";"Ano";"2026";"Banca";"ENEM";"Dificuldade";"Média";"1";""`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -727,6 +727,183 @@
     a.remove();
     URL.revokeObjectURL(a.href);
   }
+
+
+  // ===== PRENAT+ ZIP IMPORT COM IMAGENS =====
+  function getZipImageMime(filename) {
+    const ext = String(filename || '').split('.').pop().toLowerCase();
+    if (ext === 'jpg' || ext === 'jpeg') return 'image/jpeg';
+    if (ext === 'png') return 'image/png';
+    if (ext === 'webp') return 'image/webp';
+    if (ext === 'gif') return 'image/gif';
+    if (ext === 'svg') return 'image/svg+xml';
+    return 'application/octet-stream';
+  }
+
+  function basenameSafe(path) {
+    return String(path || '').split('/').pop().split('\\').pop().trim();
+  }
+
+  function normalizeImageLookupName(name) {
+    return normalizeHeaderSafe(basenameSafe(name));
+  }
+
+  async function buildImageMapFromZip(zip) {
+    const imageMap = {};
+    const imageExtensions = /\.(png|jpe?g|webp|gif|svg)$/i;
+    const entries = Object.values(zip.files || {});
+    for (const file of entries) {
+      if (file.dir) continue;
+      if (file.name.includes('__MACOSX/')) continue;
+      if (!imageExtensions.test(file.name)) continue;
+      const baseName = basenameSafe(file.name);
+      const mime = getZipImageMime(baseName);
+      const base64 = await file.async('base64');
+      const dataUrl = `data:${mime};base64,${base64}`;
+      imageMap[normalizeImageLookupName(baseName)] = dataUrl;
+      imageMap[normalizeImageLookupName(file.name)] = dataUrl;
+    }
+    return imageMap;
+  }
+
+  function findCsvFileInZip(zip) {
+    const files = Object.values(zip.files || {}).filter(file =>
+      !file.dir &&
+      !file.name.includes('__MACOSX/') &&
+      /\.csv$/i.test(file.name)
+    );
+    if (!files.length) return null;
+    return files.find(file => /(^|\/)questoes\.csv$/i.test(file.name)) || files[0];
+  }
+
+  async function importQuestionsFromZipWithImages(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (typeof JSZip === 'undefined') {
+      alert('A biblioteca JSZip não carregou. Confira a internet e recarregue o professor.');
+      event.target.value = '';
+      return;
+    }
+
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const csvFile = findCsvFileInZip(zip);
+      if (!csvFile) {
+        alert('O ZIP não possui arquivo CSV. Inclua um arquivo chamado questoes.csv na raiz do pacote.');
+        event.target.value = '';
+        return;
+      }
+
+      const imageMap = await buildImageMapFromZip(zip);
+      const csvText = await csvFile.async('string');
+      const rows = parseCsvTextSafe(csvText);
+
+      const missingImages = [];
+      const imported = rows.map((row, index) => {
+        const q = questionFromCsvRow(row, index);
+        if (!q) return null;
+
+        const imageRef = pickCsvCell(row, ['Imagem','Image','Arquivo da Imagem','Nome da Imagem','Imagem Nome','URL da Imagem','Link da Imagem']);
+        if (imageRef) {
+          const normalizedRef = normalizeImageLookupName(imageRef);
+          const linkedImage = imageMap[normalizedRef];
+          if (linkedImage) {
+            q.image = linkedImage;
+            q.metadata = { ...(q.metadata || {}), imagemOriginal: basenameSafe(imageRef) };
+          } else if (/^https?:\/\//i.test(imageRef) || /^data:image\//i.test(imageRef)) {
+            q.image = imageRef;
+          } else {
+            q.image = '';
+            missingImages.push(`Linha ${index + 2}: ${imageRef}`);
+          }
+        }
+        return q;
+      }).filter(Boolean);
+
+      if (!imported.length) {
+        alert('Nenhuma questão válida foi encontrada no ZIP. Confira se o questoes.csv possui Enunciado, Alternativas e Correta.');
+        event.target.value = '';
+        return;
+      }
+
+      const invalidImported = [];
+      imported.forEach((q, index) => {
+        const problems = validateQuestionBeforeStoreSafe(q);
+        if (problems.length) invalidImported.push(`Questão ${index + 1}: ${problems.join('; ')}`);
+      });
+      if (invalidImported.length) {
+        alert('Problema(s) encontrado(s) no ZIP:\n\n' + invalidImported.slice(0, 12).join('\n') + (invalidImported.length > 12 ? `\n... e mais ${invalidImported.length - 12} questão(ões).` : '') + '\n\nCorrija o pacote antes de importar.');
+        event.target.value = '';
+        return;
+      }
+
+      const withImages = imported.filter(q => q.image && String(q.image).startsWith('data:image/')).length;
+      const byPhase = {};
+      imported.forEach(q => { byPhase[q.phase] = (byPhase[q.phase] || 0) + 1; });
+      const resumo = Object.entries(byPhase).map(([phase, count]) => {
+        const p = settings.phases?.find(item => Number(item.id) === Number(phase));
+        return `${p?.name || 'Ilha ' + phase}: ${count}`;
+      }).join('\n');
+
+      let message = `Importar ${imported.length} questão(ões) do ZIP?\n\n${resumo}\n\nImagem(ns) vinculada(s): ${withImages}.`;
+      if (missingImages.length) {
+        message += `\n\nAtenção: ${missingImages.length} imagem(ns) citada(s) não foram encontradas no ZIP:\n${missingImages.slice(0, 8).join('\n')}${missingImages.length > 8 ? '\n...' : ''}`;
+      }
+      message += '\n\nAs questões serão adicionadas ao banco atual.';
+
+      if (!confirm(message)) {
+        event.target.value = '';
+        return;
+      }
+
+      questions = [...questions, ...imported].map(normalizeQuestion);
+      renderQuestionBank();
+      persistTeacherDraftSafe(`ZIP com imagens importado com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
+      autoDownloadBackupAfterSaveSafe();
+      alert(`Importação concluída.\n\nQuestões adicionadas: ${imported.length}\nImagens vinculadas: ${withImages}\nBanco atual: ${questions.length} questão(ões).`);
+    } catch (error) {
+      console.error(error);
+      alert('Não foi possível importar o ZIP. Confira se ele contém questoes.csv e pasta imagens com arquivos PNG, JPG, WEBP, GIF ou SVG.');
+    } finally {
+      event.target.value = '';
+    }
+  }
+
+  function downloadZipImageTemplateSafe() {
+    if (typeof JSZip === 'undefined') {
+      alert('A biblioteca JSZip não carregou. Confira a internet e recarregue o professor.');
+      return;
+    }
+
+    const csv = `"Enunciado";"Categoria";"Feedback Positivo";"Feedback Negativo";"Alternativa 1";"Alternativa 1 Correta";"Alternativa 2";"Alternativa 2 Correta";"Alternativa 3";"Alternativa 3 Correta";"Alternativa 4";"Alternativa 4 Correta";"Alternativa 5";"Alternativa 5 Correta";"Alternativa 6";"Alternativa 6 Correta";"Alternativa 7";"Alternativa 7 Correta";"Alternativa 8";"Alternativa 8 Correta";"Metadado 1";"Valor 1";"Metadado 2";"Valor 2";"Metadado 3";"Valor 3";"Ilha/Fase";"Imagem"
+"Observe a imagem associada ao item e responda à questão teste de Química.";"Teste com imagem";"Parabéns, você acertou! 🐢💙 A alternativa correta é a A. A imagem foi vinculada corretamente ao item e aparece como apoio visual da questão.";"Que pena, não foi dessa vez, mas vou te explicar para você evoluir! 🐢💙 A alternativa correta é a A. Neste teste, o objetivo é apenas confirmar se a imagem foi importada e associada à questão correta.";"Alternativa correta de teste";"Sim";"Distrator 1";"";"Distrator 2";"";"Distrator 3";"";"Distrator 4";"";"";"";"";"";"";"";"Ano";"2026";"Banca";"ENEM";"Dificuldade";"Teste";"1";"Q001.svg"`;
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+      <rect width="900" height="520" fill="#ffffff"/>
+      <rect x="38" y="38" width="824" height="444" rx="34" fill="#e8fbfb" stroke="#09999F" stroke-width="8"/>
+      <circle cx="250" cy="250" r="112" fill="#FCCC46" stroke="#055274" stroke-width="8"/>
+      <ellipse cx="470" cy="255" rx="170" ry="95" fill="#ffffff" stroke="#D01890" stroke-width="7"/>
+      <text x="450" y="112" font-family="Arial" font-size="46" font-weight="700" text-anchor="middle" fill="#055274">Imagem teste PRENAT+</text>
+      <text x="450" y="405" font-family="Arial" font-size="30" text-anchor="middle" fill="#055274">Se esta imagem aparecer no aluno, a importação funcionou.</text>
+      <text x="470" y="270" font-family="Arial" font-size="42" font-weight="700" text-anchor="middle" fill="#D01890">Q001.svg</text>
+    </svg>`;
+
+    const zip = new JSZip();
+    zip.file('questoes.csv', csv);
+    zip.folder('imagens').file('Q001.svg', svg);
+    zip.file('LEIA-ME.txt', 'Modelo PRENAT+ para importação com imagens. Mantenha o arquivo questoes.csv e coloque as imagens na pasta imagens. Na coluna Imagem, escreva exatamente o nome do arquivo, por exemplo Q001.png, Q001.jpg, Q001.webp ou Q001.svg.');
+    zip.generateAsync({ type: 'blob' }).then(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `modelo-zip-com-imagens-${missionSlugSafe()}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    });
+  }
+  // ===== FIM ZIP IMPORT COM IMAGENS =====
+
   // ===== FIM CSV IMPORT =====
 
   // ===== FIM DO PATCH =====
@@ -856,6 +1033,8 @@
     document.getElementById('moveAllVisibleToPhase')?.addEventListener('click', moveVisibleQuestionsToSelectedPhaseSafe);
     document.getElementById('importQuestionsCsv')?.addEventListener('change', importQuestionsFromCsvFile);
     document.getElementById('downloadCsvTemplate')?.addEventListener('click', downloadCsvTemplateSafe);
+    document.getElementById('importQuestionsZipImages')?.addEventListener('change', importQuestionsFromZipWithImages);
+    document.getElementById('downloadZipImageTemplate')?.addEventListener('click', downloadZipImageTemplateSafe);
     document.getElementById('qImage')?.addEventListener('input', updateImagePreview);
     document.getElementById('clearImageBtn')?.addEventListener('click', () => {
       setValue('qImage', '');

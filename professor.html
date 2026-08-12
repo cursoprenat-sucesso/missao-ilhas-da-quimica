@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Área do Professor | PRENAT+ Química</title>
-  <link rel="stylesheet" href="style-quimica.css?v=21" />
+  <link rel="stylesheet" href="style-quimica.css?v=22" />
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] }, svg: { fontCache: 'global' } };
   </script>
@@ -159,11 +159,21 @@
           
           <div class="csv-import-panel">
             <strong>Importação em lote por planilha</strong>
-            <p>Use CSV com colunas: Enunciado, Categoria, Feedback Positivo, Feedback Negativo, Alternativas e Correta. Se a planilha não informar ilha, as questões entram na fase/ilha selecionada no formulário.</p>
+            <p>Use CSV com colunas: Enunciado, Categoria, Feedback Positivo, Feedback Negativo, Alternativas, Correta e, opcionalmente, Imagem. Se a planilha não informar ilha, as questões entram na fase/ilha selecionada no formulário.</p>
             <div class="teacher-actions csv-import-actions">
               <label class="btn btn-primary file-like">Importar planilha CSV <input type="file" id="importQuestionsCsv" accept=".csv,text/csv" hidden></label>
               <button type="button" class="btn btn-soft" id="downloadCsvTemplate">Baixar modelo CSV</button>
             </div>
+          </div>
+
+          <div class="csv-import-panel">
+            <strong>Importação em lote com imagens</strong>
+            <p>Use um arquivo ZIP contendo <strong>questoes.csv</strong> e uma pasta <strong>imagens</strong>. Na coluna <strong>Imagem</strong> do CSV, escreva o nome exato do arquivo, por exemplo: Q001.png.</p>
+            <div class="teacher-actions csv-import-actions">
+              <label class="btn btn-primary file-like">Importar ZIP com imagens <input type="file" id="importQuestionsZipImages" accept=".zip,application/zip" hidden></label>
+              <button type="button" class="btn btn-soft" id="downloadZipImageTemplate">Baixar modelo ZIP com imagens</button>
+            </div>
+            <p class="safe-save-warning">As imagens são convertidas para dentro do questions.json. Use imagens leves em PNG, JPG, WEBP, GIF ou SVG.</p>
           </div>
 
           <p class="safe-save-warning">Atenção: salvar no painel não publica para os alunos. O backup automático baixa uma cópia no computador. O aluno só vê depois que o arquivo <strong>questions.json</strong> atualizado substituir o antigo no GitHub.</p>
@@ -198,6 +208,7 @@
     </section>
   </main>
 
-  <script src="professor-quimica.js?v=21"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="professor-quimica.js?v=22"></script>
 </body>
 </html>

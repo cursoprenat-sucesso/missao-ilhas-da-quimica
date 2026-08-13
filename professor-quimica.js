@@ -396,21 +396,40 @@
     const cleanQuestions = stripOptionFeedbackForGeneralOnly(questions).map(normalizeQuestion);
     questions = cleanQuestions;
 
-    localStorage.setItem(keys.questions, JSON.stringify(cleanQuestions));
-    localStorage.setItem(keys.settings, JSON.stringify(cleanSettings));
-
+    const questionsJson = JSON.stringify(cleanQuestions);
+    const settingsJson = JSON.stringify(cleanSettings);
     const backup = {
       type: 'prenat_teacher_emergency_backup',
-      version: 2,
+      version: 3,
       savedAt: new Date().toISOString(),
       missionSlug: missionSlugSafe(),
       settings: cleanSettings,
       questions: cleanQuestions
     };
-    localStorage.setItem(keys.backup, JSON.stringify(backup));
-    localStorage.setItem(keys.last, backup.savedAt);
+    const backupJson = JSON.stringify(backup);
 
-    updateTeacherSafeStatus(message || 'Banco salvo automaticamente no navegador.');
+    try {
+      localStorage.setItem(keys.questions, questionsJson);
+      localStorage.setItem(keys.settings, settingsJson);
+      localStorage.setItem(keys.backup, backupJson);
+      localStorage.setItem(keys.last, backup.savedAt);
+      updateTeacherSafeStatus(message || 'Banco salvo automaticamente no navegador.');
+      return { ok: true, mode: 'full' };
+    } catch (error) {
+      console.warn('PRENAT+ salvamento completo falhou; tentando modo leve.', error);
+      try {
+        localStorage.removeItem(keys.backup);
+        localStorage.removeItem(keys.last);
+        localStorage.setItem(keys.questions, questionsJson);
+        localStorage.setItem(keys.settings, settingsJson);
+        updateTeacherSafeStatus((message || 'Banco salvo no navegador.') + ' Backup local interno foi dispensado para economizar espaço. Baixe também o backup de emergência.');
+        return { ok: true, mode: 'light', error };
+      } catch (secondError) {
+        console.error('PRENAT+ salvamento leve também falhou.', secondError);
+        updateTeacherSafeStatus('Banco atualizado na tela, mas o navegador não conseguiu salvar localmente. Baixe o questions.json atualizado agora.');
+        return { ok: false, mode: 'failed', error: secondError };
+      }
+    }
   }
 
   function updateTeacherSafeStatus(message) {
@@ -858,12 +877,42 @@
 
       questions = [...questions, ...imported].map(normalizeQuestion);
       renderQuestionBank();
-      persistTeacherDraftSafe(`ZIP com imagens importado com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
+      const saveResult = persistTeacherDraftSafe(`ZIP com imagens importado com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
       autoDownloadBackupAfterSaveSafe();
-      alert(`Importação concluída.\n\nQuestões adicionadas: ${imported.length}\nImagens vinculadas: ${withImages}\nBanco atual: ${questions.length} questão(ões).`);
+      if (saveResult?.ok === false) {
+        alert(`As questões foram importadas para a tela, mas o navegador não conseguiu salvar no armazenamento local.
+
+Questões adicionadas: ${imported.length}
+Imagens vinculadas: ${withImages}
+Banco atual na tela: ${questions.length}
+
+AÇÃO NECESSÁRIA: clique agora em "Baixar questions.json atualizado" e guarde/suba esse arquivo no GitHub.
+
+Erro técnico: ${saveResult.error?.name || 'Erro'} - ${saveResult.error?.message || 'sem mensagem'}`);
+      } else if (saveResult?.mode === 'light') {
+        alert(`Importação concluída em modo leve.
+
+Questões adicionadas: ${imported.length}
+Imagens vinculadas: ${withImages}
+Banco atual: ${questions.length} questão(ões).
+
+O backup local interno foi dispensado para economizar espaço no navegador. Clique em "Exportar backup de emergência" para guardar uma cópia segura.`);
+      } else {
+        alert(`Importação concluída.
+
+Questões adicionadas: ${imported.length}
+Imagens vinculadas: ${withImages}
+Banco atual: ${questions.length} questão(ões).`);
+      }
     } catch (error) {
       console.error(error);
-      alert('Não foi possível importar o ZIP. Confira se ele contém questoes.csv e pasta imagens com arquivos PNG, JPG, WEBP, GIF ou SVG.');
+      alert(`Não foi possível importar o ZIP.
+
+O arquivo pode estar correto, mas ocorreu um erro no processamento do professor.
+
+Detalhe técnico: ${error?.name || 'Erro'} - ${error?.message || 'sem mensagem'}
+
+Confira se o ZIP contém questoes.csv na raiz e pasta imagens com PNG, JPG, WEBP, GIF ou SVG.`);
     } finally {
       event.target.value = '';
     }
@@ -1156,10 +1205,14 @@
 
 
   function normalizeAlternativeForCompareSafe(text) {
+    const superscriptMap = {
+      '⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁻':'-','⁺':'+'
+    };
     return String(text || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]/g, ch => superscriptMap[ch] || ch)
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
       .replace(/<[^>]*>/g, ' ')
-      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .replace(/[^\p{L}\p{N}+\-]+/gu, ' ')
       .toLowerCase()
       .trim()
       .replace(/\s+/g, ' ');

@@ -3,6 +3,297 @@
   let settings = null;
   let questions = [];
 
+
+  // ===== PRENAT+ BLOCO DE IMPORTAÇÃO, PRÉVIA E EXCLUSÃO EM MASSA =====
+  let selectedQuestionIds = new Set();
+
+  function makeImportBatchSafe(sourceLabel, fileName = '') {
+    const now = new Date();
+    const stamp = now.toLocaleString('pt-BR');
+    return {
+      id: `batch_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+      label: `${sourceLabel}${fileName ? ' · ' + fileName : ''} · ${stamp}`,
+      source: sourceLabel,
+      fileName,
+      importedAt: now.toISOString()
+    };
+  }
+
+  function attachImportBatchSafe(bank, batch) {
+    return bank.map((q, index) => normalizeQuestion({
+      ...q,
+      metadata: {
+        ...(q.metadata || {}),
+        importBatchId: batch.id,
+        importBatchLabel: batch.label,
+        importBatchSource: batch.source,
+        importBatchFile: batch.fileName,
+        importBatchOrder: index + 1,
+        importedAt: batch.importedAt
+      }
+    }));
+  }
+
+  function getQuestionBatchIdSafe(q) {
+    return String(q?.metadata?.importBatchId || q?.importBatchId || '');
+  }
+
+  function getQuestionBatchLabelSafe(q) {
+    return String(q?.metadata?.importBatchLabel || q?.metadata?.importBatchFile || 'Sem bloco identificado');
+  }
+
+  function currentVisibleQuestionsSafe() {
+    const filter = document.getElementById('bankPhaseFilter')?.value || 'all';
+    return [...questions]
+      .filter(q => filter === 'all' || Number(q.phase) === Number(filter))
+      .sort((a,b) => Number(a.phase || 0) - Number(b.phase || 0));
+  }
+
+  function ensureBulkQuestionToolsSafe() {
+    const list = document.getElementById('questionBankList');
+    if (!list || document.getElementById('bulkQuestionTools')) return;
+    const panel = document.createElement('div');
+    panel.id = 'bulkQuestionTools';
+    panel.className = 'csv-import-panel';
+    panel.style.margin = '16px 0';
+    panel.innerHTML = `
+      <strong>Revisão rápida do banco</strong>
+      <p>Use seleção em massa para apagar questões importadas com erro sem precisar excluir uma por uma. Isso altera apenas o banco local do professor; publique somente depois de baixar o questions.json atualizado.</p>
+      <div class="teacher-actions csv-import-actions">
+        <button type="button" class="btn btn-soft" id="selectVisibleQuestions">Selecionar visíveis</button>
+        <button type="button" class="btn btn-soft" id="clearSelectedQuestions">Limpar seleção</button>
+        <button type="button" class="btn btn-soft danger" id="deleteSelectedQuestions">Excluir selecionadas</button>
+      </div>
+      <div id="selectionCounter" class="small-muted" style="margin-top:8px">0 questão(ões) selecionada(s).</div>
+      <div id="importBatchPanel" style="margin-top:14px"></div>
+    `;
+    list.parentElement.insertBefore(panel, list);
+    document.getElementById('selectVisibleQuestions')?.addEventListener('click', selectVisibleQuestionsSafe);
+    document.getElementById('clearSelectedQuestions')?.addEventListener('click', clearQuestionSelectionSafe);
+    document.getElementById('deleteSelectedQuestions')?.addEventListener('click', deleteSelectedQuestionsSafe);
+  }
+
+  function updateSelectionCounterSafe() {
+    const counter = document.getElementById('selectionCounter');
+    if (counter) counter.textContent = `${selectedQuestionIds.size} questão(ões) selecionada(s).`;
+  }
+
+  function enhanceQuestionSelectionSafe() {
+    ensureBulkQuestionToolsSafe();
+    document.querySelectorAll('.question-row').forEach(row => {
+      const id = row.dataset.questionId;
+      if (!id || row.querySelector('.question-select-wrap')) return;
+      const wrap = document.createElement('label');
+      wrap.className = 'question-select-wrap';
+      wrap.style.cssText = 'display:flex;align-items:center;gap:8px;margin-right:10px;font-weight:800;color:#055274;';
+      wrap.innerHTML = `<input type="checkbox" data-select-question="${escapeHtml(id)}"> selecionar`;
+      row.insertBefore(wrap, row.firstChild);
+    });
+    document.querySelectorAll('[data-select-question]').forEach(input => {
+      input.checked = selectedQuestionIds.has(input.dataset.selectQuestion);
+      input.onchange = () => {
+        if (input.checked) selectedQuestionIds.add(input.dataset.selectQuestion);
+        else selectedQuestionIds.delete(input.dataset.selectQuestion);
+        updateSelectionCounterSafe();
+      };
+    });
+    updateSelectionCounterSafe();
+  }
+
+  function selectVisibleQuestionsSafe() {
+    currentVisibleQuestionsSafe().forEach(q => selectedQuestionIds.add(String(q.id)));
+    enhanceQuestionSelectionSafe();
+  }
+
+  function clearQuestionSelectionSafe() {
+    selectedQuestionIds.clear();
+    enhanceQuestionSelectionSafe();
+  }
+
+  function deleteSelectedQuestionsSafe() {
+    const ids = new Set([...selectedQuestionIds]);
+    if (!ids.size) return alert('Nenhuma questão selecionada.');
+    if (!confirm(`Excluir ${ids.size} questão(ões) selecionada(s) do banco local?`)) return;
+    questions = questions.filter(q => !ids.has(String(q.id)));
+    selectedQuestionIds.clear();
+    renderQuestionBank();
+    saveTeacherDraftAfterBulkSafe(`Excluídas ${ids.size} questão(ões) selecionada(s). Banco atual: ${questions.length}.`);
+    downloadBackupAfterBulkSafe();
+  }
+
+  function getImportBatchesSafe() {
+    const map = new Map();
+    questions.forEach(q => {
+      const id = getQuestionBatchIdSafe(q);
+      if (!id) return;
+      if (!map.has(id)) {
+        map.set(id, { id, label: getQuestionBatchLabelSafe(q), count: 0, images: 0, phases: new Set() });
+      }
+      const item = map.get(id);
+      item.count += 1;
+      if (q.image) item.images += 1;
+      item.phases.add(Number(q.phase || 0));
+    });
+    return [...map.values()].sort((a,b) => String(b.id).localeCompare(String(a.id)));
+  }
+
+  function renderImportBatchPanelSafe() {
+    const panel = document.getElementById('importBatchPanel');
+    if (!panel) return;
+    const batches = getImportBatchesSafe();
+    if (!batches.length) {
+      panel.innerHTML = '<p class="small-muted">Nenhum bloco importado identificado ainda. As próximas importações por CSV ou ZIP ficarão agrupadas aqui.</p>';
+      return;
+    }
+    panel.innerHTML = `
+      <strong>Blocos de importação</strong>
+      <div class="safe-save-chips" style="margin-top:8px">
+        ${batches.map(batch => `
+          <span class="bank-chip" style="display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <strong>${escapeHtml(batch.label)}</strong> · ${batch.count} questão(ões) · ${batch.images} imagem(ns)
+            <button type="button" class="btn btn-soft small" data-select-batch="${escapeHtml(batch.id)}">Selecionar bloco</button>
+            <button type="button" class="btn btn-soft small danger" data-delete-batch="${escapeHtml(batch.id)}">Excluir bloco</button>
+          </span>
+        `).join('')}
+      </div>`;
+    panel.querySelectorAll('[data-select-batch]').forEach(btn => btn.addEventListener('click', () => {
+      questions.filter(q => getQuestionBatchIdSafe(q) === btn.dataset.selectBatch).forEach(q => selectedQuestionIds.add(String(q.id)));
+      enhanceQuestionSelectionSafe();
+    }));
+    panel.querySelectorAll('[data-delete-batch]').forEach(btn => btn.addEventListener('click', () => deleteImportBatchSafe(btn.dataset.deleteBatch)));
+  }
+
+  function deleteImportBatchSafe(batchId) {
+    const batchQuestions = questions.filter(q => getQuestionBatchIdSafe(q) === batchId);
+    if (!batchQuestions.length) return alert('Esse bloco não foi encontrado no banco atual.');
+    const label = getQuestionBatchLabelSafe(batchQuestions[0]);
+    if (!confirm(`Excluir o bloco importado abaixo?\n\n${label}\n\nTotal: ${batchQuestions.length} questão(ões).`)) return;
+    const ids = new Set(batchQuestions.map(q => String(q.id)));
+    questions = questions.filter(q => !ids.has(String(q.id)));
+    [...ids].forEach(id => selectedQuestionIds.delete(id));
+    renderQuestionBank();
+    saveTeacherDraftAfterBulkSafe(`Bloco excluído: ${label}. Banco atual: ${questions.length}.`);
+    downloadBackupAfterBulkSafe();
+  }
+
+  function saveTeacherDraftAfterBulkSafe(message) {
+    if (typeof persistTeacherDraftSafe === 'function') return persistTeacherDraftSafe(message);
+    try {
+      localStorage.setItem(`${settings?.slug || 'prenat'}_teacher_questions`, JSON.stringify(questions));
+      return { ok: true, mode: 'simple' };
+    } catch (error) {
+      console.error(error);
+      return { ok: false, error };
+    }
+  }
+
+  function downloadBackupAfterBulkSafe() {
+    if (typeof autoDownloadBackupAfterSaveSafe === 'function') autoDownloadBackupAfterSaveSafe();
+  }
+
+  function getQuestionPreviewWarningsSafe(q) {
+    const warnings = [];
+    const problems = typeof validateQuestionBeforeStoreSafe === 'function' ? validateQuestionBeforeStoreSafe(q) : (typeof validateImportedQuestionNatureza === 'function' ? validateImportedQuestionNatureza(q) : []);
+    if (problems.length) warnings.push(...problems);
+    const img = String(q.image || '');
+    if (img.startsWith('data:image/')) {
+      const kb = Math.round((img.length * 0.75) / 1024);
+      if (kb > 500) warnings.push(`imagem pesada: ~${kb} KB`);
+    }
+    if (/<img\b/i.test(String(q.statement || ''))) warnings.push('enunciado contém tag de imagem; use somente o campo Imagem');
+    return warnings;
+  }
+
+  function showImportPreviewSafe(imported, options = {}) {
+    return new Promise(resolve => {
+      const selected = new Set(imported.map(q => String(q.id)));
+      const overlay = document.createElement('div');
+      overlay.className = 'prenat-import-preview-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.55);display:flex;align-items:flex-start;justify-content:center;padding:26px;overflow:auto;';
+      const box = document.createElement('div');
+      box.style.cssText = 'width:min(1080px,96vw);background:#fff;border-radius:24px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.35);max-height:92vh;overflow:auto;color:#053d56;';
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+
+      const byPhase = {};
+      imported.forEach(q => { byPhase[q.phase] = (byPhase[q.phase] || 0) + 1; });
+      const summary = Object.entries(byPhase).map(([phase, count]) => {
+        const p = settings.phases?.find(item => Number(item.id) === Number(phase));
+        return `${p?.name || 'Ilha ' + phase}: ${count}`;
+      }).join(' · ');
+
+      function render() {
+        box.innerHTML = `
+          <h2 style="margin:0 0 8px">Prévia antes de salvar no banco</h2>
+          <p style="margin:0 0 12px">Revise as questões importadas. Desmarque o que estiver ruim, principalmente imagem cortada, imagem com enunciado/alternativas ou item incompatível.</p>
+          <p class="warning-tip" style="margin:10px 0"><strong>${escapeHtml(options.source || 'Importação')}</strong>${options.fileName ? ' · ' + escapeHtml(options.fileName) : ''}<br>${escapeHtml(summary)}</p>
+          <div class="teacher-actions" style="position:sticky;top:0;background:#fff;padding:10px 0;z-index:2;border-bottom:1px solid #d6eef2">
+            <button type="button" class="btn btn-soft" id="previewSelectAll">Selecionar todas</button>
+            <button type="button" class="btn btn-soft" id="previewClearAll">Desmarcar todas</button>
+            <button type="button" class="btn btn-primary" id="previewConfirm">Salvar selecionadas (${selected.size})</button>
+            <button type="button" class="btn btn-soft danger" id="previewCancel">Cancelar importação</button>
+          </div>
+          <div style="display:grid;gap:12px;margin-top:14px">
+            ${imported.map((q, idx) => {
+              const phase = settings.phases?.find(p => Number(p.id) === Number(q.phase));
+              const warnings = getQuestionPreviewWarningsSafe(q);
+              const img = String(q.image || '');
+              const imageHtml = img.startsWith('data:image/') || /^https?:\/\//i.test(img)
+                ? `<img src="${img}" style="max-width:260px;max-height:170px;border:1px solid #bce9ef;border-radius:14px;background:#fff;object-fit:contain">`
+                : '<span class="small-muted">sem imagem</span>';
+              const correct = (q.options || []).findIndex(op => op.correct);
+              return `
+                <article style="border:1px solid #c7edf2;border-radius:18px;padding:14px;background:#f8feff;display:grid;grid-template-columns:32px 280px 1fr;gap:14px;align-items:start">
+                  <input type="checkbox" data-preview-check="${escapeHtml(String(q.id))}" ${selected.has(String(q.id)) ? 'checked' : ''} style="margin-top:6px;transform:scale(1.2)">
+                  <div>${imageHtml}<div class="small-muted" style="margin-top:6px">${escapeHtml(q.metadata?.imagemOriginal || '')}</div></div>
+                  <div>
+                    <strong>${idx + 1}. ${escapeHtml(phase ? `${phase.name} · ${phase.title}` : 'Ilha ' + q.phase)}</strong>
+                    <p style="margin:7px 0">${escapeHtml(stripHtml(q.statement || '').slice(0, 520))}${stripHtml(q.statement || '').length > 520 ? '...' : ''}</p>
+                    <small>${escapeHtml((q.options || []).map((op, i) => `${letters[i] || i+1}) ${op.correct ? '✓ ' : ''}${stripHtml(op.text || '').slice(0, 90)}`).join(' | '))}</small>
+                    ${warnings.length ? `<p class="safe-save-warning" style="margin-top:8px">Atenção: ${escapeHtml(warnings.join('; '))}</p>` : ''}
+                  </div>
+                </article>`;
+            }).join('')}
+          </div>`;
+
+        box.querySelectorAll('[data-preview-check]').forEach(input => {
+          input.onchange = () => {
+            if (input.checked) selected.add(input.dataset.previewCheck);
+            else selected.delete(input.dataset.previewCheck);
+            const btn = box.querySelector('#previewConfirm');
+            if (btn) btn.textContent = `Salvar selecionadas (${selected.size})`;
+          };
+        });
+        box.querySelector('#previewSelectAll')?.addEventListener('click', () => { imported.forEach(q => selected.add(String(q.id))); render(); });
+        box.querySelector('#previewClearAll')?.addEventListener('click', () => { selected.clear(); render(); });
+        box.querySelector('#previewCancel')?.addEventListener('click', () => { overlay.remove(); resolve(null); });
+        box.querySelector('#previewConfirm')?.addEventListener('click', () => {
+          const chosen = imported.filter(q => selected.has(String(q.id)));
+          if (!chosen.length) return alert('Nenhuma questão selecionada para salvar.');
+          overlay.remove();
+          resolve(chosen);
+        });
+      }
+      render();
+    });
+  }
+
+  function finishImportedQuestionsSafe(imported, batch, sourceLabel, withImages = 0) {
+    const importedWithBatch = attachImportBatchSafe(imported, batch);
+    questions = [...questions, ...importedWithBatch].map(normalizeQuestion);
+    renderQuestionBank();
+    const saveResult = saveTeacherDraftAfterBulkSafe(`${sourceLabel} importado com ${importedWithBatch.length} questão(ões). Banco atual: ${questions.length}.`);
+    downloadBackupAfterBulkSafe();
+    if (saveResult?.ok === false) {
+      alert(`As questões foram importadas para a tela, mas o navegador não conseguiu salvar no armazenamento local.\n\nQuestões adicionadas: ${importedWithBatch.length}\nImagens vinculadas: ${withImages}\nBanco atual na tela: ${questions.length}\n\nAÇÃO NECESSÁRIA: clique agora em "Baixar questions.json atualizado".`);
+    } else {
+      alert(`Importação concluída.\n\nQuestões adicionadas: ${importedWithBatch.length}\nImagens vinculadas: ${withImages}\nBanco atual: ${questions.length} questão(ões).`);
+    }
+  }
+
+  // ===== FIM BLOCO DE IMPORTAÇÃO, PRÉVIA E EXCLUSÃO EM MASSA =====
+
+
   const FONT_OPTIONS = ['inter','arial','trebuchet','verdana','georgia','times','palatino'];
 
   const DEFAULT_SETTINGS = {
@@ -686,7 +977,7 @@
     const file = event.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const rows = parseCsvTextSafe(reader.result);
         const imported = rows.map(questionFromCsvRow).filter(Boolean);
@@ -713,17 +1004,14 @@
           const p = settings.phases?.find(item => Number(item.id) === Number(phase));
           return `${p?.name || 'Ilha ' + phase}: ${count}`;
         }).join('\n');
-
-        if (!confirm(`Importar ${imported.length} questão(ões) da planilha?\n\n${resumo}\n\nElas serão adicionadas ao banco atual.`)) {
+        const previewed = await showImportPreviewSafe(imported, { source: 'CSV', fileName: file.name });
+        if (!previewed || !previewed.length) {
           event.target.value = '';
           return;
         }
 
-        questions = [...questions, ...imported].map(normalizeQuestion);
-        renderQuestionBank();
-        persistTeacherDraftSafe(`Planilha importada com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
-        autoDownloadBackupAfterSaveSafe();
-        alert(`Importação concluída.\n\nForam adicionadas ${imported.length} questão(ões).\nBanco atual: ${questions.length} questão(ões).`);
+        const batch = makeImportBatchSafe('CSV', file.name);
+        finishImportedQuestionsSafe(previewed, batch, 'Planilha CSV', 0);
       } catch (error) {
         console.error(error);
         alert('Não foi possível importar a planilha. Salve como CSV separado por ponto e vírgula e tente novamente.');
@@ -869,41 +1157,14 @@
         message += `\n\nAtenção: ${missingImages.length} imagem(ns) citada(s) não foram encontradas no ZIP:\n${missingImages.slice(0, 8).join('\n')}${missingImages.length > 8 ? '\n...' : ''}`;
       }
       message += '\n\nAs questões serão adicionadas ao banco atual.';
-
-      if (!confirm(message)) {
+      const previewed = await showImportPreviewSafe(imported, { source: 'ZIP com imagens', fileName: file.name, missingImages });
+      if (!previewed || !previewed.length) {
         event.target.value = '';
         return;
       }
-
-      questions = [...questions, ...imported].map(normalizeQuestion);
-      renderQuestionBank();
-      const saveResult = persistTeacherDraftSafe(`ZIP com imagens importado com ${imported.length} questão(ões). Banco atual: ${questions.length}.`);
-      autoDownloadBackupAfterSaveSafe();
-      if (saveResult?.ok === false) {
-        alert(`As questões foram importadas para a tela, mas o navegador não conseguiu salvar no armazenamento local.
-
-Questões adicionadas: ${imported.length}
-Imagens vinculadas: ${withImages}
-Banco atual na tela: ${questions.length}
-
-AÇÃO NECESSÁRIA: clique agora em "Baixar questions.json atualizado" e guarde/suba esse arquivo no GitHub.
-
-Erro técnico: ${saveResult.error?.name || 'Erro'} - ${saveResult.error?.message || 'sem mensagem'}`);
-      } else if (saveResult?.mode === 'light') {
-        alert(`Importação concluída em modo leve.
-
-Questões adicionadas: ${imported.length}
-Imagens vinculadas: ${withImages}
-Banco atual: ${questions.length} questão(ões).
-
-O backup local interno foi dispensado para economizar espaço no navegador. Clique em "Exportar backup de emergência" para guardar uma cópia segura.`);
-      } else {
-        alert(`Importação concluída.
-
-Questões adicionadas: ${imported.length}
-Imagens vinculadas: ${withImages}
-Banco atual: ${questions.length} questão(ões).`);
-      }
+      const batch = makeImportBatchSafe('ZIP', file.name);
+      const selectedWithImages = previewed.filter(q => q.image && String(q.image).startsWith('data:image/')).length;
+      finishImportedQuestionsSafe(previewed, batch, 'ZIP com imagens', selectedWithImages);
     } catch (error) {
       console.error(error);
       alert(`Não foi possível importar o ZIP.
@@ -1314,8 +1575,10 @@ Confira se o ZIP contém questoes.csv na raiz e pasta imagens com PNG, JPG, WEBP
   function deleteQuestion(id) {
     if (!confirm('Excluir esta questão do banco?')) return;
     questions = questions.filter(q => q.id !== id);
+    selectedQuestionIds.delete(String(id));
     renderQuestionBank();
     persistTeacherDraftSafe(`Questão excluída. Banco atual: ${questions.length} questão(ões). Se o backup automático estiver ligado, confira o arquivo baixado na pasta Downloads.`);
+    autoDownloadBackupAfterSaveSafe?.();
   }
 
   function clearQuestionForm() {
@@ -1334,6 +1597,7 @@ Confira se o ZIP contém questoes.csv na raiz e pasta imagens com PNG, JPG, WEBP
     const stats = document.getElementById('phaseQuestionStats');
     const filter = document.getElementById('bankPhaseFilter')?.value || 'all';
     if (!list) { updateTeacherSafeStatus(); return; }
+    ensureBulkQuestionToolsSafe();
 
     const counts = {};
     questions.forEach(q => { counts[q.phase] = (counts[q.phase] || 0) + 1; });
@@ -1387,12 +1651,16 @@ Confira se o ZIP contém questoes.csv na raiz e pasta imagens com PNG, JPG, WEBP
 
     list.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => editQuestion(btn.dataset.edit)));
     list.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => deleteQuestion(btn.dataset.delete)));
+    enhanceQuestionSelectionSafe();
+    renderImportBatchPanelSafe();
   }
 
   function questionRow(q) {
     const phase = settings.phases.find(p => p.id === q.phase);
     const row = document.createElement('article');
     row.className = 'question-row';
+    row.dataset.questionId = q.id;
+    row.dataset.importBatchId = getQuestionBatchIdSafe(q);
     row.innerHTML = `
       <div>
         <strong>${escapeHtml(phase ? `${phase.name} · ${phase.title}` : `Fase ${q.phase}`)}</strong>
